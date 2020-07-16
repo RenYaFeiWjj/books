@@ -7,6 +7,7 @@
  */
 
 namespace app\books\controller;
+
 use think\Controller;
 use think\Model;
 use think\Request;
@@ -19,21 +20,21 @@ use think\Cache;
 class Info extends Base
 {
     /*章节详情*/
-    public function index(){
+    public function index()
+    {
 
         //读取阅读设置，如果cookie为空，表示用户还未自定阅读设置，则采用默认规则
         $fit = cookie('fit');
-        $fit = json_decode($fit,true);
-        if(empty($fit)){
-            $fit=array(
-                'font'=>'160',
-                'size'=>'1.125rem',
-                'background'=>'skin-default',
-                'slide'=>'Slide_tb',
-                'time'=>'0',
+        $fit = json_decode($fit, true);
+        if (empty($fit)) {
+            $fit = array(
+                'font' => '160',
+                'size' => '1.125rem',
+                'background' => 'skin-default',
+                'slide' => 'Slide_tb',
+                'time' => '0',
             );
         }
-
 
 
         $books_id = input('param.books_id');
@@ -45,47 +46,49 @@ class Info extends Base
         //取读缓存，看是否有预读章节
         $cache_name = md5($chapter_url);
         $data = cache($cache_name);
+        if (empty($data)) {
 
-
-        if(empty($data)){
-
-           // $chapter_url=  str_replace('*','/',$chapter_url).'.html';
-            $chapter_url=  base64_decode($chapter_url);
+            // $chapter_url=  str_replace('*','/',$chapter_url).'.html';
+            $chapter_url = base64_decode($chapter_url);
 
             $curl = model("Curl");
+
             $res = $curl->getDataHttps($chapter_url);
 
+            if ($res) {
+                $href = parse_url($chapter_url);
+                $rule = Db::table('books_rule')->field('info_title,info_content')->alias('r')->join('books_rule_info i', 'i.rule_id=r.rule_id')->where('rule_url', 'like', "%{$href["host"]}%")->find();
+                /*取得小说地址*/
+                $data = array(
+                    'title' => array($rule['info_title'], 'text'),
+                    'content' => array($rule['info_content'], 'text', '<br />'),
+                );
 
-            $href = parse_url($chapter_url);
-            $rule = Db::table('books_rule')->field('info_title,info_content')->alias('r')->join('books_rule_info i','i.rule_id=r.rule_id')->where('rule_url','like',"%{$href["host"]}%")->find();
-            /*取得小说地址*/
-            $data = array(
-                'title'=>array($rule['info_title'],'text'),
-                'content'=>array($rule['info_content'],'text','<br />'),
-            );
-            //第三方类库
-            Loader::import('QueryList', EXTEND_PATH);
-            //匹配出所有章节
-            $info = QueryList::Query($res,$data)->data;
-            $chapter_content = mb_convert_encoding($info[0]['content'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
-            $chapter_name =mb_convert_encoding($info[0]['title'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
-        }else{
+                //第三方类库
+                Loader::import('QueryList', EXTEND_PATH);
+                //匹配出所有章节
+                $info = QueryList::Query($chapter_url, $data, '', 'UTF-8', 'GB2312')->data;
+                $chapter_content = mb_convert_encoding($info[0]['content'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
+
+                $chapter_name = mb_convert_encoding($info[0]['title'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
+            }
+
+            //记录阅读进度,如果未登陆则不记录
+            $user_id = session('user_id');
+            if (!empty($user_id)) {
+                //先删除原有本书记录
+                Db::table('books_history')->where('books_id', $books_id)->where('user_id', $user_id)->delete();
+                $time = date('Y-m-s H:i:s', time());
+                $data = array('books_id' => $books_id, 'user_id' => $user_id, 'history_name' => $chapter_name, 'history_url' => $chapter_url, 'history_time' => $time);
+                //新增阅读记录
+                Db::table('books_history')->insert($data);
+            }
+        } else {
 
             $chapter_name = $data['chapter_name'];
             $chapter_content = $data['chapter_content'];
             $chapter_url = $data['chapter_url'];
 
-        }
-
-        //记录阅读进度,如果未登陆则不记录
-        $user_id = session('user_id');
-        if(!empty($user_id)){
-            //先删除原有本书记录
-            Db::table('books_history')->where('books_id',$books_id)->where('user_id',$user_id)->delete();
-            $time = date('Y-m-s H:i:s',time());
-            $data=array('books_id'=>$books_id,'user_id'=>$user_id,'history_name'=>$chapter_name,'history_url'=>$chapter_url,'history_time'=>$time);
-            //新增阅读记录
-            Db::table('books_history')->insert($data);
         }
 
         $this->view->chapter_name = $chapter_name;
@@ -95,9 +98,9 @@ class Info extends Base
         $this->view->fit = $fit;
 
         $mobile = session('mobile');
-        if($mobile){
+        if ($mobile) {
             return $this->fetch('mobile/info');
-        }else{
+        } else {
             return $this->fetch('template/info');
         }
 
@@ -108,7 +111,8 @@ class Info extends Base
      * @return \think\response\Json
      * ajax取出下一章内容，由于效果不佳，暂时弃用
      */
-    public function nextInfo(){
+    public function nextInfo()
+    {
 
         $chapter_name = input('param.chapter_name');
         $books_id = input('param.books_id');
@@ -126,53 +130,53 @@ class Info extends Base
 
         /*取得小说地址*/
         $chapter_all = array(
-            'text'=>array('dd>a','text'),
-            'href'=>array('dd>a','href'),
+            'text' => array('dd>a', 'text'),
+            'href' => array('dd>a', 'href'),
         );
 
         //第三方类库
         Loader::import('QueryList', EXTEND_PATH);
         //匹配出所有章节
-        $match = QueryList::Query($res,$chapter_all)->data;
+        $match = QueryList::Query($res, $chapter_all)->data;
 
         //去除前面重复的几个最新章节
-        array_splice($match,0,9);
+        array_splice($match, 0, 9);
 
-        foreach ($match as $key=>$val){
+        foreach ($match as $key => $val) {
             //使用该函数对结果进行转码
             $text = mb_convert_encoding($val['text'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
-            if($text==$chapter_name) {
+            if ($text == $chapter_name) {
 
                 //小于count($match)说明才有下一章节
-                if($key+1<count($match)){
-                    $chapter_url=  'https://www.bqg5.cc'.$match[$key+1]['href'];
+                if ($key + 1 < count($match)) {
+                    $chapter_url = 'https://www.bqg5.cc' . $match[$key + 1]['href'];
                     $curl = model("Curl");
                     $res = $curl->getDataHttps($chapter_url);
 
                     //取得小说章节
-                    $name="/<h1>(.*?)<\/h1>/si";
-                    preg_match($name, $res,$cname);
+                    $name = "/<h1>(.*?)<\/h1>/si";
+                    preg_match($name, $res, $cname);
 
-                    $chapter_name =mb_convert_encoding($cname[1], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
+                    $chapter_name = mb_convert_encoding($cname[1], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
 
                     //取得小说内容
-                    $regex="/<div id=\"content\".*?>.*?<\/div>/ism";
+                    $regex = "/<div id=\"content\".*?>.*?<\/div>/ism";
                     preg_match($regex, $res, $match);
 
                     //记录阅读进度,如果未登陆则不记录
                     $user_id = session('user_id');
-                    if(!empty($user_id)){
+                    if (!empty($user_id)) {
                         //先删除原有本书记录
-                        Db::table('books_history')->where('books_id',$books_id)->where('user_id',$user_id)->delete();
-                        $time = date('Y-m-s H:i:s',time());
-                        $data=array('books_id'=>$books_id,'user_id'=>$user_id,'history_name'=>$chapter_name,'history_url'=>$chapter_url,'history_time'=>$time);
+                        Db::table('books_history')->where('books_id', $books_id)->where('user_id', $user_id)->delete();
+                        $time = date('Y-m-s H:i:s', time());
+                        $data = array('books_id' => $books_id, 'user_id' => $user_id, 'history_name' => $chapter_name, 'history_url' => $chapter_url, 'history_time' => $time);
                         //新增阅读记录
                         Db::table('books_history')->insert($data);
                     }
 
 
-                    $chapter_content =mb_convert_encoding($match[0], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
-                    $data['content'] =$chapter_content;
+                    $chapter_content = mb_convert_encoding($match[0], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
+                    $data['content'] = $chapter_content;
                     $data['chapter_name'] = $chapter_name;
                     $data['code'] = '200';
                     break;
@@ -182,28 +186,29 @@ class Info extends Base
         }
 
 
+        return json($data, 200);
 
-            return json($data,200);
-
-        }
+    }
 
     /**
      * @return \think\response\Json
      * ajax请求小说目录
      */
-    public function ajaxCatalog(){
+    public function ajaxCatalog()
+    {
 
         $books_id = input('param.books_id');
 
         $catalog = model("Catalog");
         $match = $catalog->getCatalog($books_id);
 
-        return json($match,200);
+        return json($match, 200);
 
     }
 
     //二维数组去掉重复值
-    public  function array_unique_fb($array){
+    public function array_unique_fb($array)
+    {
 
         $array = array_reverse($array);
         foreach ($array as $v) {
@@ -225,7 +230,8 @@ class Info extends Base
      * @return \think\response\Json
      * 预读下一章节内容
      */
-    public function nextchapter(){
+    public function nextchapter()
+    {
 
 
         $chapter_url = input('param.chapter_url');
@@ -242,12 +248,14 @@ class Info extends Base
 
         $cl = base64_encode($chapter_url);
         //匹配出链接相对应该的位置，即阅读到哪个章节
-        $res = array_filter($match, function($t) use ($cl) { return $t[1] == $cl; });
+        $res = array_filter($match, function ($t) use ($cl) {
+            return $t[1] == $cl;
+        });
         $chapter_key = key($res);
 
-        if($chapter_key>0){
+        if ($chapter_key > 0) {
 
-            $c_url = end($match[$chapter_key-1]);
+            $c_url = end($match[$chapter_key - 1]);
             $info_url = base64_decode($c_url);
 
             $curl = model("Curl");
@@ -255,30 +263,30 @@ class Info extends Base
 
             /*取得小说地址*/
             $data = array(
-                'title'=>array($rule['info_title'],'text'),
-                'content'=>array($rule['info_content'],'text','<br />'),
+                'title' => array($rule['info_title'], 'text'),
+                'content' => array($rule['info_content'], 'text', '<br />'),
             );
             //第三方类库
             Loader::import('QueryList', EXTEND_PATH);
             //匹配出所有章节
-            $info = QueryList::Query($res,$data,'','UTF-8','GB2312')->data;
+            $info = QueryList::Query($res, $data, '', 'UTF-8', 'GB2312')->data;
 
             $chapter_content = mb_convert_encoding($info[0]['content'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
-            $chapter_name =mb_convert_encoding($info[0]['title'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
+            $chapter_name = mb_convert_encoding($info[0]['title'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
 
-            $next_chapter_url =   $c_url; //章节链接
+            $next_chapter_url = $c_url; //章节链接
 
             $cache_name = md5($next_chapter_url);
 
             $data['chapter_name'] = $chapter_name;
             $data['chapter_content'] = $chapter_content;
             $data['chapter_url'] = $info_url;
-            cache($cache_name,$data,600);
+            cache($cache_name, $data, 600);
 
-            return $this->success('','',$next_chapter_url);
-        }else{
+            return $this->success('', '', $next_chapter_url);
+        } else {
             $next_chapter_url = 'javascript:void(0);';
-            return $this->success('','',$next_chapter_url);
+            return $this->success('', '', $next_chapter_url);
         }
 
     }
@@ -287,7 +295,8 @@ class Info extends Base
      * @return \think\response\Json
      * 预读上一章节内容
      */
-    public function upperchapter(){
+    public function upperchapter()
+    {
 
         $chapter_url = input('param.chapter_url');
         $books_id = input('param.books_id');
@@ -304,42 +313,44 @@ class Info extends Base
 
         $cl = base64_encode($chapter_url);
         //匹配出链接相对应该的位置，即阅读到哪个章节
-        $res = array_filter($match, function($t) use ($cl) { return $t[1] == $cl; });
+        $res = array_filter($match, function ($t) use ($cl) {
+            return $t[1] == $cl;
+        });
         $chapter_key = key($res);
 
-        $count = count($match)-1;
+        $count = count($match) - 1;
 
-        if($chapter_key<$count){
+        if ($chapter_key < $count) {
 
-            $c_url = end($match[$chapter_key+1]);
+            $c_url = end($match[$chapter_key + 1]);
             $info_url = base64_decode($c_url);
             $curl = model("Curl");
             $res = $curl->getDataHttps($info_url);
 
             /*取得小说地址*/
             $data = array(
-                'title'=>array($rule['info_title'],'text'),
-                'content'=>array($rule['info_content'],'text','<br />'),
+                'title' => array($rule['info_title'], 'text'),
+                'content' => array($rule['info_content'], 'text', '<br />'),
             );
             //第三方类库
             Loader::import('QueryList', EXTEND_PATH);
             //匹配出所有章节
-            $info = QueryList::Query($res,$data,'','UTF-8','GB2312')->data;
+            $info = QueryList::Query($res, $data, '', 'UTF-8', 'GB2312')->data;
             $chapter_content = mb_convert_encoding($info[0]['content'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
-            $chapter_name =mb_convert_encoding($info[0]['title'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
+            $chapter_name = mb_convert_encoding($info[0]['title'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
 
-            $upper_chapter_url =   $c_url; //章节链接
+            $upper_chapter_url = $c_url; //章节链接
 
             $cache_name = md5($upper_chapter_url);
 
             $data['chapter_name'] = $chapter_name;
             $data['chapter_content'] = $chapter_content;
             $data['chapter_url'] = $info_url;
-            cache($cache_name,$data,600);
-            return $this->success('','',$upper_chapter_url);
-        }else{
+            cache($cache_name, $data, 600);
+            return $this->success('', '', $upper_chapter_url);
+        } else {
             $upper_chapter_url = 'javascript:void(0);';
-            return $this->success('','',$upper_chapter_url);
+            return $this->success('', '', $upper_chapter_url);
         }
 
 
@@ -348,7 +359,8 @@ class Info extends Base
     /**
      * 书评区
      */
-    public function forum(){
+    public function forum()
+    {
 
         $books_id = input('books_id');
 
@@ -357,18 +369,18 @@ class Info extends Base
     }
 
 
-    public function fit(){
+    public function fit()
+    {
         $fit['font'] = input('font');
         $fit['size'] = input('size');
         $fit['background'] = input('background');
-         $fit['slide'] = input('slide');
-         $fit['time'] = input('time');
+        $fit['slide'] = input('slide');
+        $fit['time'] = input('time');
 
-         $fit = json_encode($fit);
-         cookie('fit',$fit);
+        $fit = json_encode($fit);
+        cookie('fit', $fit);
 
     }
-
 
 
 }

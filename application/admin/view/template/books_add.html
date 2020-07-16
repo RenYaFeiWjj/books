@@ -3,19 +3,19 @@
     <div class="x-body">
       <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so layui-form-pane" action="{:url('/books/add')}" method="post"  >
-          <input class="layui-input" placeholder="ä¹¦ç±åæˆ–ä½œè€…åç§°" name="books_name" required="ä¹¦ç±åæˆ–ä½œè€…åç§°ä¸èƒ½ä¸ºç©º" value="{$books_name}" style="width:50%">
+          <input class="layui-input" placeholder="Êé¼®Ãû»ò×÷ÕßÃû³Æ" name="books_name" required="Êé¼®Ãû»ò×÷ÕßÃû³Æ²»ÄÜÎª¿Õ" value="{$books_name}" style="width:50%">
           <div class="layui-inline">
-            <select name="rule_id" required="ä¹¦ç±åæˆ–ä½œè€…åç§°ä¸èƒ½ä¸ºç©º" >
+            <select name="rule_id" required="Êé¼®Ãû»ò×÷ÕßÃû³Æ²»ÄÜÎª¿Õ" >
               {volist name="rule_list" id="vo"}
               <option value="{$vo.rule_id}" {if condition="$rule_id eq $vo.rule_id" }selected{/if} >{$vo.rule_name}</option>
               {/volist}
             </select>
 
           </div>
-          <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">î˜•</i></button>
+          <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">¤o</i></button>
         </form>
       </div>
-      <blockquote class="layui-elem-quote">å¦‚æœæœç´¢ä¸åˆ°æƒ³è¦å°è¯´ï¼Œå¯ç§»æ­¥åˆ°å°è¯´ä¸­åˆ—è¡¨ä¸­æ‰‹åŠ¨æ·»åŠ å°è¯´</blockquote>
+      <blockquote class="layui-elem-quote">Èç¹ûËÑË÷²»µ½ÏëÒªĞ¡Ëµ£¬¿ÉÒÆ²½µ½Ğ¡ËµÖĞÁĞ±íÖĞÊÖ¶¯Ìí¼ÓĞ¡Ëµ</blockquote>
 
       <table class="layui-table">
         <thead>
@@ -23,9 +23,9 @@
             <th>
               <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
             </th>
-            <th>ä¹¦ç±å</th>
-            <th>é“¾æ¥</th>
-            <th>æ“ä½œ</th>
+            <th>Êé¼®Ãû</th>
+            <th>Á´½Ó</th>
+            <th>²Ù×÷</th>
         </thead>
         <tbody>
 
@@ -38,7 +38,7 @@
             <td>{$vo.name}</td>
             <td><a href="{$vo.href}" target="_blank">{$vo.href}</a></td>
             <td class="td-manage">
-              <button class="layui-btn layui-btn layui-btn-xs jkbooks" name="{$vo.name}" rule_id="{$rule_id}" href="{$vo.href}"  ><i class="layui-icon">î˜ˆ</i>æ·»åŠ å…¥åº“</button>
+              <button class="layui-btn layui-btn layui-btn-xs jkbooks" name="{$vo.name}" rule_id="{$rule_id}" href="{$vo.href}"  ><i class="layui-icon">¤b</i>Ìí¼ÓÈë¿â</button>
             </td>
           </tr>
         {/volist}
@@ -52,48 +52,48 @@
     <script>
       layui.use('laydate', function(){
         var laydate = layui.laydate;
-        
-        //æ‰§è¡Œä¸€ä¸ªlaydateå®ä¾‹
+
+        //Ö´ĞĞÒ»¸ölaydateÊµÀı
         laydate.render({
-          elem: '#start' //æŒ‡å®šå…ƒç´ 
+          elem: '#start' //Ö¸¶¨ÔªËØ
         });
 
-        //æ‰§è¡Œä¸€ä¸ªlaydateå®ä¾‹
+        //Ö´ĞĞÒ»¸ölaydateÊµÀı
         laydate.render({
-          elem: '#end' //æŒ‡å®šå…ƒç´ 
+          elem: '#end' //Ö¸¶¨ÔªËØ
         });
       });
 
-       /*ç”¨æˆ·-åœç”¨*/
+       /*ÓÃ»§-Í£ÓÃ*/
       function member_stop(obj,id){
-          layer.confirm('ç¡®è®¤è¦åœç”¨å—ï¼Ÿ',function(index){
+          layer.confirm('È·ÈÏÒªÍ£ÓÃÂğ£¿',function(index){
 
-              if($(obj).attr('title')=='å¯ç”¨'){
+              if($(obj).attr('title')=='ÆôÓÃ'){
 
-                //å‘å¼‚æ­¥æŠŠç”¨æˆ·çŠ¶æ€è¿›è¡Œæ›´æ”¹
-                $(obj).attr('title','åœç”¨')
+                //·¢Òì²½°ÑÓÃ»§×´Ì¬½øĞĞ¸ü¸Ä
+                $(obj).attr('title','Í£ÓÃ')
                 $(obj).find('i').html('&#xe62f;');
 
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('å·²åœç”¨');
-                layer.msg('å·²åœç”¨!',{icon: 5,time:1000});
+                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('ÒÑÍ£ÓÃ');
+                layer.msg('ÒÑÍ£ÓÃ!',{icon: 5,time:1000});
 
               }else{
-                $(obj).attr('title','å¯ç”¨')
+                $(obj).attr('title','ÆôÓÃ')
                 $(obj).find('i').html('&#xe601;');
 
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('å·²å¯ç”¨');
-                layer.msg('å·²å¯ç”¨!',{icon: 5,time:1000});
+                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('ÒÑÆôÓÃ');
+                layer.msg('ÒÑÆôÓÃ!',{icon: 5,time:1000});
               }
-              
+
           });
       }
 
-      /*ç”¨æˆ·-åˆ é™¤*/
+      /*ÓÃ»§-É¾³ı*/
       function member_del(obj,id){
-          layer.confirm('ç¡®è®¤è¦åˆ é™¤å—ï¼Ÿ',function(index){
-              //å‘å¼‚æ­¥åˆ é™¤æ•°æ®
+          layer.confirm('È·ÈÏÒªÉ¾³ıÂğ£¿',function(index){
+              //·¢Òì²½É¾³ıÊı¾İ
               $(obj).parents("tr").remove();
-              layer.msg('å·²åˆ é™¤!',{icon:1,time:1000});
+              layer.msg('ÒÑÉ¾³ı!',{icon:1,time:1000});
           });
       }
 
@@ -102,19 +102,19 @@
       function delAll (argument) {
 
         var data = tableCheck.getData();
-  
-        layer.confirm('ç¡®è®¤è¦åˆ é™¤å—ï¼Ÿ'+data,function(index){
-            //æ‰åˆ°æ‰€æœ‰è¢«é€‰ä¸­çš„ï¼Œå‘å¼‚æ­¥è¿›è¡Œåˆ é™¤
-            layer.msg('åˆ é™¤æˆåŠŸ', {icon: 1});
+
+        layer.confirm('È·ÈÏÒªÉ¾³ıÂğ£¿'+data,function(index){
+            //×½µ½ËùÓĞ±»Ñ¡ÖĞµÄ£¬·¢Òì²½½øĞĞÉ¾³ı
+            layer.msg('É¾³ı³É¹¦', {icon: 1});
             $(".layui-form-checked").not('.header').parents('tr').remove();
         });
       }
 
-      //å°è¯´å…¥åº“
+      //Ğ¡ËµÈë¿â
       $(".jkbooks").click(function () {
 
-          //è°ƒç”¨
-          loading("å°è¯´å…¥åº“ä¸­ï¼Œè¯·ç¨ç­‰ï¼");
+          //µ÷ÓÃ
+          loading("Ğ¡ËµÈë¿âÖĞ£¬ÇëÉÔµÈ£¡");
 
           var href = $(this).attr('href');
           var name = $(this).attr('name');
@@ -125,12 +125,12 @@
           });
       });
 
-      //åŠ è½½å±‚
+      //¼ÓÔØ²ã
       function loading(msg) {
           layer.msg(msg, {
               icon: 16,
               shade: [0.1, '#fff'],
-              time: false  //å–æ¶ˆè‡ªåŠ¨å…³é—­
+              time: false  //È¡Ïû×Ô¶¯¹Ø±Õ
           })
       }
 

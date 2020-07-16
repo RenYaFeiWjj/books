@@ -14,8 +14,9 @@ use think\Request;
 
 class Curl extends Model
 {
-    public function getUrlData($url){
-        set_time_limit (0);
+    public function getUrlData($url)
+    {
+        set_time_limit(0);
         $UserAgent = 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; .NET CLR 3.5.21022; .NET CLR 1.0.3705; .NET CLR 1.1.4322)';
         $curl = curl_init();    //创建一个新的CURL资源
         curl_setopt($curl, CURLOPT_URL, $url);  //设置URL和相应的选项
@@ -45,7 +46,27 @@ class Curl extends Model
         return $data;
     }
 
-    public  function downloadImg($url, $path = 'images/')
+    /**
+     * @param $url
+     * @return mixed
+     * 获取状态
+     */
+    public function httpcode($url)
+    {
+        $ch = curl_init();
+        $timeout = 3;
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_exec($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return $httpcode;
+    }
+
+    public function downloadImg($url, $path = 'images/')
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -57,10 +78,10 @@ class Curl extends Model
         curl_close($ch);
         $filename = pathinfo($url, PATHINFO_BASENAME);
 
-        if(!is_dir($path)){
-            mkdir($path,0777,true);
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true);
         }
-        $filename = rand(0,9999999).".jpg";
+        $filename = rand(0, 9999999) . ".jpg";
         $resource = fopen($path . $filename, 'a');
         fwrite($resource, $file);
         fclose($resource);
@@ -72,7 +93,8 @@ class Curl extends Model
      * @param string $url
      * @param string $param
      */
-    public function request_post($url = '', $param = '') {
+    public function request_post($url = '', $param = '')
+    {
         if (empty($url) || empty($param)) {
             return false;
         }
@@ -80,7 +102,7 @@ class Curl extends Model
         $postUrl = $url;
         $curlPost = $param;
         $ch = curl_init();//初始化curl
-        curl_setopt($ch, CURLOPT_URL,$postUrl);//抓取指定网页
+        curl_setopt($ch, CURLOPT_URL, $postUrl);//抓取指定网页
         curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//要求结果为字符串且输出到屏幕上
         curl_setopt($ch, CURLOPT_POST, 1);//post提交方式
@@ -92,9 +114,10 @@ class Curl extends Model
     }
 
     //php curl模拟https请求
-    public function getDataHttps($url){
+    public function getDataHttps($url)
+    {
 
-        $header_ip = array( 'CLIENT-IP:8.8.8.8', 'X-FORWARDED-FOR:8.8.8.8', );
+        $header_ip = array('CLIENT-IP:8.8.8.8', 'X-FORWARDED-FOR:8.8.8.8',);
 
 
         $curl = curl_init();
@@ -106,12 +129,12 @@ class Curl extends Model
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 //        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Expect:'));
 
-        curl_setopt($curl, CURLOPT_TIMEOUT,60);   //只需要设置一个秒的数量就可以
+        curl_setopt($curl, CURLOPT_TIMEOUT, 60);   //只需要设置一个秒的数量就可以
 
         //伪造来源referer
         curl_setopt($curl, CURLOPT_REFERER, 'http://www.baidu.com/');//模拟来路
         // //伪造来源ip
-        curl_setopt($curl, CURLOPT_HTTPHEADER,$header_ip);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header_ip);
 
 
         //重要！
@@ -120,15 +143,16 @@ class Curl extends Model
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($curl, CURLOPT_ENCODING, '');   //设置编码格式，为空表示支持所有格式的编码
         //header中“Accept-Encoding: ”部分的内容，支持的编码格式为："identity"，"deflate"，"gzip"。
-        curl_setopt($curl,CURLOPT_USERAGENT,"Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; .NET CLR 3.5.21022; .NET CLR 1.0.3705; .NET CLR 1.1.4322)'"); //模拟浏览器代理
+        curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; .NET CLR 3.5.21022; .NET CLR 1.0.3705; .NET CLR 1.1.4322)'"); //模拟浏览器代理
 
         //执行命令
         $data = curl_exec($curl);
 
         if (curl_errno($curl)) {
 
-            echo 'Curl error: ' . curl_error($curl)."<br/>";
-           // $data = file_get_contents($url);
+//            return 'Curl error: ' . curl_error($curl) . "<br/>";
+            return false;
+            // $data = file_get_contents($url);
 
         }
 
@@ -145,46 +169,49 @@ class Curl extends Model
      * @param array $header
      * @return resource 并发处理
      */
-    private static function getCurlObject($url,$postData=array(),$header=array()){
+    private static function getCurlObject($url, $postData = array(), $header = array())
+    {
         $options = array();
         $url = trim($url);
         $options[CURLOPT_URL] = $url;
         $options[CURLOPT_TIMEOUT] = 3;
         $options[CURLOPT_RETURNTRANSFER] = true;
-        foreach($header as $key=>$value){
-            $options[$key] =$value;
+        foreach ($header as $key => $value) {
+            $options[$key] = $value;
         }
-        if(!empty($postData) && is_array($postData)){
+        if (!empty($postData) && is_array($postData)) {
             $options[CURLOPT_POST] = true;
             $options[CURLOPT_POSTFIELDS] = http_build_query($postData);
         }
-        if(stripos($url,'https') === 0){
+        if (stripos($url, 'https') === 0) {
             $options[CURLOPT_SSL_VERIFYPEER] = false;
         }
         $ch = curl_init();
-        curl_setopt_array($ch,$options);
+        curl_setopt_array($ch, $options);
         return $ch;
     }
+
     /**
      * [request description]
      * @param  [type] $chList
      * @return [type]
      */
-    private static function request($chList){
+    private static function request($chList)
+    {
         $downloader = curl_multi_init();
         // 将三个待请求对象放入下载器中
-        foreach ($chList as $ch){
-            curl_multi_add_handle($downloader,$ch);
+        foreach ($chList as $ch) {
+            curl_multi_add_handle($downloader, $ch);
         }
         $res = array();
         // 轮询
         do {
-            while (($execrun = curl_multi_exec($downloader, $running)) == CURLM_CALL_MULTI_PERFORM);
+            while (($execrun = curl_multi_exec($downloader, $running)) == CURLM_CALL_MULTI_PERFORM) ;
             if ($execrun != CURLM_OK) {
                 break;
             }
             // 一旦有一个请求完成，找出来，处理,因为curl底层是select，所以最大受限于1024
-            while ($done = curl_multi_info_read($downloader)){
+            while ($done = curl_multi_info_read($downloader)) {
                 // 从请求中获取信息、内容、错误
                 // $info = curl_getinfo($done['handle']);
                 $output = curl_multi_getcontent($done['handle']);
@@ -196,24 +223,26 @@ class Curl extends Model
             // 当没有数据的时候进行堵塞，把 CPU 使用权交出来，避免上面 do 死循环空跑数据导致 CPU 100%
             if ($running) {
                 $rel = curl_multi_select($downloader, 1);
-                if($rel == -1){
+                if ($rel == -1) {
                     usleep(1000);
                 }
             }
-            if($running == false){
+            if ($running == false) {
                 break;
             }
-        }while(true);
+        } while (true);
         curl_multi_close($downloader);
         return $res;
     }
+
     /**
      * [get description]
      * @param  [type] $urlArr
      * @return [type]
      * curl并发处理
      */
-    public static function getManyUrl($urlArr){
+    public static function getManyUrl($urlArr)
+    {
         $data = array();
         if (!empty($urlArr)) {
             $chList = array();
@@ -225,8 +254,6 @@ class Curl extends Model
         }
         return $data;
     }
-
-
 
 
 }

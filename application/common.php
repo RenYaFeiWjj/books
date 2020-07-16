@@ -171,7 +171,6 @@ function correct_url($url,$basename){
     $href = parse_url($url);
     $path = basename($basename);
     $res = $href['scheme'].'://'.$href['host'].$href['path'].$path;
-
     return $res;
 }
 
