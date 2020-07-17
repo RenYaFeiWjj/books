@@ -71,7 +71,7 @@
             <div class="layui-form-item hide is_search">
                 <label for="L_books_author" class="layui-form-label"> 小说作者</label>
                 <div class="layui-col-md6">
-                    <input type="text" id="L_books_author" required placeholder="作者选择器，示例：.odd>a"  value="" name="books_author"  autocomplete="off" class="layui-inpu search_inputt"  >
+                    <input type="text" id="L_books_author" required placeholder="作者选择器，示例：.odd>a"  value="" name="books_author"  autocomplete="off" class="layui-input search_inputt"  >
                 </div>
 
             </div>
@@ -132,7 +132,13 @@
                     <input type="text" id="L_info_content" required placeholder="小说内容选择器，示例：.odd>a"  value="" name="info_content"  lay-verify="required"  autocomplete="off" class="layui-input"  >
                 </div>
             </div>
-
+            <div class="layui-form-item layui-col-md7 is_search" pane="">
+                <label class="layui-form-label">最新章节</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="is_zuixin" value="1" checked title="正序">
+                    <input type="radio" name="is_zuixin" value="2"  title="倒序" >
+                </div>
+            </div>
 
 
             <div class="layui-form-item">

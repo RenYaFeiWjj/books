@@ -109,8 +109,6 @@ Class Books extends Base
             'time' => array($rule['books_time'], 'text'),
             'synopsis' => array($rule['books_synopsis'], 'text'),
             'img' => array($rule['books_img'], 'src'),
-
-
         );
 
         //匹配出信息
@@ -172,7 +170,8 @@ Class Books extends Base
             if (!$chapter) {
                 return $this->error('最新章节匹配失败');
             }
-            $end_chapter = $chapter[0];
+            //最新章节获取
+            $end_chapter = $rule['is_zuixin'] == 1 ? $chapter[0] : $chapter[count($chapter) - 1];
             $chapter_data = ['books_id' => $books_id, 'chapter_name' => $end_chapter['text'], 'chapter_url' => $end_chapter['href']];
 
             Db::table('books_chapter')->insert($chapter_data);
