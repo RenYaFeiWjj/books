@@ -55,7 +55,6 @@ class Index extends Base
         $this->view->host = $host;
         $this->view->all = $all;
         $this->view->types = $types;
-
         $mobile = session('mobile');
         if($mobile){
             //手机幻灯片
