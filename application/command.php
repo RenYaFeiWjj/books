@@ -10,5 +10,6 @@
 // +----------------------------------------------------------------------
 
 return [
-    'app\console\command\Test'
+    'app\console\command\Test',
+    'app\console\command\Get'
 ];
