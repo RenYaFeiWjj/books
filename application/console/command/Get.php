@@ -100,8 +100,7 @@ class Get extends Command
             $data = [];
             //匹配出信息
             $data = QueryList::Query($html, $content)->getData();;
-            print_r($data);
-            exit;
+
             $output->writeln("匹配到结果" . count($data) . '条');
             foreach ($data as $val) {
 
@@ -231,6 +230,7 @@ class Get extends Command
                 $chapter_data = ['books_id' => $books_id, 'chapter_name' => $end_chapter['text'], 'chapter_url' => $end_chapter['href']];
 
                 Db::table('books_chapter')->insert($chapter_data);
+                $output->writeln("插入小说信息" );
             }
 
 
