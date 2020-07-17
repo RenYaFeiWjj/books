@@ -1,5 +1,4 @@
-runtime/*
+runtime
 public/static/images/*
-.idea/*
+.idea
 public/.htaccess
-runtime/cache
