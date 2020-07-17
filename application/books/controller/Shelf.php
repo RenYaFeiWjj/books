@@ -92,8 +92,6 @@ class Shelf extends Base
         }else{
             return  ajaxJson('200','已登陆','/shelf/index');
         }
-
-
     }
 
 

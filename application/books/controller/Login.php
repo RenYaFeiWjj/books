@@ -47,12 +47,11 @@ class Login extends Controller
         if(!empty($user_id)){
             $this->redirect('/user/index');
         }
-
         $mobile = session('mobile');
         if($mobile){
             return $this->fetch('mobile/login');
         }else{
-            return $this->fetch('mobile/login');
+            return $this->fetch('template/login');
         }
     }
 

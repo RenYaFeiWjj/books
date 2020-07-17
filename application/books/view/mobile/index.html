@@ -3,22 +3,27 @@
 <!-- SVG图标 E -->
 <div class="page page-home login">
     <div class="content">
-        <header id="header" class="header header-index"><a href="/" class="logo-a">
+        <header id="header" style="    top: 0;
+    position: fixed;
+    width: 100%;background: #fff;
+    z-index: 1000;
+    box-shadow: 1px 1px 2px #888888" class="header header-index"><a href="/" class="logo-a" >
             <h1 class="logo"></h1>
         </a>
             <div class="header-operate red">
-                <a id="aUserCenter" href="javascript:" class="icon icon-person" title="个人设置">
+                <a id="aUserCenter" href="/user/index" class="icon icon-person" title="个人设置">
                     <svg class="jsGuestWrapper" hidden="" style="display: none;">
                         <use xlink:href="#icon-person"></use>
                     </svg>
                     <img id="avatar" class="header-avatar jsUserWrapper" src="__IMG__/timg.jpg" alt="" style=""></a>
-                <a href="javascript:" class="icon icon-book openshelf" id="openGuide" title="我的书架">
+                <a href="javascript:;" class="icon icon-book openshelf" id="openGuide" title="我的书架">
                     <svg>
                         <use xlink:href="#icon-book"></use>
                     </svg>
                 </a>
             </div>
         </header>
+        <div style="height: 60px;"></div>
         <!-- 页面内容 S -->
 
 
@@ -259,23 +264,23 @@
     </div>
 </div>
 <script>
-    $("#aUserCenter").click(function () {
-        $.post("/user/login", '', function (e) {
-            if (e.code == 0) {
-                //询问框
-                layer.open({
-                    content: e.msg
-                    , btn: ['登陆', '就不']
-                    , yes: function (index) {
-                        window.location.href = e.url;
-                        layer.close(index);
-                    }
-                });
-            } else {
-                window.location.href = e.url;
-            }
-        });
-    });
+    // $("#aUserCenter").click(function () {
+    //     $.post("/user/login", '', function (e) {
+    //         if (e.code == 0) {
+    //             //询问框
+    //             layer.open({
+    //                 content: e.msg
+    //                 , btn: ['登陆', '就不']
+    //                 , yes: function (index) {
+    //                     window.location.href = e.url;
+    //                     layer.close(index);
+    //                 }
+    //             });
+    //         } else {
+    //             window.location.href = e.url;
+    //         }
+    //     });
+    // });
 </script>
 
 {include file="mobile/footer" /}
