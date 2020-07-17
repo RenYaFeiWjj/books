@@ -148,7 +148,7 @@ class Get extends Command
     {
 
         //引入curl方法
-        $curl = model('Curl');
+        $curl = new Curl();
         $all = $curl->getDataHttps($href);
 
         //规则匹配方法
