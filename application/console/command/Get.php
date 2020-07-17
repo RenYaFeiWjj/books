@@ -128,7 +128,7 @@ class Get extends Command
                     $output->writeln("匹配到信息" . count($info) . '条');
                     foreach ($info as $tal) {
                         if ($tal['books_name'] == $val['text']) {
-                            $this->Warehousing($tal['books_url'], $tal['books_name'], $output);
+                            $this->Warehousing($tal['books_url'], $tal['books_name'],2, $output);
                         } else {
                             continue;
                         }
