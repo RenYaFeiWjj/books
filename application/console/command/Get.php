@@ -118,9 +118,11 @@ class Get extends Command
             foreach ($data as $v) {
                 print_r($v);
                 $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
+                print_r($has);
                 if (!$has) {
                     $href = parse_url($url);
                     $newUrl = $href . $v['href'];
+                    print_r($newUrl);
                     $output->writeln("准备" . $v['text']);
                     $this->Warehousing($newUrl, $v['text'], 14, $output);
                 }
