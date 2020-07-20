@@ -224,9 +224,9 @@ class Get extends Command
         print_r($content);
         //匹配出信息
         $info = QueryList::Query($all, $content)->data;
+        print_r($all);
         print_r($info);exit;
         if (!empty($info[0])) {
-
 
             $has = Db::table('books_cou')->where('books_name', $name)->find();
             if (empty($has)) {
