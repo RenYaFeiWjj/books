@@ -230,6 +230,7 @@ class Get extends Command
             );
             //匹配出信息
             $data = query($html, $content);
+            print_r($url);
             print_r($html);
             print_r($data);exit;
             $output->writeln("匹配到" . count($data) . '条');
