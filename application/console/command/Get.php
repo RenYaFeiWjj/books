@@ -221,9 +221,10 @@ class Get extends Command
 
         );
         print_r($href);
-        print_r($content);exit;
+        print_r($content);
         //匹配出信息
         $info = QueryList::Query($all, $content)->data;
+        print_r($info);exit;
         if (!empty($info[0])) {
 
 
