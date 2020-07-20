@@ -114,6 +114,7 @@ class Get extends Command
         //匹配出信息
         $data = query($html, $content);
         $output->writeln("匹配到" . count($data) . '条');
+        print_r($data);exit;
         if ($data) {
             foreach ($data as $v) {
                 $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
