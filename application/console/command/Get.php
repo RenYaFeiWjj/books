@@ -42,7 +42,7 @@ class Get extends Command
 
         //设置永不超时
         set_time_limit(0);
-        $this->caiji1($output);
+//        $this->caiji1($output);
         $this->caiji2($output);
         $this->getCaiji($output);
     }
