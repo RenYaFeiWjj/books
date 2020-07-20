@@ -52,7 +52,6 @@ class Info extends Base
             $chapter_url = base64_decode($chapter_url);
 
             $curl = model("Curl");
-
             $res = $curl->getDataHttps($chapter_url);
 
             if ($res) {

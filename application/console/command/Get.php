@@ -215,7 +215,7 @@ class Get extends Command
      */
     public function caijidata1($urls, Output $output)
     {
-        for ($i = 1; $i < 200; $i++) {
+        for ($i = 94; $i < 300; $i++) {
             $url = $urls . $i . '/';
             $output->writeln("开始采集第" . $i . '页数据');
             $curl = new Curl();
@@ -231,6 +231,10 @@ class Get extends Command
             print_r($url);
             //匹配出信息
             $data = query($html, $content);
+            if(!$data){
+                $output->writeln("没有数据了");
+                break;
+            }
             print_r($data);
             $output->writeln("匹配到" . count($data) . '条');
             if ($data) {
@@ -343,6 +347,7 @@ class Get extends Command
         );
         //匹配出信息
         $info = QueryList::Query($all, $content)->data;
+        print_r($info);exit;
         if (!empty($info[0])) {
             $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
             $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
