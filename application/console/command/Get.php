@@ -38,20 +38,18 @@ class Get extends Command
 
     protected function execute(Input $input, Output $output)
     {
-//        $this->getCaiji($output);
-        $this->caiji1($output);
+        ini_set('memory_limit', '1024M');
 
+        //设置永不超时
+        set_time_limit(0);
+        $this->caiji1($output);
+        $this->caiji2($output);
+        $this->getCaiji($output);
     }
 
 
     public function getCaiji(Output $output)
     {
-        //循环太久，会内存用尽，默认是128M
-        ini_set('memory_limit', '1024M');
-
-        //设置永不超时
-        set_time_limit(0);
-
         $data = [
             [
                 'title' => '原创风云榜',
@@ -92,48 +90,161 @@ class Get extends Command
         $output->writeln("end....");
     }
 
+    public function caiji1(Output $output)
+    {
+        $url = [
+            [
+                'title' => '三七中文网玄幻',
+                'url' => 'https://m.37zw.net/sort/1_'
+            ],
+            [
+                'title' => '三七中文网修真',
+                'url' => 'https://m.37zw.net/sort/2_'
+            ],
+            [
+                'title' => '三七中文网都市',
+                'url' => 'https://m.37zw.net/sort/3_'
+            ],
+            [
+                'title' => '三七中文网穿越',
+                'url' => 'https://m.37zw.net/sort/4_'
+            ],
+            [
+                'title' => '三七中文网网游',
+                'url' => 'https://m.37zw.net/sort/5_'
+            ],
+            [
+                'title' => '三七中文网科幻',
+                'url' => 'https://m.37zw.net/sort/6_'
+            ],
+        ];
+        foreach ($url as $v) {
+            $output->writeln($v['title']);
+            $this->caijidata1($v['url'], $output);
+            $output->writeln($v['title'] . '结束');
+        }
+    }
 
     /**
      * @param Output $output
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
-     * 三七中文网
+     * 笔趣手机网
      */
-    public function caiji1(Output $output)
+    public function caiji2(Output $output)
     {
-        //循环太久，会内存用尽，默认是128M
-        ini_set('memory_limit', '1024M');
+        $url = [
+            [
+                'title' => '笔趣手机网玄幻',
+                'url' => 'https://m.biquge5200.cc/sort-1-'
+            ],
+            [
+                'title' => '笔趣手机网仙侠',
+                'url' => 'https://m.biquge5200.cc/sort-2-'
+            ],
+            [
+                'title' => '笔趣手机网都市',
+                'url' => 'https://m.biquge5200.cc/sort-3-'
+            ],
+            [
+                'title' => '笔趣手机网历史',
+                'url' => 'https://m.biquge5200.cc/sort-4-'
+            ],
+            [
+                'title' => '笔趣手机网游戏',
+                'url' => 'https://m.biquge5200.cc/sort-5-'
+            ],
+            [
+                'title' => '笔趣手机网科幻',
+                'url' => 'https://m.biquge5200.cc/sort-6-'
+            ],
+            [
+                'title' => '笔趣手机网言情',
+                'url' => 'https://m.biquge5200.cc/sort-7-'
+            ],
+            [
+                'title' => '笔趣手机网同人',
+                'url' => 'https://m.biquge5200.cc/sort-8-'
+            ],
+            [
+                'title' => '笔趣手机网灵异',
+                'url' => 'https://m.biquge5200.cc/sort-9-'
+            ],
+            [
+                'title' => '笔趣手机网奇幻',
+                'url' => 'https://m.biquge5200.cc/sort-10-'
+            ],
+            [
+                'title' => '笔趣手机网竞技',
+                'url' => 'https://m.biquge5200.cc/sort-11-'
+            ],
+            [
+                'title' => '笔趣手机网武侠',
+                'url' => 'https://m.biquge5200.cc/sort-12-'
+            ],
+            [
+                'title' => '笔趣手机网军事',
+                'url' => 'https://m.biquge5200.cc/sort-13-'
+            ],
+            [
+                'title' => '笔趣手机网校园',
+                'url' => 'https://m.biquge5200.cc/sort-14-'
+            ],
+            [
+                'title' => '笔趣手机网官场',
+                'url' => 'https://m.biquge5200.cc/sort-15-'
+            ],
+        ];
+        foreach ($url as $v) {
+            $output->writeln($v['title']);
+            $this->caijidata1($v['url'], $output);
+            $output->writeln($v['title'] . '结束');
+        }
+    }
 
-        //设置永不超时
-        set_time_limit(0);
-        $output->writeln("三七中文网");
-        $url = 'https://m.37zw.net/sort/1_1/';
-        $curl = new Curl();
-        $html = $curl->getDataHttps($url);
 
-        //第三方类库
-        Loader::import('QueryList', EXTEND_PATH);
-        //取得更新时间
-        $content = array(
-            'text' => array('.line>a:nth-child(2)', 'text'),
-            'href' => array('.line>a:nth-child(2)', 'href'),
-        );
-        //匹配出信息
-        $data = query($html, $content);
-        $output->writeln("匹配到" . count($data) . '条');
-        if ($data) {
-            foreach ($data as $v) {
-                $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
-                if (!$has) {
-                    $href = parse_url($url);
-                    $newUrl = $href['host'] . $v['href'];
-                    $output->writeln("准备" . $v['text']);
-                    $this->Warehousing($newUrl, $v['text'], 14, $output);
+
+    /**
+     * @param $url
+     * @param Output $output
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 三七中文网  笔趣手机网
+     */
+    public function caijidata1($url, Output $output)
+    {
+        for ($i = 1; $i < 200; $i++) {
+            $output->writeln("开始采集第" . $i . '页数据');
+            $url = $url . $i;
+            $curl = new Curl();
+            $html = $curl->getDataHttps($url);
+
+            //第三方类库
+            Loader::import('QueryList', EXTEND_PATH);
+            //取得更新时间
+            $content = array(
+                'text' => array('.line>a:nth-child(2)', 'text'),
+                'href' => array('.line>a:nth-child(2)', 'href'),
+            );
+            //匹配出信息
+            $data = query($html, $content);
+            $output->writeln("匹配到" . count($data) . '条');
+            if ($data) {
+                foreach ($data as $v) {
+                    $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
+                    if (!$has) {
+                        $href = parse_url($url);
+                        $newUrl = 'https://' . $href['host'] . $v['href'];
+                        $output->writeln("准备" . $v['text']);
+                        $this->Warehousing($newUrl, $v['text'], 14, $output);
+                    }
                 }
             }
         }
     }
+
 
 
     /**
@@ -211,7 +322,6 @@ class Get extends Command
 
         //引入curl方法
         $curl = new Curl();
-        $href = 'https://' . $href;
         $all = $curl->getDataHttps($href);
 
         //规则匹配方法
@@ -232,8 +342,8 @@ class Get extends Command
         //匹配出信息
         $info = QueryList::Query($all, $content)->data;
         if (!empty($info[0])) {
-            $info[0]['author'] = str_replace('作者：','',$info[0]['author']);
-            $info[0]['time'] = str_replace('更新：','',$info[0]['time']);
+            $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
+            $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
             $has = Db::table('books_cou')->where('books_name', $name)->find();
 
             if (empty($has)) {
@@ -268,7 +378,6 @@ class Get extends Command
                 $result = ['books_name' => $name, 'books_author' => $author, 'books_synopsis' => $synopsis, 'books_time' => $time, 'books_img' => $imgName, 'books_type' => $type_id, 'books_status' => '0', 'books_url' => $href];
 
                 $books_id = Db::table('books_cou')->insertGetId($result);
-
                 $chapter_all = array(
                     'text' => array($rule['chapter_name'], 'text'),
                     'href' => array($rule['chapter_url'], 'href'),
