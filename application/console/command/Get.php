@@ -228,8 +228,10 @@ class Get extends Command
                 'text' => array('.line>a:nth-child(2)', 'text'),
                 'href' => array('.line>a:nth-child(2)', 'href'),
             );
+            print_r($url);
             //匹配出信息
             $data = query($html, $content);
+            print_r($data);
             $output->writeln("匹配到" . count($data) . '条');
             if ($data) {
                 foreach ($data as $v) {
