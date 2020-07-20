@@ -213,10 +213,10 @@ class Get extends Command
      * @throws \think\exception\DbException
      * 三七中文网  笔趣手机网
      */
-    public function caijidata1($url, Output $output)
+    public function caijidata1($urls, Output $output)
     {
         for ($i = 1; $i < 200; $i++) {
-            $url = $url . $i . '/';
+            $url = $urls . $i . '/';
             $output->writeln("开始采集第" . $i . '页数据');
             $curl = new Curl();
             $html = $curl->getDataHttps($url);
