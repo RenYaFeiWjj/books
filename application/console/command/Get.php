@@ -93,6 +93,13 @@ class Get extends Command
     }
 
 
+    /**
+     * @param Output $output
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 三七中文网
+     */
     public function caiji1(Output $output)
     {
         //循环太久，会内存用尽，默认是128M
@@ -100,7 +107,8 @@ class Get extends Command
 
         //设置永不超时
         set_time_limit(0);
-        $url = 'https://m.37zw.net/sort/1_3/';
+        $output->writeln("三七中文网");
+        $url = 'https://m.37zw.net/sort/1_1/';
         $curl = new Curl();
         $html = $curl->getDataHttps($url);
 
@@ -227,7 +235,6 @@ class Get extends Command
             $info[0]['author'] = str_replace('作者：','',$info[0]['author']);
             $info[0]['time'] = str_replace('更新：','',$info[0]['time']);
             $has = Db::table('books_cou')->where('books_name', $name)->find();
-            print_r($info);exit;
 
             if (empty($has)) {
                 //使用该函数对结果进行转码
