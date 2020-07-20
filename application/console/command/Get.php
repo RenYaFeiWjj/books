@@ -218,6 +218,7 @@ class Get extends Command
         for ($i = 1; $i < 200; $i++) {
             $output->writeln("开始采集第" . $i . '页数据');
             $url = $url . $i;
+            print_r($url);exit;
             $curl = new Curl();
             $html = $curl->getDataHttps($url);
 
