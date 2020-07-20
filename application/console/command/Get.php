@@ -114,13 +114,13 @@ class Get extends Command
         //匹配出信息
         $data = query($html, $content);
         $output->writeln("匹配到" . count($data) . '条');
-        print_r($data);exit;
         if ($data) {
             foreach ($data as $v) {
                 $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
                 if (!$has) {
                     $href = parse_url($url);
                     $newUrl = $href . $v['href'];
+                    $output->writeln("准备" . $v['text']);
                     $this->Warehousing($newUrl, $v['text'], 14, $output);
                 }
             }
