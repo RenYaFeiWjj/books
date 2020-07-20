@@ -221,15 +221,14 @@ class Get extends Command
 
 
         );
-        print_r($href);
-        print_r($content);
         //匹配出信息
         $info = QueryList::Query($all, $content)->data;
-        print_r($all);
-        print_r($info);exit;
         if (!empty($info[0])) {
-
+            $info[0]['author'] = str_replace('作者：','',$info[0]['author']);
+            $info[0]['time'] = str_replace('更新：','',$info[0]['time']);
             $has = Db::table('books_cou')->where('books_name', $name)->find();
+            print_r($info);exit;
+
             if (empty($has)) {
                 //使用该函数对结果进行转码
                 $author = mb_convert_encoding($info[0]['author'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
