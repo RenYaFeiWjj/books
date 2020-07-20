@@ -42,7 +42,7 @@ class Get extends Command
 
         //设置永不超时
         set_time_limit(0);
-        $this->caiji1($output);
+//        $this->caiji1($output);
         $this->caiji2($output);
         $this->getCaiji($output);
     }
@@ -215,7 +215,7 @@ class Get extends Command
      */
     public function caijidata1($urls, Output $output)
     {
-        for ($i = 97; $i < 300; $i++) {
+        for ($i = 1; $i < 300; $i++) {
             $url = $urls . $i . '/';
             $output->writeln("开始采集第" . $i . '页数据');
             $curl = new Curl();
