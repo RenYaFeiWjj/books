@@ -203,6 +203,7 @@ class Get extends Command
 
         //引入curl方法
         $curl = new Curl();
+        $href = 'https://' . $href;
         $all = $curl->getDataHttps($href);
 
         //规则匹配方法
