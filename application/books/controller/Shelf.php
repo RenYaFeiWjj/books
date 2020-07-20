@@ -30,7 +30,6 @@ class Shelf extends Base
             ->join('books_cou c', 'c.books_id=s.books_id', 'INNER')
             ->join('books_history h', 'h.books_id=s.books_id and h.user_id=s.user_id', 'LEFT')
             ->where('s.user_id', $user_id)
-            ->where('h.user_id', $user_id)
             ->paginate(9);
         //所有小说类型
         $type = Db::table('books_type')->select();
