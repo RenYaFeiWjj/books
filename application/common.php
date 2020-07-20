@@ -57,7 +57,7 @@ function query($res, $data)
     //第三方类库
     \think\Loader::import('QueryList', EXTEND_PATH);
     //匹配出所有章节
-    if (strpos($res, 'UTF-8') !== false || strpos($res, 'utf-8') !== false) {
+    if (strpos($res, 'UTF-8') != false || strpos($res, 'utf-8') != false) {
         $info = \QL\QueryList::Query($res, $data)->data;
     } else {
         $info = \QL\QueryList::Query($res, $data, '', 'UTF-8', 'GB2312')->data;

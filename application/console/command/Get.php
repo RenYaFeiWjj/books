@@ -24,6 +24,12 @@ use think\model;
 
 class Get extends Command
 {
+    public $config = [
+        '' => [
+
+        ]
+    ];
+
     protected function configure()
     {
         $this->setName('get')
@@ -31,6 +37,14 @@ class Get extends Command
     }
 
     protected function execute(Input $input, Output $output)
+    {
+//        $this->getCaiji($output);
+        $this->caiji1($output);
+
+    }
+
+
+    public function getCaiji(Output $output)
     {
         //循环太久，会内存用尽，默认是128M
         ini_set('memory_limit', '1024M');
@@ -76,6 +90,40 @@ class Get extends Command
         $output->writeln("TestCommand:");
 
         $output->writeln("end....");
+    }
+
+
+    public function caiji1(Output $output)
+    {
+        //循环太久，会内存用尽，默认是128M
+        ini_set('memory_limit', '1024M');
+
+        //设置永不超时
+        set_time_limit(0);
+        $url = 'https://m.37zw.net/sort/1_3/';
+        $curl = new Curl();
+        $html = $curl->getDataHttps($url);
+
+        //第三方类库
+        Loader::import('QueryList', EXTEND_PATH);
+        //取得更新时间
+        $content = array(
+            'text' => array('.line>a:nth-child(2)', 'text'),
+            'href' => array('.line>a:nth-child(2)', 'href'),
+        );
+        //匹配出信息
+        $data = query($html, $content);
+        $output->writeln("匹配到" . count($data) . '条');
+        if ($data) {
+            foreach ($data as $v) {
+                $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
+                if (!$has) {
+                    $href = parse_url($url);
+                    $newUrl = $href . $v['href'];
+                    $this->Warehousing($newUrl, $v['text'], 14, $output);
+                }
+            }
+        }
     }
 
 
@@ -133,7 +181,7 @@ class Get extends Command
                     $output->writeln("匹配到信息" . count($info) . '条');
                     foreach ($info as $tal) {
                         if ($tal['books_name'] == $val['text']) {
-                            $this->Warehousing($tal['books_url'], $tal['books_name'],2, $output);
+                            $this->Warehousing($tal['books_url'], $tal['books_name'], 2, $output);
                         } else {
                             continue;
                         }
@@ -235,7 +283,7 @@ class Get extends Command
                 $chapter_data = ['books_id' => $books_id, 'chapter_name' => $end_chapter['text'], 'chapter_url' => $end_chapter['href']];
 
                 Db::table('books_chapter')->insert($chapter_data);
-                $output->writeln("插入小说信息" );
+                $output->writeln("插入小说信息");
             }
 
 

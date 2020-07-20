@@ -8,6 +8,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Curl;
 use think\Controller;
 use think\Model;
 use think\Db;
@@ -25,7 +26,6 @@ Class Books extends Base
      */
     public function add()
     {
-
         $books_name = input('post.books_name');
         $rule_id = input('post.rule_id');
 
