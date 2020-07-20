@@ -220,7 +220,8 @@ class Get extends Command
 
 
         );
-
+        print_r($href);
+        print_r($content);exit;
         //匹配出信息
         $info = QueryList::Query($all, $content)->data;
         if (!empty($info[0])) {
