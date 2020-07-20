@@ -44,6 +44,11 @@ class Get extends Command
                 'url' => 'https://www.qidian.com/rank/yuepiao?style=1&chn=-1&page='
             ],
             [
+                'title' => '原创月票榜',
+                'url' => 'https://www.qidian.com/rank/yuepiao?style=1&chn=-1&page='
+            ],
+
+            [
                 'title' => '推荐票榜	',
                 'url' => 'https://www.qidian.com/rank/recom?style=1&page='
             ],
@@ -84,7 +89,7 @@ class Get extends Command
         if (empty($obj_url)) {
             $output->writeln("采集链接为空");
         }
-
+        $output->writeln(date('Y-m-d H:i:s'));
         for ($i = 1; $i < 26; $i++) {
             $output->writeln("开始采集'.$title.'第" . $i . '页数据');
             $url = $obj_url . $i;

@@ -80,11 +80,10 @@ class Catalog extends Model
                 'text' => array($rule['chapter_name'], 'text'),
                 'href' => array($rule['chapter_url'], 'href'),
             );
-
             //第三方类库
             Loader::import('QueryList', EXTEND_PATH);
             //匹配出所有章节
-            $match = QueryList::Query($res, $chapter_all, '', 'UTF-8', 'GB2312')->data;
+            $match = query($res, $chapter_all);
 
             if ($match) {
                 foreach ($match as $key => &$val) {

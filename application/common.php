@@ -12,11 +12,12 @@
 // 应用公共文件
 
 //防注入安全过滤函数
-function filter($data){
+function filter($data)
+{
     //对特殊符号添加反斜杠
     $data = addslashes($data);
     //判断自动添加反斜杠是否开启
-    if(get_magic_quotes_gpc()){
+    if (get_magic_quotes_gpc()) {
         //去除反斜杠
         $data = stripslashes($data);
     }
@@ -37,16 +38,32 @@ function filter($data){
 
 /**
  * @param string $code 状态码
- * @param string $msg   说明
- * @param string $res   内容数据
+ * @param string $msg 说明
+ * @param string $res 内容数据
  * @return \think\response\Json  json返回格式
  */
-function ajaxJson($code='',$msg='',$res=''){
+function ajaxJson($code = '', $msg = '', $res = '')
+{
     $data['code'] = $code;
     $data['msg'] = $msg;
     $data['res'] = $res;
 
     return json($data);
+}
+
+
+function query($res, $data)
+{
+    //第三方类库
+    \think\Loader::import('QueryList', EXTEND_PATH);
+    //匹配出所有章节
+    if (strpos($res, 'UTF-8') !== false || strpos($res, 'utf-8') !== false) {
+        $info = \QL\QueryList::Query($res, $data)->data;
+    } else {
+        $info = \QL\QueryList::Query($res, $data, '', 'UTF-8', 'GB2312')->data;
+    }
+
+    return $info;
 }
 
 
@@ -56,13 +73,14 @@ function ajaxJson($code='',$msg='',$res=''){
  * $icon 这里主要有两个，5和6，代表两种表情（哭和笑）
  * $time 弹出维持时间（单位秒）
  */
-function alert_success($msg='',$url='',$time=3){
-    $str='<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script> <script type="text/javascript" src="/static/js/layer/layer.js"></script>';//加载jquery和layer
-    $str.='<script>
+function alert_success($msg = '', $url = '', $time = 3)
+{
+    $str = '<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script> <script type="text/javascript" src="/static/js/layer/layer.js"></script>';//加载jquery和layer
+    $str .= '<script>
         $(function(){
-            layer.msg("'.$msg.'",{icon:"6",time:'.($time*1000).'});
+            layer.msg("' . $msg . '",{icon:"6",time:' . ($time * 1000) . '});
             setTimeout(function(){
-                   self.parent.location.href="'.$url.'"
+                   self.parent.location.href="' . $url . '"
             },2000)
         });
     </script>';//主要方法
@@ -74,11 +92,12 @@ function alert_success($msg='',$url='',$time=3){
  * $icon 这里主要有两个，5和6，代表两种表情（哭和笑）
  * $time 弹出维持时间（单位秒）
  */
-function alert_error($msg='',$time=3){
-    $str='<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script> <script type="text/javascript" src="/static/js/layer/layer.js"></script>';//加载jquery和layer
-    $str.='<script>
+function alert_error($msg = '', $time = 3)
+{
+    $str = '<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script> <script type="text/javascript" src="/static/js/layer/layer.js"></script>';//加载jquery和layer
+    $str .= '<script>
         $(function(){
-            layer.msg("'.$msg.'",{icon:"5",time:'.($time*1000).'});
+            layer.msg("' . $msg . '",{icon:"5",time:' . ($time * 1000) . '});
             setTimeout(function(){
                    window.history.go(-1);
             },2000)
@@ -97,10 +116,10 @@ function alert_error($msg='',$time=3){
  * 加解密码算法
  * 用法示例：
  * $str = 'abcdef';
-    $key = 'www.baidu.com';
-    echo authcode($str,'ENCODE',$key,0); //加密
-    $str = 'cee9oY4I83MZssKUT9ARpyeeUrq33KJj2Joc6spNrUA0J5A';
-    echo authcode($str,'DECODE',$key,0); //解密
+ * $key = 'www.baidu.com';
+ * echo authcode($str,'ENCODE',$key,0); //加密
+ * $str = 'cee9oY4I83MZssKUT9ARpyeeUrq33KJj2Joc6spNrUA0J5A';
+ * echo authcode($str,'DECODE',$key,0); //解密
  */
 function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0)
 {
@@ -167,13 +186,13 @@ function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0)
  * @return string
  *
  */
-function correct_url($url,$basename){
+function correct_url($url, $basename)
+{
     $href = parse_url($url);
     $path = basename($basename);
-    $res = $href['scheme'].'://'.$href['host'].$href['path'].$path;
+    $res = $href['scheme'] . '://' . $href['host'] . $href['path'] . $path;
     return $res;
 }
-
 
 
 /**
@@ -182,7 +201,8 @@ function correct_url($url,$basename){
  * 二维数组去掉重复值
  * 说明：不能只用简单的逗号等隔开，因为有些章节中会含有这些字符，会导致匹配出错
  */
-function array_unique_fb($array){
+function array_unique_fb($array)
+{
 
     $array = array_reverse($array);
     foreach ($array as $v) {
@@ -196,7 +216,6 @@ function array_unique_fb($array){
     }
 
     return $temp;
-
 
 
 }

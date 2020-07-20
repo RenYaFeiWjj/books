@@ -53,7 +53,7 @@ Class Books extends Base
             );
 
             //匹配出信息
-            $result = QueryList::Query($data, $content)->data;
+            $result = query($data, $content);
             foreach ($result as &$val) {
                 $val['name'] = mb_convert_encoding($val['name'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
             }
@@ -112,7 +112,7 @@ Class Books extends Base
         );
 
         //匹配出信息
-        $info = QueryList::Query($all, $content)->data;
+        $info = query($all, $content);
         if (!empty($info[0])) {
 
             //使用该函数对结果进行转码

@@ -65,9 +65,7 @@ class Info extends Base
                 );
 
                 //第三方类库
-                Loader::import('QueryList', EXTEND_PATH);
-                //匹配出所有章节
-                $info = QueryList::Query($chapter_url, $data, '', 'UTF-8', 'GB2312')->data;
+                $info = query($res, $data);
                 $chapter_content = mb_convert_encoding($info[0]['content'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
 
                 $chapter_name = mb_convert_encoding($info[0]['title'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');

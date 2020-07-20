@@ -157,7 +157,7 @@ class Cover extends Base
         //第三方类库
         Loader::import('QueryList', EXTEND_PATH);
         //匹配出所有章节
-        $match = QueryList::Query($all,$chapter_all,'','UTF-8','GB2312')->data;
+        $match = query($all, $chapter_all);
 
         //去除前面重复的几个最新章节
         $match = array_unique_fb($match);

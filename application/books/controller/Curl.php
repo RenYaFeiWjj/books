@@ -247,7 +247,7 @@ class Curl extends Controller
                 'image' => array('#fmimg>img','src'),
             );
 
-            $data = QueryList::Query($html,$book_info)->data;
+            $data = query($html, $book_info);
 
             if(!empty($data[0]['image'])){
                 $path = ROOT_PATH. 'public/static/images/books_img/';
@@ -444,7 +444,7 @@ class Curl extends Controller
                 'img' => array('#fmimg>img','src'),
             );
             //匹配出信息
-            $info = QueryList::Query($res,$content)->data;
+            $info = query($res, $content);
             foreach ($info as $ival){
                 //使用该函数对结果进行转码
                 $author = mb_convert_encoding($ival['author'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');

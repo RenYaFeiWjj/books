@@ -112,7 +112,7 @@ class Index extends Base
            );
 
             //根据地址取得小说简介，小说状态，小说更新时间
-           $data = QueryList::Query($html,$book_info)->data;
+           $data = query($html, $book_info);
 
            //验证不为空
            $books_time = !empty($data[0]['time']) ? $data[0]['time'] : '';
@@ -158,7 +158,7 @@ class Index extends Base
                 'image' => array('.novelinfo-r>img','src'),
             );
 
-            $data = QueryList::Query($html,$book_info)->data;
+            $data = query($html, $book_info);
             $path = dirname(__FILE__).'/../images/';
             $imgName = $curl->downloadImg($data[0]['image'],$path);
 
@@ -192,6 +192,7 @@ print_r($res);die;
         );
 
         $data = QueryList::Query($res,$book_info)->data;
+
 
         $rescon = $curl->getUrlData($data[0]['href']);
 
