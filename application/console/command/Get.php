@@ -218,7 +218,6 @@ class Get extends Command
         for ($i = 1; $i < 200; $i++) {
             $output->writeln("开始采集第" . $i . '页数据');
             $url = $url . $i;
-            print_r($url);exit;
             $curl = new Curl();
             $html = $curl->getDataHttps($url);
 
@@ -231,6 +230,8 @@ class Get extends Command
             );
             //匹配出信息
             $data = query($html, $content);
+            print_r($html);
+            print_r($data);exit;
             $output->writeln("匹配到" . count($data) . '条');
             if ($data) {
                 foreach ($data as $v) {
