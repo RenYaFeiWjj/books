@@ -217,7 +217,7 @@ class Get extends Command
     {
 //        for ($i = 1; $i < 200; $i++) {
 //            $output->writeln("开始采集第" . $i . '页数据');
-            $url = 'https://m.37zw.net/sort/1_1';
+            $url = 'https://m.37zw.net/sort/1_1/';
             $curl = new Curl();
             $html = $curl->getDataHttps($url);
 
