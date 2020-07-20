@@ -215,9 +215,9 @@ class Get extends Command
      */
     public function caijidata1($url, Output $output)
     {
-//        for ($i = 1; $i < 200; $i++) {
-//            $output->writeln("开始采集第" . $i . '页数据');
-            $url = 'https://m.37zw.net/sort/1_1/';
+        for ($i = 1; $i < 200; $i++) {
+            $url = $url . $i . '/';
+            $output->writeln("开始采集第" . $i . '页数据');
             $curl = new Curl();
             $html = $curl->getDataHttps($url);
 
@@ -245,7 +245,7 @@ class Get extends Command
                     }
                 }
             }
-//        }
+        }
     }
 
 
