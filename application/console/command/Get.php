@@ -328,7 +328,6 @@ class Get extends Command
             $time = str_replace('更新：', '', $info[0]['time']);
             $books_status = strpos($info[0]['status'], '连载') ? 0 : 1;
             $has = Db::table('books_cou')->where('books_name', $name)->find();
-            echo 1;
             if (empty($has)) {
                 //使用该函数对结果进行转码
                 $synopsis = mb_convert_encoding($info[0]['synopsis'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
@@ -340,19 +339,20 @@ class Get extends Command
                 } elseif ($types == '言情') {
                     $types = '都市';
                 }
-
+echo 1;
                 $type_id = Db::table('books_type')->where('type_name', 'like', "%{$types}%")->value('type_id');
                 $type_id = !empty($type_id) ? $type_id : '14';
 
                 //下载小说封面
                 $path = ROOT_PATH . 'public/static/images/books_img/';
                 $imgName = $curl->downloadImg($url, $path);
-
+                echo 2;
                 $result = ['books_name' => $name, 'books_author' => $author, 'books_synopsis' => $synopsis, 'books_time' => $time, 'books_img' => $imgName, 'books_type' => $type_id, 'books_status' => $books_status, 'books_url' => $href];
 
                 $books_id = Db::table('books_cou')->insertGetId($result);
                 //最新章
                 $end_chapter = [];
+                echo 32;
                 if (isset($info[0]['chapter_name']) && $info[0]['chapter_name']) {
                     $end_chapter = ['chapter_name' => $info[0]['chapter_name'], 'href' => $info[0]['chapter_href']];
                 } else {
@@ -370,7 +370,7 @@ class Get extends Command
 
                     $end_chapter = end($chapter);
                 }
-
+                echo 4;
                 $chapter_data = ['books_id' => $books_id, 'chapter_name' => $end_chapter['text'], 'chapter_url' => $end_chapter['href']];
 
                 Db::table('books_chapter')->insert($chapter_data);
