@@ -18,7 +18,7 @@ use think\console\Output;
 use think\Db;
 
 
-class Test extends Command
+class Test1 extends Command
 {
     protected function configure()
     {
