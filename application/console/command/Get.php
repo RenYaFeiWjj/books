@@ -247,7 +247,7 @@ class Get extends Command
             if (isset($config['menu'][$i])) {
                 echo '------开始' . $config['menu'][$i]['url'] . PHP_EOL;
                 $process = new \swoole_process(function (\swoole_process $worker) use ($i, $config) {
-                    $this->search($config, $config['menu'][$i]['url']);
+                    $this->search($i , $config, $config['menu'][$i]['url']);
                 });
                 $pid = $process->start();
                 echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
@@ -257,7 +257,7 @@ class Get extends Command
     }
 
 
-    public function search($config, $url)
+    public function search($i , $config, $url)
     {
         $curl = new Curl();
         $html = $curl->getDataHttps($url . '1/');
@@ -266,25 +266,25 @@ class Get extends Command
         //取得更新时间
         $content = $config['search_rule'];
 
-        echo '------匹配出信息' . PHP_EOL;
+        echo $i .'------匹配出信息' . PHP_EOL;
         //匹配出信息
         $data = query($html, $content);
         if (!$data) {
-            echo '------没有数据了' . PHP_EOL;
+            echo $i .'------没有数据了' . PHP_EOL;
 //            continue;
         }
-        echo "------匹配到" . count($data) . '条' . PHP_EOL;
+        echo $i ."------匹配到" . count($data) . '条' . PHP_EOL;
         if ($data) {
             foreach ($data as $v) {
                 $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
                 if (!$has) {
-                    echo "------准备" . $v['text'] . PHP_EOL;
+                    echo $i ."------准备" . $v['text'] . PHP_EOL;
                     $href = parse_url($url);
                     $newUrl = 'https://' . $href['host'] . $v['href'];
                     echo $newUrl . PHP_EOL;
 //                    $this->Warehousing($newUrl, $v['text'], 14, $output);
                 } else {
-                    echo "------" . $v['text'] . '已存在' . PHP_EOL;
+                    echo $i ."------" . $v['text'] . '已存在' . PHP_EOL;
                 }
             }
         }
