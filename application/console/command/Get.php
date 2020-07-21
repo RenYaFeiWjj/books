@@ -102,7 +102,7 @@ class Get extends Command
             ],
             'chapter_rule' => [
                 'text' => ['.chapter>li>a', 'text'],
-                'herf' => ['.chapter>li>a', 'herf'],
+                'herf' => ['.chapter>li>a', 'href'],
             ]
         ],
         'm.biquge5200.cc' => [
@@ -183,7 +183,7 @@ class Get extends Command
             ],
             'chapter_rule' => [
                 'text' => ['.chapter>li>a', 'text'],
-                'herf' => ['.chapter>li>a', 'herf'],
+                'herf' => ['.chapter>li>a', 'href'],
             ]
         ]
     ];
