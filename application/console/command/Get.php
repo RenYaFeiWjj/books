@@ -269,7 +269,7 @@ class Get extends Command
     public function search($k, $config, $url)
     {
         $curl = new Curl();
-        $html = $curl->getDataHttps($url . '1/');
+        $html = $curl->getDataHttps($url);
         //第三方类库
         Loader::import('QueryList', EXTEND_PATH);
         //取得更新时间
