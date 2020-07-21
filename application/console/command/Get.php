@@ -351,7 +351,8 @@ class Get extends Command
                 //最新章
                 $end_chapter = [];
                 if (isset($info[0]['chapter_name']) && $info[0]['chapter_name']) {
-                    $end_chapter = ['text' => $info[0]['chapter_name'], 'href' => $info[0]['chapter_href']];
+                    $chapter_href = correct_url($href, $info[0]['chapter_href']);
+                    $end_chapter = ['text' => $info[0]['chapter_name'], 'href' => $chapter_href];
                 } else {
                     $chapter_all = $config['chapter_rule'];
                     //匹配出所有章节
