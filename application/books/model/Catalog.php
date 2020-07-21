@@ -65,15 +65,21 @@ class Catalog extends Model
     public function getCatalog($books_id)
     {
         $match = cache($books_id . '_catalog');
+//        $match = '';
         if (empty($match)) {
 
             $books = $this->getBook($books_id);
-
             $curl = model("Curl");
+
+            if(strpos($books['books_url'], 'm.37zw.net') !== false || strpos($books['books_url'], 'm.biquge5200.cc') !== false){
+                $url = $this->search($books['books_name'], $curl);
+                if ($url) {
+                    $books['books_url'] = $url[0]['books_url'];
+                }
+            }
             $res = $curl->getUrlData($books['books_url']);
             $href = parse_url($books['books_url']);
             $rule = $this->getRule($href["host"]);
-
             /*取得小说地址*/
             $chapter_all = array(
                 'text' => array($rule['chapter_name'], 'text'),
@@ -86,11 +92,9 @@ class Catalog extends Model
 
             if ($match) {
                 foreach ($match as $key => &$val) {
-
                     if (!strstr($val['href'], 'www')) {
                         $val['href'] = correct_url($books['books_url'], $val['href']);
                     }
-
                     //使用该函数对结果进行转码
                     $val['text'] = mb_convert_encoding($val['text'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
                     $val['href'] = str_replace(array("\r\n", "\r", "\n"), "", $val['href']);
@@ -119,6 +123,29 @@ class Catalog extends Model
 
         }
         return $match;
+    }
+
+    public function search($text, $curl)
+    {
+        $key = urlencode($text);
+        $url = 'https://www.biquge5200.cc/modules/article/search.php?searchkey=' . $key;
+
+        //引入curl方法
+        $html = $curl->getDataHttps($url);
+        if (!$html) {
+            return false;
+        }
+
+        //取得地址
+        $content = array(
+            'books_name' => array('.odd>a:eq(0)', 'text'),
+            'books_url' => array('.odd>a:eq(0)', 'href'),
+        );
+
+
+        //匹配出信息
+        $info = query($html, $content);
+        return $info;
     }
 
 

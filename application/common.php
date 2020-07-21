@@ -190,7 +190,11 @@ function correct_url($url, $basename)
 {
     $href = parse_url($url);
     $path = basename($basename);
-    $res = $href['scheme'] . '://' . $href['host'] . $href['path'] . $path;
+    if (strpos($url, 'https://m.biquge5200.cc') !== false) {
+        $res = $href['scheme'] . '://' . $href['host'] . '/' . $path . '/';
+    } else {
+        $res = $href['scheme'] . '://' . $href['host'] . $href['path'] . $path;
+    }
     return $res;
 }
 
