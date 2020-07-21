@@ -245,7 +245,7 @@ class Get extends Command
     {
         echo '------测试' . $config['menu'][2]['url'] . PHP_EOL;
 
-        for ($i = 1; $i < 15; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             $process = new \swoole_process(function (\swoole_process $worker) use ($i, $config) {
                 if(isset($config['menu'][$i])){
                     $this->search($config, $config['menu'][$i]['url']);
