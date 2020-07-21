@@ -67,7 +67,7 @@ class Test1 extends Command
     {
         sleep(20);//为了让子进程多存在一段时间，让大家看到效果
         $content = file_get_contents($url);
-        file_put_contents("./sData/baidu.txt", "tttttttttttttttt" . $content, FILE_APPEND);
+        file_put_contents("baidu.txt", "tttttttttttttttt" . $content, FILE_APPEND);
     }
 
 
