@@ -243,18 +243,16 @@ class Get extends Command
 
     public function ready($config)
     {
-
         for ($i = 0; $i < 15; $i++) {
-            echo '------开始' . $config['menu'][$i]['url'] . PHP_EOL;
-            $process = new \swoole_process(function (\swoole_process $worker) use ($i, $config) {
-                if(isset($config['menu'][$i])){
+            if (isset($config['menu'][$i])) {
+                echo '------开始' . $config['menu'][$i]['url'] . PHP_EOL;
+                $process = new \swoole_process(function (\swoole_process $worker) use ($i, $config) {
                     $this->search($config, $config['menu'][$i]['url']);
-                }
-            });
-            echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+                });
+                echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+            }
         }
-
-        $this->search($config, $config['menu'][2]['url']);
+//        $this->search($config, $config['menu'][2]['url']);
     }
 
 
