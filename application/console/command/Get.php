@@ -280,7 +280,7 @@ class Get extends Command
         $data = query($html, $content);
         if (!$data) {
             echo $k . '------没有数据了' . PHP_EOL;
-            continue;
+            return false;
         }
         echo $k . "------匹配到" . count($data) . '条' . PHP_EOL;
         if ($data) {
