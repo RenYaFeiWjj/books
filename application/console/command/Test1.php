@@ -62,7 +62,7 @@ class Test1 extends Command
         ];
         $count = count($url);//为了方便演示，此处用1000意思一下
         for ($i = 0; $i < $count; $i++) {
-            $this->creatProcess($i, $url , $output);
+            $this->creatProcess($i, $url[$i]['url'] , $output);
         }
         echo "process-end-time:" . date("Ymd H:i:s");
         // 定时器需要执行的内容
