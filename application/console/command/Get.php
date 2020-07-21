@@ -203,7 +203,7 @@ class Get extends Command
 
         $this->start_time = $this->getCurrentTime();
         echo '------开始咯' . PHP_EOL;
-        echo "process-end-time:" . date("Ymd H:i:s");
+        echo "process-start-time:" . date("Ymd H:i:s");
         $this->ready($this->config['m.37zw.net']);
         echo '------结束咯' . PHP_EOL;
 
@@ -254,42 +254,48 @@ class Get extends Command
                 echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
             }
         }
-        echo "process-end-time:" . date("Ymd H:i:s");
 //        $this->search($config, $config['menu'][2]['url']);
     }
 
 
-    public function search($i , $config, $url)
+    public function search($k , $config, $url)
     {
-        $curl = new Curl();
-        $html = $curl->getDataHttps($url . '1/');
-        //第三方类库
-        Loader::import('QueryList', EXTEND_PATH);
-        //取得更新时间
-        $content = $config['search_rule'];
+        for ($i = 1; $i < 300; $i++) {
+            $process = new \swoole_process(function (\swoole_process $worker) use ($i, $k , $config) {
+                echo $k . '--' . $i . PHP_EOL;
+            });
+            $pid = $process->start();
+        }
 
-        echo $i .'------匹配出信息' . PHP_EOL;
-        //匹配出信息
-        $data = query($html, $content);
-        if (!$data) {
-            echo $i .'------没有数据了' . PHP_EOL;
-//            continue;
-        }
-        echo $i ."------匹配到" . count($data) . '条' . PHP_EOL;
-        if ($data) {
-            foreach ($data as $v) {
-                $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
-                if (!$has) {
-                    echo $i ."------准备" . $v['text'] . PHP_EOL;
-                    $href = parse_url($url);
-                    $newUrl = 'https://' . $href['host'] . $v['href'];
-                    echo $newUrl . PHP_EOL;
-//                    $this->Warehousing($newUrl, $v['text'], 14, $output);
-                } else {
-                    echo $i ."------" . $v['text'] . '已存在' . PHP_EOL;
-                }
-            }
-        }
+//        $curl = new Curl();
+//        $html = $curl->getDataHttps($url . '1/');
+//        //第三方类库
+//        Loader::import('QueryList', EXTEND_PATH);
+//        //取得更新时间
+//        $content = $config['search_rule'];
+//
+//        echo $i .'------匹配出信息' . PHP_EOL;
+//        //匹配出信息
+//        $data = query($html, $content);
+//        if (!$data) {
+//            echo $i .'------没有数据了' . PHP_EOL;
+////            continue;
+//        }
+//        echo $i ."------匹配到" . count($data) . '条' . PHP_EOL;
+//        if ($data) {
+//            foreach ($data as $v) {
+//                $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
+//                if (!$has) {
+//                    echo $i ."------准备" . $v['text'] . PHP_EOL;
+//                    $href = parse_url($url);
+//                    $newUrl = 'https://' . $href['host'] . $v['href'];
+//                    echo $newUrl . PHP_EOL;
+////                    $this->Warehousing($newUrl, $v['text'], 14, $output);
+//                } else {
+//                    echo $i ."------" . $v['text'] . '已存在' . PHP_EOL;
+//                }
+//            }
+//        }
     }
 
 
