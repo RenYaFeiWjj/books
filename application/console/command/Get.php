@@ -203,6 +203,7 @@ class Get extends Command
 
         $this->start_time = $this->getCurrentTime();
         echo '------开始咯' . PHP_EOL;
+        echo "process-end-time:" . date("Ymd H:i:s");
         $this->ready($this->config['m.37zw.net']);
         echo '------结束咯' . PHP_EOL;
 
@@ -253,6 +254,7 @@ class Get extends Command
                 echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
             }
         }
+        echo "process-end-time:" . date("Ymd H:i:s");
 //        $this->search($config, $config['menu'][2]['url']);
     }
 
