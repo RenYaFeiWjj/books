@@ -214,7 +214,8 @@ class Get extends Command
         $this->start_time = $this->getCurrentTime();
         echo '------开始咯' . PHP_EOL;
         echo "process-start-time:" . date("Ymd H:i:s");
-        $this->ready($this->config['m.37zw.net']);
+        $this->ready($this->config['m.biquge5200.cc']);
+//        $this->ready($this->config['m.37zw.net']);
         echo '------结束咯' . PHP_EOL;
 
 //        $this->caiji1($output); //采集三七网
