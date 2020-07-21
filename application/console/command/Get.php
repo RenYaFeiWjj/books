@@ -254,22 +254,22 @@ class Get extends Command
 
     public function ready($config)
     {
-//        for ($i = 0; $i < 15; $i++) {
-//            if (isset($config['menu'][$i])) {
-//                echo '------开始' . $config['menu'][$i]['url'] . PHP_EOL;
-//                $process = new \swoole_process(function (\swoole_process $worker) use ($i, $config) {
-//                    $this->process($i, $config, $config['menu'][$i]['url']);
-//                });
-//                $pid = $process->start();
-//                echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
-//            }
-//        }
-        $this->process(1, $config, $config['menu'][2]['url']);
+        for ($i = 0; $i < 15; $i++) {
+            if (isset($config['menu'][$i])) {
+                echo '------开始' . $config['menu'][$i]['url'] . PHP_EOL;
+                $process = new \swoole_process(function (\swoole_process $worker) use ($i, $config) {
+                    $this->process($i, $config, $config['menu'][$i]['url']);
+                });
+                $pid = $process->start();
+                echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+            }
+        }
+//        $this->process(1, $config, $config['menu'][2]['url']);
     }
 
     public function process($k, $config, $url)
     {
-        for ($i = 80; $i < 100; $i++) {
+        for ($i = 80; $i < 81; $i++) {
             echo "------开始第" . $i . "页" . PHP_EOL;
             $this->search($k, $config, $url . $i . '/');
         }
