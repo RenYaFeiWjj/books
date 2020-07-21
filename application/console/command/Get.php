@@ -395,7 +395,7 @@ class Get extends Command
                 'books_time' => $info[0]['time'],
                 'books_status' => $info[0]['books_status'],
             ]);
-
+            $this->update_count+=1;
             if ($res) {
                 $output->writeln($v['books_name'] . "更新成功");
             } else {
