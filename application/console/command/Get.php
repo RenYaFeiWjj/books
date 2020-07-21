@@ -10,6 +10,7 @@
 
 namespace app\console\command;
 
+use AlibabaCloud\SDK\OSS\OSS\GetBucketWebsiteResponse\websiteConfiguration\routingRules\routingRule\condition;
 use QL\QueryList;
 use think\console\Command;
 use think\console\Input;
@@ -381,7 +382,10 @@ class Get extends Command
             );
             //匹配出信息
             $info = query($all, $content);
-            print_r($info);
+
+            if(!$info){
+                continue;
+            }
             $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
             $info[0]['author'] = $info[0]['author'] ? $info[0]['author'] : $info[0]['authors'];
             $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
