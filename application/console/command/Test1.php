@@ -52,7 +52,7 @@ class Test1 extends Command
         $pCount = system($cmd);//进程数量
         if ($pCount < 200) {
             //    创建子进程
-            $process = new swoole_process(function (swoole_process $worker) use ($i, $url) {
+            $process = new \swoole_process(function (swoole_process $worker) use ($i, $url) {
                 $content = $this->curlData($url);//方法里面处理你的逻辑
             });
             $pid = $process->start();
