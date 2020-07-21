@@ -328,6 +328,7 @@ class Get extends Command
         $data = Db::table('books_cou')->where('books_url', 'like', "%{$url}%")->where(['books_author' => ''])->limit(1)->select();
         $output->writeln("共有数据" . count($data) . '需更新');
         foreach ($data as $v) {
+            $output->writeln('查询' . $v['books_name'] . "数据");
             //引入curl方法
             $curl = new Curl();
             $all = $curl->getDataHttps($v['books_url']);
@@ -346,10 +347,20 @@ class Get extends Command
             $info = QueryList::Query($all, $content)->data;
             $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
             $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
-            print_r($info);exit;
+            $info[0]['books_status'] = strpos($info[0]['books_status'],'连载') ? 0 : 1;
+            $res = Db::table('books_cou')->where(['books_id' => $v['books_id']])->update([
+                'books_eauthor' => $info[0]['author'],
+                'books_time' => $info[0]['time'],
+                'books_status' => $info[0]['books_status'],
+            ]);
+
+            if($res){
+                $output->writeln($v['books_name'] . "更新成功");
+            }else{
+                $output->writeln($v['books_name'] . "更新失败");
+            }
+
         }
-        print_r($data);
-        exit;
     }
 
     /**
