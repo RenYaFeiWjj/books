@@ -244,13 +244,24 @@ class Get extends Command
     public function ready($config)
     {
         echo '------测试' . $config['menu'][2]['url'] . PHP_EOL;
+
+        for ($i = 1; $i < 15; $i++) {
+            $process = new \swoole_process(function (\swoole_process $worker) use ($i, $config) {
+                if(isset($config['menu'][$i])){
+                    $this->search($config, $config['menu'][$i]['url']);
+                }
+            });
+            echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+        }
+
         $this->search($config, $config['menu'][2]['url']);
     }
+
 
     public function search($config, $url)
     {
         $curl = new Curl();
-        $html = $curl->getDataHttps($url . '10/');
+        $html = $curl->getDataHttps($url . '1/');
         //第三方类库
         Loader::import('QueryList', EXTEND_PATH);
         //取得更新时间
@@ -265,7 +276,6 @@ class Get extends Command
         }
         echo "------匹配到" . count($data) . '条' . PHP_EOL;
         if ($data) {
-            print_r($data);exit;
             foreach ($data as $v) {
                 $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
                 if (!$has) {
