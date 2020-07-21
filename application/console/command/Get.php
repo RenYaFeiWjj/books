@@ -265,6 +265,7 @@ class Get extends Command
         }
         echo "------匹配到" . count($data) . '条' . PHP_EOL;
         if ($data) {
+            print_r($data);exit;
             foreach ($data as $v) {
                 $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
                 if (!$has) {
@@ -473,9 +474,7 @@ class Get extends Command
                 $output->writeln("没有数据了");
                 break;
             }
-//            print_r($data);
             $output->writeln("匹配到" . count($data) . '条');
-            print_r($data);exit;
             if ($data) {
                 foreach ($data as $v) {
                     print_r($v);
