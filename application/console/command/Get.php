@@ -57,7 +57,7 @@ class Get extends Command
 
         $this->start_time = $this->getCurrentTime();
 
-//        $this->caiji1($output); //采集三七网
+        $this->caiji1($output); //采集三七网
 //        $this->caiji2($output); //采集笔趣手机网
 //        $this->getCaiji($output); //采集笔趣pc端
         $this->updateMData($output, 14, 'm.biquge5200.cc'); //更新作者和更新时间

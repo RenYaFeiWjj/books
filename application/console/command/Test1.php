@@ -10,12 +10,14 @@
 
 namespace app\console\command;
 
+use app\admin\model\Curl;
 use think\console\Command;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\input\Option;
 use think\console\Output;
 use think\Db;
+use think\Loader;
 
 
 class Test1 extends Command
@@ -32,10 +34,35 @@ class Test1 extends Command
         $output->writeln("TestCommand:");
 
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
-        $baseUrl = "http://www.baidu.com/";//自定义网页
-        $count = 1000;//为了方便演示，此处用1000意思一下
+        $url = [
+            [
+                'title' => '三七中文网玄幻',
+                'url' => 'https://m.37zw.net/sort/1_'
+            ],
+            [
+                'title' => '三七中文网修真',
+                'url' => 'https://m.37zw.net/sort/2_'
+            ],
+            [
+                'title' => '三七中文网都市',
+                'url' => 'https://m.37zw.net/sort/3_'
+            ],
+            [
+                'title' => '三七中文网穿越',
+                'url' => 'https://m.37zw.net/sort/4_'
+            ],
+            [
+                'title' => '三七中文网网游',
+                'url' => 'https://m.37zw.net/sort/5_'
+            ],
+            [
+                'title' => '三七中文网科幻',
+                'url' => 'https://m.37zw.net/sort/6_'
+            ],
+        ];
+        $count = count($url);//为了方便演示，此处用1000意思一下
         for ($i = 0; $i < $count; $i++) {
-            $this->creatProcess($i, $baseUrl);
+            $this->creatProcess($i, $url , $output);
         }
         echo "process-end-time:" . date("Ymd H:i:s");
         // 定时器需要执行的内容
@@ -44,8 +71,63 @@ class Test1 extends Command
         $output->writeln("end....");
     }
 
+    /**
+     * @param $url
+     * @param Output $output
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 三七中文网  笔趣手机网
+     */
+    public function caijidata1($urls)
+    {
 
-    public function creatProcess($i, $url)
+
+        for ($i = 1; $i < 300; $i++) {
+            $url = $urls . $i . '/';
+            echo "开始采集第" . $i . '页数据';
+//            $output->writeln("开始采集第" . $i . '页数据');
+            $curl = new Curl();
+            $html = $curl->getDataHttps($url);
+
+            //第三方类库
+            Loader::import('QueryList', EXTEND_PATH);
+            //取得更新时间
+            $content = array(
+                'text' => array('.line>a:nth-child(2)', 'text'),
+                'href' => array('.line>a:nth-child(2)', 'href'),
+            );
+//            $output->writeln($url);
+            //匹配出信息
+            $data = query($html, $content);
+            if (!$data) {
+                echo '没有数据了';
+//                $output->writeln("没有数据了");
+                break;
+            }
+//            print_r($data);
+//            $output->writeln("匹配到" . count($data) . '条');
+            if ($data) {
+                foreach ($data as $v) {
+                    $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
+                    if (!$has) {
+                        $href = parse_url($url);
+                        $newUrl = 'https://' . $href['host'] . $v['href'];
+                        echo "准备" . $v['text'];
+//                        $output->writeln("准备" . $v['text']);
+//                        $this->Warehousing($newUrl, $v['text'], 14, $output);
+                    } else {
+                        echo $v['text'] . '已存在';
+//                        $output->writeln($v['text'] . '已存在');
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    public function creatProcess($i, $url , $output)
     {
 //    每次过来统计一下进程数量
         $cmd = "ps -ef |grep test1 |grep -v grep |wc -l";
@@ -53,7 +135,8 @@ class Test1 extends Command
         if ($pCount < 200) {
             //    创建子进程
             $process = new \swoole_process(function (\swoole_process $worker) use ($i, $url) {
-                $content = $this->curlData($url);//方法里面处理你的逻辑
+                $content = $this->caijidata1($url);//方法里面处理你的逻辑
+
             });
             $pid = $process->start();
             echo $url . '------第' . $i . '个子进程创建完毕' . PHP_EOL;
