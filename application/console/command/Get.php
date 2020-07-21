@@ -99,8 +99,10 @@ class Get extends Command
                 'time' => ['.block_txt2>p:eq(4)', 'text'],
                 'synopsis' => ['.intro_info', 'text'],
                 'img' => ['.block_img2>img', 'text'],
-                'chapter_name' => ['.chapter>li>a', 'text'],
-                'chapter_url' => ['.chapter>li>a', 'herf'],
+            ],
+            'chapter_rule' => [
+                'text' => ['.chapter>li>a', 'text'],
+                'herf' => ['.chapter>li>a', 'herf'],
             ]
         ],
         'm.biquge5200.cc' => [
@@ -177,6 +179,9 @@ class Get extends Command
                 'time' => ['.block_txt2>p:eq(4)', 'text'],
                 'synopsis' => ['.intro_info', 'text'],
                 'img' => ['.block_img2>img', 'text'],
+
+            ],
+            'chapter_rule' => [
                 'text' => ['.chapter>li>a', 'text'],
                 'herf' => ['.chapter>li>a', 'herf'],
             ]
@@ -312,7 +317,6 @@ class Get extends Command
         Loader::import('QueryList', EXTEND_PATH);
         //取得小说信息
         $content = $config['match_rule'];
-        print_r($content);exit;
         //匹配出信息
         $info = QueryList::Query($all, $content)->data;
         print_r($info);exit;
