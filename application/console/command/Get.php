@@ -349,7 +349,7 @@ class Get extends Command
             $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
             $info[0]['books_status'] = strpos($info[0]['books_status'],'连载') ? 0 : 1;
             $res = Db::table('books_cou')->where(['books_id' => $v['books_id']])->update([
-                'books_eauthor' => $info[0]['author'],
+                'books_author' => $info[0]['author'],
                 'books_time' => $info[0]['time'],
                 'books_status' => $info[0]['books_status'],
             ]);
