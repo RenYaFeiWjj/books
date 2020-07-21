@@ -339,22 +339,19 @@ class Get extends Command
                 } elseif ($types == '言情') {
                     $types = '都市';
                 }
-echo 1;
                 $type_id = Db::table('books_type')->where('type_name', 'like', "%{$types}%")->value('type_id');
                 $type_id = !empty($type_id) ? $type_id : '14';
 
                 //下载小说封面
                 $path = ROOT_PATH . 'public/static/images/books_img/';
                 $imgName = $curl->downloadImg($url, $path);
-                echo 2;
                 $result = ['books_name' => $name, 'books_author' => $author, 'books_synopsis' => $synopsis, 'books_time' => $time, 'books_img' => $imgName, 'books_type' => $type_id, 'books_status' => $books_status, 'books_url' => $href];
 
                 $books_id = Db::table('books_cou')->insertGetId($result);
                 //最新章
                 $end_chapter = [];
-                echo 32;
                 if (isset($info[0]['chapter_name']) && $info[0]['chapter_name']) {
-                    $end_chapter = ['chapter_name' => $info[0]['chapter_name'], 'href' => $info[0]['chapter_href']];
+                    $end_chapter = ['text' => $info[0]['chapter_name'], 'href' => $info[0]['chapter_href']];
                 } else {
                     $chapter_all = $config['chapter_rule'];
                     //匹配出所有章节
@@ -370,7 +367,6 @@ echo 1;
 
                     $end_chapter = end($chapter);
                 }
-                echo 4;
                 $chapter_data = ['books_id' => $books_id, 'chapter_name' => $end_chapter['text'], 'chapter_url' => $end_chapter['href']];
 
                 Db::table('books_chapter')->insert($chapter_data);
