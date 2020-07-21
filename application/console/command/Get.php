@@ -90,7 +90,7 @@ class Get extends Command
             ],
             'search_rule' => [
                 'text' => ['.line>a:nth-child(2)', 'text'],
-                'href' => ['.line>a:nth-child(2)', 'herf'],
+                'href' => ['.line>a:nth-child(2)', 'href'],
             ],
             'match_rule' => [
                 'name' => ['h1', 'text'],
@@ -168,7 +168,7 @@ class Get extends Command
             ],
             'search_rule' => [
                 'text' => ['.line>a:nth-child(2)', 'text'],
-                'href' => ['.line>a:nth-child(2)', 'herf'],
+                'href' => ['.line>a:nth-child(2)', 'href'],
             ],
             'match_rule' => [
                 'name' => ['h1', 'text'],
