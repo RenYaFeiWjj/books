@@ -11,5 +11,6 @@
 
 return [
     'app\console\command\Test',
-    'app\console\command\Get'
+    'app\console\command\Get',
+    'app\console\command\Test1',
 ];
