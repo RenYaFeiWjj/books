@@ -30,6 +30,9 @@ class Get extends Command
         ]
     ];
 
+    public $start_time = 0;
+    public $end_time = 0;
+
     protected function configure()
     {
         $this->setName('get')
@@ -42,10 +45,16 @@ class Get extends Command
 
         //设置永不超时
         set_time_limit(0);
-//        $this->caiji1($output);
-//        $this->caiji2($output);
-//        $this->getCaiji($output);
-        $this->updateMData($output , 14 , 'm.biquge5200.cc');
+
+        $this->start_time = $this->getCurrentTime();
+
+//        $this->caiji1($output); //采集三七网
+//        $this->caiji2($output); //采集笔趣手机网
+//        $this->getCaiji($output); //采集笔趣pc端
+        $this->updateMData($output, 14, 'm.biquge5200.cc'); //更新作者和更新时间
+        $this->updateMData($output, 14, 'm.37zw.net'); //更新作者和更新时间
+        $this->end_time = $this->getCurrentTime();
+        $output->writeln("用时" . $this->end_time - $this->start_time);
     }
 
 
@@ -321,10 +330,21 @@ class Get extends Command
         $output->writeln("采集完成");
     }
 
-
+    /**
+     * @param Output $output
+     * @param $rule_id
+     * @param $url
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     * 更新三七中文网和 笔趣手机网 作者和更新时间
+     */
     function updateMData(Output $output, $rule_id, $url)
     {
 //        m.biquge5200.cc
+//        m.37zw.net
         $data = Db::table('books_cou')->where('books_url', 'like', "%{$url}%")->where(['books_author' => ''])->select();
         $output->writeln("共有数据" . count($data) . '需更新');
         foreach ($data as $v) {
@@ -347,16 +367,16 @@ class Get extends Command
             $info = query($all, $content);
             $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
             $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
-            $info[0]['books_status'] = strpos($info[0]['books_status'],'连载') ? 0 : 1;
+            $info[0]['books_status'] = strpos($info[0]['books_status'], '连载') ? 0 : 1;
             $res = Db::table('books_cou')->where(['books_id' => $v['books_id']])->update([
                 'books_author' => $info[0]['author'],
                 'books_time' => $info[0]['time'],
                 'books_status' => $info[0]['books_status'],
             ]);
 
-            if($res){
+            if ($res) {
                 $output->writeln($v['books_name'] . "更新成功");
-            }else{
+            } else {
                 $output->writeln($v['books_name'] . "更新失败");
             }
 
@@ -460,4 +480,15 @@ class Get extends Command
 
     }
 
+
+    /**
+     * Description:计算当前时间
+     *
+     * @return float
+     */
+    function getCurrentTime()
+    {
+        list ($msec, $sec) = explode(" ", microtime());
+        return (float)$msec + (float)$sec;
+    }
 }
