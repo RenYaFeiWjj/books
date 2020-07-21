@@ -369,13 +369,15 @@ class Get extends Command
             //取得小说信息
             $content = array(
                 'author' => array($rule['books_author'], 'text'),
+                'authors' => array($rule['books_author'] . '>a', 'text'),
                 'time' => array($rule['books_time'], 'text'),
                 'books_status' => array('.block_txt2>p:eq(3)', 'text'),
             );
             //匹配出信息
             $info = query($all, $content);
-            print_r($info);exit;
             $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
+            $info[0]['authors'] = str_replace('作者：', '', $info[0]['authors']);
+            $info[0]['author'] = $info[0]['author'] ? $info[0]['author'] : $info[0]['authors'];
             $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
             $info[0]['books_status'] = strpos($info[0]['books_status'], '连载') ? 0 : 1;
             $res = Db::table('books_cou')->where(['books_id' => $v['books_id']])->update([
