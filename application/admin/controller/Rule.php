@@ -22,7 +22,7 @@ Class Rule extends Base
         $address = array('首页','采集规则','规则管理');
 
         //等待添加的规则
-        $result =  Db::table('books_cou')->select();
+        $result =  Db::table('books_cou')->group("left(books_url , 15)")->select();
         foreach ($result as $val){
             $href = parse_url($val['books_url']);
             if(empty($href['host'])){
@@ -45,8 +45,10 @@ Class Rule extends Base
 
         foreach ($data as &$val){
             $url = parse_url($val['rule_url']);
+
             $val['host'] = $url['host'];
         }
+
         $this->view->data = $data;
         $this->view->res = $res;
         $this->view->address = $address;
