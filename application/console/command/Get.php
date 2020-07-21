@@ -260,10 +260,7 @@ class Get extends Command
     public function process($k, $config, $url)
     {
         for ($i = 1; $i < 300; $i++) {
-            $process = new \swoole_process(function (\swoole_process $worker) use ($i, $k, $config, $url) {
-                $this->search($k, $config, $url);
-            });
-            $pid = $process->start();
+            $this->search($k, $config, $url . $i . '/');
         }
     }
 
