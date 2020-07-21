@@ -32,6 +32,8 @@ class Get extends Command
 
     public $start_time = 0;
     public $end_time = 0;
+    public $count = 0;
+    public $update_count = 0;
 
     protected function configure()
     {
@@ -133,6 +135,9 @@ class Get extends Command
             $this->caijidata1($v['url'], $output);
             $output->writeln($v['title'] . '结束');
         }
+
+        $output->writeln("caiji1采集成功" . $this->count);
+        $this->count = 0;
     }
 
     /**
@@ -211,6 +216,9 @@ class Get extends Command
             $this->caijidata1($v['url'], $output);
             $output->writeln($v['title'] . '结束');
         }
+
+        $output->writeln("caiji2采集成功" . $this->count);
+        $this->count = 0;
     }
 
 
@@ -376,11 +384,16 @@ class Get extends Command
 
             if ($res) {
                 $output->writeln($v['books_name'] . "更新成功");
+                $this->update_count +=1;
             } else {
                 $output->writeln($v['books_name'] . "更新失败");
             }
 
         }
+
+        $output->writeln($url. "更新成功" . $this->update_count);
+        $this->update_count = 0;
+
     }
 
     /**
@@ -472,6 +485,7 @@ class Get extends Command
 
                 Db::table('books_chapter')->insert($chapter_data);
                 $output->writeln("插入小说信息");
+                $this->count +=1;
             }
 
 
