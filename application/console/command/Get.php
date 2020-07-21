@@ -249,6 +249,7 @@ class Get extends Command
                 $process = new \swoole_process(function (\swoole_process $worker) use ($i, $config) {
                     $this->search($config, $config['menu'][$i]['url']);
                 });
+                $pid = $process->start();
                 echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
             }
         }
