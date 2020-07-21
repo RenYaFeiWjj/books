@@ -98,7 +98,7 @@ class Get extends Command
                 'author' => ['.block_txt2>p:eq(1)', 'text'],
                 'time' => ['.block_txt2>p:eq(4)', 'text'],
                 'synopsis' => ['.intro_info', 'text'],
-                'img' => ['.block_img2>img', 'text'],
+                'img' => ['.block_img2>img', 'src'],
             ],
             'chapter_rule' => [
                 'text' => ['.chapter>li>a', 'text'],
@@ -178,7 +178,7 @@ class Get extends Command
                 'author' => ['.block_txt2>p:eq(1)', 'text'],
                 'time' => ['.block_txt2>p:eq(4)', 'text'],
                 'synopsis' => ['.intro_info', 'text'],
-                'img' => ['.block_img2>img', 'text'],
+                'img' => ['.block_img2>img', 'src'],
 
             ],
             'chapter_rule' => [
