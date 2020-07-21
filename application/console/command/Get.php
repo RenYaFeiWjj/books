@@ -215,7 +215,7 @@ class Get extends Command
      */
     public function caijidata1($urls, Output $output)
     {
-        for ($i = 1; $i < 300; $i++) {
+        for ($i = 94; $i < 300; $i++) {
             $url = $urls . $i . '/';
             $output->writeln("开始采集第" . $i . '页数据');
             $curl = new Curl();
