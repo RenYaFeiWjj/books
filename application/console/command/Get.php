@@ -99,6 +99,8 @@ class Get extends Command
                 'time' => ['.block_txt2>p:eq(4)', 'text'],
                 'synopsis' => ['.intro_info', 'text'],
                 'img' => ['.block_img2>img', 'src'],
+                'chapter_name' =>['.block_txt2>p:eq(5) a', 'text'],
+                'chapter_href' =>['.block_txt2>p:eq(5) a', 'href'],
             ],
             'chapter_rule' => [
                 'text' => ['.chapter>li>a', 'text'],
