@@ -259,7 +259,7 @@ class Get extends Command
 
     public function process($k, $config, $url)
     {
-        for ($i = 1; $i < 300; $i++) {
+        for ($i = 1; $i < 100; $i++) {
             echo "------开始第" . $i . "页" . PHP_EOL;
             $this->search($k, $config, $url . $i . '/');
         }
