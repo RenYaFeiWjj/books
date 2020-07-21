@@ -267,37 +267,35 @@ class Get extends Command
 
     public function search($k, $config, $url)
     {
-        echo $k . '--' . $url . PHP_EOL;
+        $curl = new Curl();
+        $html = $curl->getDataHttps($url . '1/');
+        //第三方类库
+        Loader::import('QueryList', EXTEND_PATH);
+        //取得更新时间
+        $content = $config['search_rule'];
 
-//        $curl = new Curl();
-//        $html = $curl->getDataHttps($url . '1/');
-//        //第三方类库
-//        Loader::import('QueryList', EXTEND_PATH);
-//        //取得更新时间
-//        $content = $config['search_rule'];
-//
-//        echo $i .'------匹配出信息' . PHP_EOL;
-//        //匹配出信息
-//        $data = query($html, $content);
-//        if (!$data) {
-//            echo $i .'------没有数据了' . PHP_EOL;
-////            continue;
-//        }
-//        echo $i ."------匹配到" . count($data) . '条' . PHP_EOL;
-//        if ($data) {
-//            foreach ($data as $v) {
-//                $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
-//                if (!$has) {
-//                    echo $i ."------准备" . $v['text'] . PHP_EOL;
-//                    $href = parse_url($url);
-//                    $newUrl = 'https://' . $href['host'] . $v['href'];
-//                    echo $newUrl . PHP_EOL;
-////                    $this->Warehousing($newUrl, $v['text'], 14, $output);
-//                } else {
-//                    echo $i ."------" . $v['text'] . '已存在' . PHP_EOL;
-//                }
-//            }
-//        }
+        echo $i .'------匹配出信息' . PHP_EOL;
+        //匹配出信息
+        $data = query($html, $content);
+        if (!$data) {
+            echo $i .'------没有数据了' . PHP_EOL;
+            continue;
+        }
+        echo $i ."------匹配到" . count($data) . '条' . PHP_EOL;
+        if ($data) {
+            foreach ($data as $v) {
+                $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
+                if (!$has) {
+                    echo $i ."------准备" . $v['text'] . PHP_EOL;
+                    $href = parse_url($url);
+                    $newUrl = 'https://' . $href['host'] . $v['href'];
+                    echo $newUrl . PHP_EOL;
+//                    $this->Warehousing($newUrl, $v['text'], 14, $output);
+                } else {
+                    echo $i ."------" . $v['text'] . '已存在' . PHP_EOL;
+                }
+            }
+        }
     }
 
 
