@@ -204,7 +204,6 @@ class Get extends Command
     }
 
 
-
     /**
      * @param $url
      * @param Output $output
@@ -231,11 +230,11 @@ class Get extends Command
             print_r($url);
             //匹配出信息
             $data = query($html, $content);
-            if(!$data){
+            if (!$data) {
                 $output->writeln("没有数据了");
                 break;
             }
-            print_r($data);
+//            print_r($data);
             $output->writeln("匹配到" . count($data) . '条');
             if ($data) {
                 foreach ($data as $v) {
@@ -245,12 +244,13 @@ class Get extends Command
                         $newUrl = 'https://' . $href['host'] . $v['href'];
                         $output->writeln("准备" . $v['text']);
                         $this->Warehousing($newUrl, $v['text'], 14, $output);
+                    } else {
+                        $output->writeln($v['text'] . '已存在');
                     }
                 }
             }
         }
     }
-
 
 
     /**
