@@ -475,6 +475,7 @@ class Get extends Command
             }
 //            print_r($data);
             $output->writeln("匹配到" . count($data) . '条');
+            print_r($data);
             if ($data) {
                 foreach ($data as $v) {
                     print_r($v);
