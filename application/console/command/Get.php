@@ -43,8 +43,9 @@ class Get extends Command
         //设置永不超时
         set_time_limit(0);
 //        $this->caiji1($output);
-        $this->caiji2($output);
-        $this->getCaiji($output);
+//        $this->caiji2($output);
+//        $this->getCaiji($output);
+        $this->updateMData($output);
     }
 
 
@@ -227,7 +228,7 @@ class Get extends Command
                 'text' => array('.line>a:nth-child(2)', 'text'),
                 'href' => array('.line>a:nth-child(2)', 'href'),
             );
-            print_r($url);
+            $output->writeln($url);
             //匹配出信息
             $data = query($html, $content);
             if (!$data) {
@@ -318,6 +319,35 @@ class Get extends Command
         }
 
         $output->writeln("采集完成");
+    }
+
+
+    function updateMData(Output $output, $rule_id, $url)
+    {
+//        m.biquge5200.cc
+        $data = Db::table('books_cou')->where('books_url', 'like', "%{$url}%")->where(['books_author' => ''])->limit(1)->select();
+        $output->writeln("共有数据" . count($data) . '需更新');
+        foreach ($data as $v) {
+            //引入curl方法
+            $curl = new Curl();
+            $all = $curl->getDataHttps($v['books_url']);
+
+            //规则匹配方法
+            $rule = Db::table('books_rule_info')->where('rule_id', $rule_id)->find();
+            //第三方类库
+            Loader::import('QueryList', EXTEND_PATH);
+            //取得小说信息
+            $content = array(
+                'author' => array($rule['books_author'], 'text'),
+                'time' => array($rule['books_time'], 'text'),
+                'books_status' => array('.block_txt2>p:eq(3)', 'text'),
+            );
+            //匹配出信息
+            $info = QueryList::Query($all, $content)->data;
+            print_r($info);exit;
+        }
+        print_r($data);
+        exit;
     }
 
     /**
