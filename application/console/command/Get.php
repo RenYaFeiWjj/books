@@ -344,6 +344,8 @@ class Get extends Command
             );
             //匹配出信息
             $info = QueryList::Query($all, $content)->data;
+            $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
+            $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
             print_r($info);exit;
         }
         print_r($data);
