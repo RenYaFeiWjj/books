@@ -243,7 +243,7 @@ class Get extends Command
 
     public function ready($config)
     {
-        echo '------测试' . $config['menu'][2]['url'] . . PHP_EOL;
+        echo '------测试' . $config['menu'][2]['url'] . PHP_EOL;
         $this->search($config, $config['menu'][2]['url']);
     }
 
