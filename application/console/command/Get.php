@@ -56,6 +56,7 @@ class Get extends Command
         $this->updateMData($output, 14, 'm.biquge5200.cc'); //更新作者和更新时间
         $this->updateMData($output, 14, 'm.37zw.net'); //更新作者和更新时间
         $this->end_time = $this->getCurrentTime();
+        $output->writeln("更新成功" . $this->update_count);
         $output->writeln("用时" . $this->end_time - $this->start_time);
     }
 
@@ -373,9 +374,10 @@ class Get extends Command
             );
             //匹配出信息
             $info = query($all, $content);
+            print_r($info);exit;
             $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
             $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
-            $info[0]['books_status'] = strpos($info[0]['books_status'], '连载') !== false ? 0 : 1;
+            $info[0]['books_status'] = strpos($info[0]['books_status'], '连载') ? 0 : 1;
             $res = Db::table('books_cou')->where(['books_id' => $v['books_id']])->update([
                 'books_author' => $info[0]['author'],
                 'books_time' => $info[0]['time'],
@@ -384,7 +386,6 @@ class Get extends Command
 
             if ($res) {
                 $output->writeln($v['books_name'] . "更新成功");
-                $this->update_count +=1;
             } else {
                 $output->writeln($v['books_name'] . "更新失败");
             }
