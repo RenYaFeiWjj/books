@@ -260,6 +260,7 @@ class Get extends Command
     public function process($k, $config, $url)
     {
         for ($i = 1; $i < 300; $i++) {
+            echo "------开始第" . $i . "页" . PHP_EOL;
             $this->search($k, $config, $url . $i . '/');
         }
     }
@@ -274,25 +275,25 @@ class Get extends Command
         //取得更新时间
         $content = $config['search_rule'];
 
-        echo $k .'------匹配出信息' . PHP_EOL;
+        echo $k . '------匹配出信息' . PHP_EOL;
         //匹配出信息
         $data = query($html, $content);
         if (!$data) {
-            echo $k .'------没有数据了' . PHP_EOL;
+            echo $k . '------没有数据了' . PHP_EOL;
             continue;
         }
-        echo $k ."------匹配到" . count($data) . '条' . PHP_EOL;
+        echo $k . "------匹配到" . count($data) . '条' . PHP_EOL;
         if ($data) {
             foreach ($data as $v) {
                 $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
                 if (!$has) {
-                    echo $k ."------准备" . $v['text'] . PHP_EOL;
+                    echo $k . "------准备" . $v['text'] . PHP_EOL;
                     $href = parse_url($url);
                     $newUrl = 'https://' . $href['host'] . $v['href'];
                     echo $newUrl . PHP_EOL;
 //                    $this->Warehousing($newUrl, $v['text'], 14, $output);
                 } else {
-                    echo $k ."------" . $v['text'] . '已存在' . PHP_EOL;
+                    echo $k . "------" . $v['text'] . '已存在' . PHP_EOL;
                 }
             }
         }
