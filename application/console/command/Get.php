@@ -376,6 +376,7 @@ class Get extends Command
             //匹配出信息
             $info = query($all, $content);
             print_r($info);
+            print_r($content);
             $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
             $info[0]['authors'] = str_replace('作者：', '', $info[0]['authors']);
             $info[0]['author'] = $info[0]['author'] ? $info[0]['author'] : $info[0]['authors'];
