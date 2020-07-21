@@ -85,7 +85,7 @@ class Test1 extends Command
 
         for ($i = 1; $i < 300; $i++) {
             $url = $urls . $i . '/';
-            echo "开始采集第" . $i . '页数据';
+            echo "开始采集第" . $i . '页数据'.PHP_EOL;
 //            $output->writeln("开始采集第" . $i . '页数据');
             $curl = new Curl();
             $html = $curl->getDataHttps($url);
@@ -101,7 +101,7 @@ class Test1 extends Command
             //匹配出信息
             $data = query($html, $content);
             if (!$data) {
-                echo '没有数据了';
+                echo '没有数据了'.PHP_EOL;
 //                $output->writeln("没有数据了");
                 break;
             }
@@ -113,11 +113,11 @@ class Test1 extends Command
                     if (!$has) {
                         $href = parse_url($url);
                         $newUrl = 'https://' . $href['host'] . $v['href'];
-                        echo "准备" . $v['text'];
+                        echo "准备" . $v['text'] .PHP_EOL;
 //                        $output->writeln("准备" . $v['text']);
 //                        $this->Warehousing($newUrl, $v['text'], 14, $output);
                     } else {
-                        echo $v['text'] . '已存在';
+                        echo $v['text'] . '已存在'.PHP_EOL;
 //                        $output->writeln($v['text'] . '已存在');
                     }
                 }
