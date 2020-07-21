@@ -231,28 +231,6 @@ class Get extends Command
 
     }
 
-    public function creatProcess($i, $url, $output)
-    {
-//    每次过来统计一下进程数量
-//        $cmd = "ps -ef |grep test1 |grep -v grep |wc -l";
-//        $pCount = system($cmd);//进程数量
-//        if ($pCount < 200) {
-//            //    创建子进程
-//
-//        } else {
-//            sleep(10);//可以根据实际情况定义
-//            $this->creatProcess($i, $url);
-//        }
-
-        $process = new \swoole_process(function (\swoole_process $worker) use ($i, $url) {
-            $this->caijidata1($url);//方法里面处理你的逻辑
-        });
-        $pid = $process->start();
-        echo $url . '------第' . $i . '个子进程创建完毕' . PHP_EOL;
-//        $config = $this->config[$k];
-
-    }
-
 
     public function ready($config)
     {
