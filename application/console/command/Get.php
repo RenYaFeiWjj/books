@@ -135,10 +135,10 @@ class Get extends Command
     public function caiji2(Output $output)
     {
         $url = [
-//            [
-//                'title' => '笔趣手机网玄幻',
-//                'url' => 'https://m.biquge5200.cc/sort-1-'
-//            ],
+            [
+                'title' => '笔趣手机网玄幻',
+                'url' => 'https://m.biquge5200.cc/sort-1-'
+            ],
             [
                 'title' => '笔趣手机网仙侠',
                 'url' => 'https://m.biquge5200.cc/sort-2-'
@@ -215,7 +215,7 @@ class Get extends Command
      */
     public function caijidata1($urls, Output $output)
     {
-        for ($i = 94; $i < 300; $i++) {
+        for ($i = 1; $i < 300; $i++) {
             $url = $urls . $i . '/';
             $output->writeln("开始采集第" . $i . '页数据');
             $curl = new Curl();
