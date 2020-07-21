@@ -325,7 +325,7 @@ class Get extends Command
     function updateMData(Output $output, $rule_id, $url)
     {
 //        m.biquge5200.cc
-        $data = Db::table('books_cou')->where('books_url', 'like', "%{$url}%")->where(['books_author' => ''])->limit(1)->select();
+        $data = Db::table('books_cou')->where('books_url', 'like', "%{$url}%")->where(['books_author' => ''])->select();
         $output->writeln("共有数据" . count($data) . '需更新');
         foreach ($data as $v) {
             $output->writeln('查询' . $v['books_name'] . "数据");
@@ -348,7 +348,6 @@ class Get extends Command
             $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
             $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
             $info[0]['books_status'] = strpos($info[0]['books_status'],'连载') ? 0 : 1;
-            print_r($info);exit;
             $res = Db::table('books_cou')->where(['books_id' => $v['books_id']])->update([
                 'books_author' => $info[0]['author'],
                 'books_time' => $info[0]['time'],
