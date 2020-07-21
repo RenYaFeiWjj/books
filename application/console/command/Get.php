@@ -477,6 +477,7 @@ class Get extends Command
             $output->writeln("匹配到" . count($data) . '条');
             if ($data) {
                 foreach ($data as $v) {
+                    print_r($v);
                     $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
                     if (!$has) {
                         $href = parse_url($url);
