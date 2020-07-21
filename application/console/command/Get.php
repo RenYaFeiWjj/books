@@ -250,7 +250,7 @@ class Get extends Command
     public function process($k, $config, $url)
     {
         for ($i = 1; $i < 300; $i++) {
-            echo "------开始第" . $i . "页" . PHP_EOL;
+            echo $k . "------开始第" . $i . "页" . PHP_EOL;
             $this->search($k, $config, $url . $i . '/');
         }
     }
