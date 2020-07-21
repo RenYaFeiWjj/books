@@ -248,7 +248,7 @@ class Get extends Command
             if (isset($config['menu'][$i])) {
                 echo '------开始' . $config['menu'][$i]['url'] . PHP_EOL;
                 $process = new \swoole_process(function (\swoole_process $worker) use ($i, $config) {
-                    $this->search($i , $config, $config['menu'][$i]['url']);
+                    $this->process($i, $config, $config['menu'][$i]['url']);
                 });
                 $pid = $process->start();
                 echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
@@ -257,15 +257,20 @@ class Get extends Command
 //        $this->search($config, $config['menu'][2]['url']);
     }
 
-
-    public function search($k , $config, $url)
+    public function process($k, $config, $url)
     {
         for ($i = 1; $i < 300; $i++) {
-            $process = new \swoole_process(function (\swoole_process $worker) use ($i, $k , $config) {
-                echo $k . '--' . $i . PHP_EOL;
+            $process = new \swoole_process(function (\swoole_process $worker) use ($i, $k, $config, $url) {
+                $this->search($k, $config, $url);
             });
             $pid = $process->start();
         }
+    }
+
+
+    public function search($k, $config, $url)
+    {
+        echo $k . '--' . $url . PHP_EOL;
 
 //        $curl = new Curl();
 //        $html = $curl->getDataHttps($url . '1/');
