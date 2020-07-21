@@ -202,8 +202,9 @@ class Get extends Command
         set_time_limit(0);
 
         $this->start_time = $this->getCurrentTime();
+        echo '------开始咯' . PHP_EOL;
         $this->ready($this->config['m.37zw.net']);
-
+        echo '------结束咯' . PHP_EOL;
 
 //        $this->caiji1($output); //采集三七网
 ////        $this->caiji2($output); //采集笔趣手机网
@@ -242,15 +243,41 @@ class Get extends Command
 
     public function ready($config)
     {
-        $this->search($config['menu'][2]['url']);
+        echo '------测试' . $config['menu'][2]['url'] . . PHP_EOL;
+        $this->search($config, $config['menu'][2]['url']);
     }
 
-    public function search($url)
+    public function search($config, $url)
     {
         $curl = new Curl();
-        $html = $curl->getDataHttps($url);
+        $html = $curl->getDataHttps($url . '10/');
         //第三方类库
         Loader::import('QueryList', EXTEND_PATH);
+        //取得更新时间
+        $content = $config['search_rule'];
+
+        echo '------匹配出信息' . PHP_EOL;
+        //匹配出信息
+        $data = query($html, $content);
+        if (!$data) {
+            echo '------没有数据了' . PHP_EOL;
+//            continue;
+        }
+        echo "------匹配到" . count($data) . '条' . PHP_EOL;
+        if ($data) {
+            foreach ($data as $v) {
+                $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
+                if (!$has) {
+                    echo "------准备" . $v['text'] . PHP_EOL;
+                    $href = parse_url($url);
+                    $newUrl = 'https://' . $href['host'] . $v['href'];
+                    echo $newUrl . PHP_EOL;
+//                    $this->Warehousing($newUrl, $v['text'], 14, $output);
+                } else {
+                    echo "------" . $v['text'] . '已存在' . PHP_EOL;
+                }
+            }
+        }
     }
 
 
