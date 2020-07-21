@@ -99,8 +99,9 @@ class Get extends Command
                 'time' => ['.block_txt2>p:eq(4)', 'text'],
                 'synopsis' => ['.intro_info', 'text'],
                 'img' => ['.block_img2>img', 'src'],
-                'chapter_name' =>['.block_txt2>p:eq(5) a', 'text'],
-                'chapter_href' =>['.block_txt2>p:eq(5) a', 'href'],
+                'status' => ['.block_txt2>p:eq(3)', 'text'],
+                'chapter_name' => ['.block_txt2>p:eq(5) a', 'text'],
+                'chapter_href' => ['.block_txt2>p:eq(5) a', 'href'],
             ],
             'chapter_rule' => [
                 'text' => ['.chapter>li>a', 'text'],
@@ -181,7 +182,9 @@ class Get extends Command
                 'time' => ['.block_txt2>p:eq(4)', 'text'],
                 'synopsis' => ['.intro_info', 'text'],
                 'img' => ['.block_img2>img', 'src'],
-
+                'status' => ['.block_txt2>p:eq(3)', 'text'],
+                'chapter_name' => ['.block_txt2>p:eq(5) a', 'text'],
+                'chapter_href' => ['.block_txt2>p:eq(5) a', 'href'],
             ],
             'chapter_rule' => [
                 'text' => ['.chapter>li>a', 'text'],
@@ -261,7 +264,7 @@ class Get extends Command
 //                echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
 //            }
 //        }
-        $this->process(1 , $config, $config['menu'][2]['url']);
+        $this->process(1, $config, $config['menu'][2]['url']);
     }
 
     public function process($k, $config, $url)
@@ -311,7 +314,6 @@ class Get extends Command
      */
     public function Warehousings($href, $name, $config)
     {
-
         //引入curl方法
         $curl = new Curl();
         $all = $curl->getDataHttps($href);
@@ -321,26 +323,15 @@ class Get extends Command
         $content = $config['match_rule'];
         //匹配出信息
         $info = QueryList::Query($all, $content)->data;
-        print_r($info);exit;
-
         if (!empty($info[0]) && isset($info[0]['author'])) {
-            $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
-            $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
+            $author = str_replace('作者：', '', $info[0]['author']);
+            $time = str_replace('更新：', '', $info[0]['time']);
+            $books_status = strpos($info[0]['status'], '连载') ? 0 : 1;
             $has = Db::table('books_cou')->where('books_name', $name)->find();
-
             if (empty($has)) {
                 //使用该函数对结果进行转码
-                $author = mb_convert_encoding($info[0]['author'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
-                $author = substr($author, 33);
-
                 $synopsis = mb_convert_encoding($info[0]['synopsis'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
-
-
-                $time = mb_convert_encoding($info[0]['time'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
-                $time = substr($time, 15);
-
                 $url = $info[0]['img'];
-
                 $types = mb_convert_encoding($info[0]['type'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
                 $types = substr($types, 0, 6);
                 if ($types == '修真') {
@@ -352,46 +343,40 @@ class Get extends Command
                 $type_id = Db::table('books_type')->where('type_name', 'like', "%{$types}%")->value('type_id');
                 $type_id = !empty($type_id) ? $type_id : '14';
 
-
                 //下载小说封面
                 $path = ROOT_PATH . 'public/static/images/books_img/';
                 $imgName = $curl->downloadImg($url, $path);
 
-                $result = ['books_name' => $name, 'books_author' => $author, 'books_synopsis' => $synopsis, 'books_time' => $time, 'books_img' => $imgName, 'books_type' => $type_id, 'books_status' => '0', 'books_url' => $href];
+                $result = ['books_name' => $name, 'books_author' => $author, 'books_synopsis' => $synopsis, 'books_time' => $time, 'books_img' => $imgName, 'books_type' => $type_id, 'books_status' => $books_status, 'books_url' => $href];
 
                 $books_id = Db::table('books_cou')->insertGetId($result);
-                $chapter_all = array(
-                    'text' => array($rule['chapter_name'], 'text'),
-                    'href' => array($rule['chapter_url'], 'href'),
-                );
-                //匹配出所有章节
-                $match = QueryList::Query($all, $chapter_all)->data;
+                //最新章
+                $end_chapter = [];
+                if (isset($info[0]['chapter_name']) && $info[0]['chapter_name']) {
+                    $end_chapter = ['chapter_name' => $info[0]['chapter_name'], 'href' => $info[0]['chapter_href']];
+                } else {
+                    $chapter_all = $config['chapter_rule'];
+                    //匹配出所有章节
+                    $match = QueryList::Query($all, $chapter_all)->data;
 
-                //去除前面重复的几个最新章节
-                $match = array_unique_fb($match);
+                    //去除前面重复的几个最新章节
+                    $match = array_unique_fb($match);
+                    foreach ($match as $key => $val) {
+                        //使用该函数对结果进行转码
+                        $chapter[$key]['text'] = mb_convert_encoding($val[0], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
+                        $chapter[$key]['href'] = correct_url($href, $val[1]);
+                    }
 
-
-                foreach ($match as $key => $val) {
-
-                    //使用该函数对结果进行转码
-                    $chapter[$key]['text'] = mb_convert_encoding($val[0], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
-                    $chapter[$key]['href'] = correct_url($href, $val[1]);
-
+                    $end_chapter = end($chapter);
                 }
-
-                $end_chapter = end($chapter);
 
                 $chapter_data = ['books_id' => $books_id, 'chapter_name' => $end_chapter['text'], 'chapter_url' => $end_chapter['href']];
 
                 Db::table('books_chapter')->insert($chapter_data);
-                $output->writeln("插入小说信息");
+                echo '----插入小说信息' . PHP_EOL;
                 $this->count += 1;
             }
-
-
         }
-
-
     }
 
 
