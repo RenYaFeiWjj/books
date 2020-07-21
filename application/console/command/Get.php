@@ -344,7 +344,7 @@ class Get extends Command
                 'books_status' => array('.block_txt2>p:eq(3)', 'text'),
             );
             //匹配出信息
-            $info = QueryList::Query($all, $content)->data;
+            $info = query($all, $content);
             $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
             $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
             $info[0]['books_status'] = strpos($info[0]['books_status'],'连载') ? 0 : 1;
