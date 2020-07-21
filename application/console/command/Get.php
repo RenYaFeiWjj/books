@@ -135,10 +135,10 @@ class Get extends Command
     public function caiji2(Output $output)
     {
         $url = [
-            [
-                'title' => '笔趣手机网玄幻',
-                'url' => 'https://m.biquge5200.cc/sort-1-'
-            ],
+//            [
+//                'title' => '笔趣手机网玄幻',
+//                'url' => 'https://m.biquge5200.cc/sort-1-'
+//            ],
             [
                 'title' => '笔趣手机网仙侠',
                 'url' => 'https://m.biquge5200.cc/sort-2-'
