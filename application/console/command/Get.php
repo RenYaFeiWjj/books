@@ -21,7 +21,13 @@ use think\Loader;
 use app\admin\model\Curl;
 use think\model;
 
-
+/**
+ * Class Get
+ * @package app\console\command
+ * 每日采集小说数据
+ * 每日更新时间和最新章节
+ * 每日查看图片丢失数据
+ */
 class Get extends Command
 {
     public $config = [
@@ -375,6 +381,7 @@ class Get extends Command
             );
             //匹配出信息
             $info = query($all, $content);
+            print_r($info);
             $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
             $info[0]['author'] = $info[0]['author'] ? $info[0]['author'] : $info[0]['authors'];
             $info[0]['time'] = str_replace('更新：', '', $info[0]['time']);
