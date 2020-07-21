@@ -322,12 +322,13 @@ class Get extends Command
         //取得小说信息
         $content = $config['match_rule'];
         //匹配出信息
-        $info = QueryList::Query($all, $content)->data;
+        $info = query($all, $content);
         if (!empty($info[0]) && isset($info[0]['author'])) {
             $author = str_replace('作者：', '', $info[0]['author']);
             $time = str_replace('更新：', '', $info[0]['time']);
             $books_status = strpos($info[0]['status'], '连载') ? 0 : 1;
             $has = Db::table('books_cou')->where('books_name', $name)->find();
+            echo 1;
             if (empty($has)) {
                 //使用该函数对结果进行转码
                 $synopsis = mb_convert_encoding($info[0]['synopsis'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
@@ -357,7 +358,7 @@ class Get extends Command
                 } else {
                     $chapter_all = $config['chapter_rule'];
                     //匹配出所有章节
-                    $match = QueryList::Query($all, $chapter_all)->data;
+                    $match = query($all, $chapter_all);
 
                     //去除前面重复的几个最新章节
                     $match = array_unique_fb($match);
