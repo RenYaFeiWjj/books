@@ -45,7 +45,7 @@ class Get extends Command
 //        $this->caiji1($output);
 //        $this->caiji2($output);
 //        $this->getCaiji($output);
-        $this->updateMData($output);
+        $this->updateMData($output , 14 , 'm.biquge5200.cc');
     }
 
 
