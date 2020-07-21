@@ -81,8 +81,6 @@ class Test1 extends Command
      */
     public function caijidata1($urls)
     {
-
-
         for ($i = 1; $i < 300; $i++) {
             $url = $urls . $i . '/';
             echo "开始采集第" . $i . '页数据'.PHP_EOL;
@@ -125,25 +123,24 @@ class Test1 extends Command
         }
     }
 
-
-
     public function creatProcess($i, $url , $output)
     {
 //    每次过来统计一下进程数量
-        $cmd = "ps -ef |grep test1 |grep -v grep |wc -l";
-        $pCount = system($cmd);//进程数量
-        if ($pCount < 200) {
-            //    创建子进程
-            $process = new \swoole_process(function (\swoole_process $worker) use ($i, $url) {
-                $content = $this->caijidata1($url);//方法里面处理你的逻辑
+//        $cmd = "ps -ef |grep test1 |grep -v grep |wc -l";
+//        $pCount = system($cmd);//进程数量
+//        if ($pCount < 200) {
+//            //    创建子进程
+//
+//        } else {
+//            sleep(10);//可以根据实际情况定义
+//            $this->creatProcess($i, $url);
+//        }
 
-            });
-            $pid = $process->start();
-            echo $url . '------第' . $i . '个子进程创建完毕' . PHP_EOL;
-        } else {
-            sleep(10);//可以根据实际情况定义
-            $this->creatProcess($i, $url);
-        }
+        $process = new \swoole_process(function (\swoole_process $worker) use ($i, $url) {
+            $this->caijidata1($url);//方法里面处理你的逻辑
+        });
+        $pid = $process->start();
+        echo $url . '------第' . $i . '个子进程创建完毕' . PHP_EOL;
     }
 
     public function curlData($url)

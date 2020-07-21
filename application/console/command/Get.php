@@ -32,10 +32,157 @@ use think\model;
 class Get extends Command
 {
     public $config = [
-        '' => [
+        'www.qidian.com' => [
+            'menu' => [
+                [
+                    'title' => '原创风云榜',
+                    'url' => 'https://www.qidian.com/rank/yuepiao?style=1&chn=-1&page='
+                ],
+                [
+                    'title' => '原创月票榜',
+                    'url' => 'https://www.qidian.com/rank/yuepiao?style=1&chn=-1&page='
+                ],
 
+                [
+                    'title' => '推荐票榜	',
+                    'url' => 'https://www.qidian.com/rank/recom?style=1&page='
+                ],
+                [
+                    'title' => 'VIP收藏榜',
+                    'url' => 'https://www.qidian.com/rank/vipcollect?style=1&page='
+                ],
+                [
+                    'title' => 'VIP精品打赏榜',
+                    'url' => 'https://www.qidian.com/rank/vipreward?style=1&page='
+                ],
+                [
+                    'title' => '完本榜',
+                    'url' => 'https://www.qidian.com/rank/fin?style=1&page='
+                ]
+            ],
+        ],
+        'm.37zw.net' => [
+            'menu' => [
+                [
+                    'title' => '三七中文网玄幻',
+                    'url' => 'https://m.37zw.net/sort/1_'
+                ],
+                [
+                    'title' => '三七中文网修真',
+                    'url' => 'https://m.37zw.net/sort/2_'
+                ],
+                [
+                    'title' => '三七中文网都市',
+                    'url' => 'https://m.37zw.net/sort/3_'
+                ],
+                [
+                    'title' => '三七中文网穿越',
+                    'url' => 'https://m.37zw.net/sort/4_'
+                ],
+                [
+                    'title' => '三七中文网网游',
+                    'url' => 'https://m.37zw.net/sort/5_'
+                ],
+                [
+                    'title' => '三七中文网科幻',
+                    'url' => 'https://m.37zw.net/sort/6_'
+                ]
+            ],
+            'search_rule' => [
+                'text' => ['.line>a:nth-child(2)', 'text'],
+                'href' => ['.line>a:nth-child(2)', 'herf'],
+            ],
+            'match_rule' => [
+                'name' => ['h1', 'text'],
+                'type' => ['.block_txt2>p:eq(2)>a', 'text'],
+                'author' => ['.block_txt2>p:eq(1)', 'text'],
+                'time' => ['.block_txt2>p:eq(4)', 'text'],
+                'synopsis' => ['.intro_info', 'text'],
+                'img' => ['.block_img2>img', 'text'],
+                'chapter_name' => ['.chapter>li>a', 'text'],
+                'chapter_url' => ['.chapter>li>a', 'herf'],
+            ]
+        ],
+        'm.biquge5200.cc' => [
+            'menu' => [
+                [
+                    'title' => '笔趣手机网玄幻',
+                    'url' => 'https://m.biquge5200.cc/sort-1-'
+                ],
+                [
+                    'title' => '笔趣手机网仙侠',
+                    'url' => 'https://m.biquge5200.cc/sort-2-'
+                ],
+                [
+                    'title' => '笔趣手机网都市',
+                    'url' => 'https://m.biquge5200.cc/sort-3-'
+                ],
+                [
+                    'title' => '笔趣手机网历史',
+                    'url' => 'https://m.biquge5200.cc/sort-4-'
+                ],
+                [
+                    'title' => '笔趣手机网游戏',
+                    'url' => 'https://m.biquge5200.cc/sort-5-'
+                ],
+                [
+                    'title' => '笔趣手机网科幻',
+                    'url' => 'https://m.biquge5200.cc/sort-6-'
+                ],
+                [
+                    'title' => '笔趣手机网言情',
+                    'url' => 'https://m.biquge5200.cc/sort-7-'
+                ],
+                [
+                    'title' => '笔趣手机网同人',
+                    'url' => 'https://m.biquge5200.cc/sort-8-'
+                ],
+                [
+                    'title' => '笔趣手机网灵异',
+                    'url' => 'https://m.biquge5200.cc/sort-9-'
+                ],
+                [
+                    'title' => '笔趣手机网奇幻',
+                    'url' => 'https://m.biquge5200.cc/sort-10-'
+                ],
+                [
+                    'title' => '笔趣手机网竞技',
+                    'url' => 'https://m.biquge5200.cc/sort-11-'
+                ],
+                [
+                    'title' => '笔趣手机网武侠',
+                    'url' => 'https://m.biquge5200.cc/sort-12-'
+                ],
+                [
+                    'title' => '笔趣手机网军事',
+                    'url' => 'https://m.biquge5200.cc/sort-13-'
+                ],
+                [
+                    'title' => '笔趣手机网校园',
+                    'url' => 'https://m.biquge5200.cc/sort-14-'
+                ],
+                [
+                    'title' => '笔趣手机网官场',
+                    'url' => 'https://m.biquge5200.cc/sort-15-'
+                ],
+            ],
+            'search_rule' => [
+                'text' => ['.line>a:nth-child(2)', 'text'],
+                'href' => ['.line>a:nth-child(2)', 'herf'],
+            ],
+            'match_rule' => [
+                'name' => ['h1', 'text'],
+                'type' => ['.block_txt2>p:eq(2)>a', 'text'],
+                'author' => ['.block_txt2>p:eq(1)', 'text'],
+                'time' => ['.block_txt2>p:eq(4)', 'text'],
+                'synopsis' => ['.intro_info', 'text'],
+                'img' => ['.block_img2>img', 'text'],
+                'chapter_name' => ['.chapter>li>a', 'text'],
+                'chapter_url' => ['.chapter>li>a', 'herf'],
+            ]
         ]
     ];
+
 
     public $start_time = 0;
     public $end_time = 0;
@@ -51,20 +198,59 @@ class Get extends Command
     protected function execute(Input $input, Output $output)
     {
         ini_set('memory_limit', '1024M');
-
         //设置永不超时
         set_time_limit(0);
 
         $this->start_time = $this->getCurrentTime();
+        $this->ready($this->config['m.37zw.net']);
 
-        $this->caiji1($output); //采集三七网
-//        $this->caiji2($output); //采集笔趣手机网
-//        $this->getCaiji($output); //采集笔趣pc端
-        $this->updateMData($output, 14, 'm.biquge5200.cc'); //更新作者和更新时间
-        $this->updateMData($output, 14, 'm.37zw.net'); //更新作者和更新时间
-        $this->end_time = $this->getCurrentTime();
-        $output->writeln("更新成功" . $this->update_count);
-        $output->writeln("用时" . $this->end_time - $this->start_time);
+
+//        $this->caiji1($output); //采集三七网
+////        $this->caiji2($output); //采集笔趣手机网
+////        $this->getCaiji($output); //采集笔趣pc端
+//        $this->updateMData($output, 14, 'm.biquge5200.cc'); //更新作者和更新时间
+//        $this->updateMData($output, 14, 'm.37zw.net'); //更新作者和更新时间
+//        $this->end_time = $this->getCurrentTime();
+//        $output->writeln("更新成功" . $this->update_count);
+//        $output->writeln("用时" . $this->end_time - $this->start_time);
+
+
+    }
+
+    public function creatProcess($i, $url, $output)
+    {
+//    每次过来统计一下进程数量
+//        $cmd = "ps -ef |grep test1 |grep -v grep |wc -l";
+//        $pCount = system($cmd);//进程数量
+//        if ($pCount < 200) {
+//            //    创建子进程
+//
+//        } else {
+//            sleep(10);//可以根据实际情况定义
+//            $this->creatProcess($i, $url);
+//        }
+
+        $process = new \swoole_process(function (\swoole_process $worker) use ($i, $url) {
+            $this->caijidata1($url);//方法里面处理你的逻辑
+        });
+        $pid = $process->start();
+        echo $url . '------第' . $i . '个子进程创建完毕' . PHP_EOL;
+//        $config = $this->config[$k];
+
+    }
+
+
+    public function ready($config)
+    {
+        $this->search($config['menu'][2]['url']);
+    }
+
+    public function search($url)
+    {
+        $curl = new Curl();
+        $html = $curl->getDataHttps($url);
+        //第三方类库
+        Loader::import('QueryList', EXTEND_PATH);
     }
 
 
@@ -383,7 +569,7 @@ class Get extends Command
             //匹配出信息
             $info = query($all, $content);
 
-            if(!$info){
+            if (!$info) {
                 continue;
             }
             $info[0]['author'] = str_replace('作者：', '', $info[0]['author']);
@@ -396,7 +582,7 @@ class Get extends Command
                 'books_status' => $info[0]['books_status'],
             ]);
             if ($res) {
-                $this->update_count+=1;
+                $this->update_count += 1;
                 $output->writeln($v['books_name'] . "更新成功");
             } else {
                 $output->writeln($v['books_name'] . "更新失败");
@@ -404,7 +590,7 @@ class Get extends Command
 
         }
 
-        $output->writeln($url. "更新成功" . $this->update_count);
+        $output->writeln($url . "更新成功" . $this->update_count);
         $this->update_count = 0;
 
     }
@@ -498,7 +684,7 @@ class Get extends Command
 
                 Db::table('books_chapter')->insert($chapter_data);
                 $output->writeln("插入小说信息");
-                $this->count +=1;
+                $this->count += 1;
             }
 
 
