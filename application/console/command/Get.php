@@ -649,7 +649,7 @@ class Get extends Command
                         echo '-----开始匹配最新章节' . PHP_EOL;
                         $curl = new Curl();
                         $data = $curl->getDataHttps($v['books_url']);
-
+                        print_r($data);exit;
                         $match = query($data, $content);
 
                         //去除前面重复的几个最新章节
