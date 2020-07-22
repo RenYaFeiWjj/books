@@ -626,7 +626,7 @@ class Get extends Command
 
     public function updateChapters()
     {
-        for ($i = 0; $i < 60; $i++) {
+        for ($i = 0; $i < 30; $i++) {
             echo '------开始' . $i . PHP_EOL;
             $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
                 $this->updateChapter($i);
