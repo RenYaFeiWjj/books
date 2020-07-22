@@ -635,6 +635,7 @@ class Get extends Command
                 foreach ($data as $v) {
                     echo '-----' . $v['books_id'] . PHP_EOL;
                     echo '-----' . $v['books_name'] . PHP_EOL;
+                    echo '-----' . $v['books_url'] . PHP_EOL;
                     $books_url = parse_url($v['books_url']);
                     $host = $books_url['host'];
                     $content = [];
