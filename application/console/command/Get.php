@@ -626,6 +626,7 @@ class Get extends Command
     {
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['c.books_status' => 0])
+            ->where(['c.books_id' => 131])
             ->field('c.*')
             ->chunk(20, function ($data) {
                 foreach ($data as $v) {
@@ -691,13 +692,14 @@ class Get extends Command
                             $time = getDates($res[0]['time']);
                             //如果最后一次更新时间大于现在时间半年 状态为完结
                             $status = 0;
+                            print_r($time);
                             if ($time) {
                                 if (time() - $time > 60 * 60 * 24 * 180) {
                                     echo '-----状态改为完本' . PHP_EOL;
                                     $status = 1;
                                 }
                             }
-
+                            echo '-----状态改为完本'.$status . PHP_EOL;
                             $ress = Db::table('books_cou')->where(['books_id' => $v['books_id'], 'books_status' => $status])->update(['books_time' => $time]);
                             if ($ress) {
                                 echo '-----更新时间更新成功' . PHP_EOL;
