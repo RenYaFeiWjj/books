@@ -12,6 +12,7 @@ namespace app\console\command;
 
 use AlibabaCloud\SDK\OSS\OSS\GetBucketWebsiteResponse\websiteConfiguration\routingRules\routingRule\condition;
 use QL\QueryList;
+use think\Cache;
 use think\console\Command;
 use think\console\Input;
 use think\console\input\Argument;
@@ -631,6 +632,7 @@ class Get extends Command
                 $this->updateChapter($i);
             });
             $pid = $process->start();
+            \swoole_process::wait();
             echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
         }
     }
@@ -641,7 +643,6 @@ class Get extends Command
      */
     public function updateChapter($k)
     {
-
         $data = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['c.books_status' => 0])
             ->limit($k * 1000, 1000)
@@ -652,6 +653,13 @@ class Get extends Command
 //            ->where(['c.books_id' => 236])
 //            ->field('c.*')
 //            ->chunk(20, function ($data) {
+
+        if (!$data) {
+            echo '------第' . $k . '个没有数据' . PHP_EOL;
+            return false;
+        }
+
+
         foreach ($data as $v) {
             echo '-----' . $v['books_id'] . PHP_EOL;
             echo '-----' . $v['books_name'] . PHP_EOL;
@@ -695,6 +703,8 @@ class Get extends Command
                     }
 
                     if ($res) {
+                        $zhang = Cache::get('zhang') ? Cache::get('zhang') : 0;
+                        Cache::set('zhang', $zhang + 1);
                         echo '-----最新章节更新成功' . PHP_EOL;
                     } else {
                         echo 'error-----章节更新失败' . PHP_EOL;
