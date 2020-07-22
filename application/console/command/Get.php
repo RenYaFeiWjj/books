@@ -232,13 +232,6 @@ class Get extends Command
 
     }
 
-    public function updateChapter()
-    {
-        $a = Db::table('books_chapter')->alias('a')->join('books_cou c', 'c.books_id = a.books_id', 'left')
-            ->where(['c.books_status' => 0])->fetchSql(true);
-        print_r($a);exit;
-    }
-
 
     public function ready($config)
     {
@@ -628,6 +621,100 @@ class Get extends Command
             }
         }
     }
+
+    public function updateChapter()
+    {
+        Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
+            ->where(['c.books_status' => 0])
+            ->field('c.*')
+            ->chunk(20, function ($data) {
+                foreach ($data as $v) {
+                    echo '-----' . $v['books_id'] . PHP_EOL;
+                    echo '-----' . $v['books_name'] . PHP_EOL;
+                    $books_url = parse_url($v['books_url']);
+                    $host = $books_url['host'];
+                    $content = [];
+                    $has = Db::table('books_rule_info')->alias('i')->field('i.*')->join('books_rule r', 'r.rule_id=i.rule_id')->where('r.rule_url', 'like', "%{$host}%")->find();
+                    if ($has) {
+                        $content = array(
+                            'text' => [$has['chapter_name'], 'text'],
+                            'herf' => [$has['chapter_url'], 'href'],
+                        );
+
+                        echo '-----开始匹配最新章节' . PHP_EOL;
+                        $curl = model('Curl');
+                        $data = $curl->getDataHttps($v['books_url']);
+
+                        $match = query($data, $content);
+
+                        //去除前面重复的几个最新章节
+                        $match = array_unique_fb($match);
+                        if ($match) {
+                            foreach ($match as $key => $val) {
+
+                                //使用该函数对结果进行转码
+                                $chapter[$key]['text'] = mb_convert_encoding($val[0], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
+                                $chapter[$key]['href'] = correct_url($v['books_url'], $val[1]);
+
+                            }
+                            echo '-----准备更新' . PHP_EOL;
+                            $end_chapter = $has['is_zuixin'] == 2 ? $chapter[count($chapter) - 1] : $chapter[0];
+
+                            $c = Db::table('books_chapter')->where(['books_id' => $v['books_id']])->find();
+                            if ($c) {
+                                $chapter_data = ['chapter_name' => $end_chapter['text'], 'chapter_url' => $end_chapter['href']];
+                                $res = Db::table('books_chapter')->where(['books_id' => $v['books_id']])->update($chapter_data);
+                            } else {
+                                $chapter_data = ['books_id' => $v['books_id'], 'chapter_name' => $end_chapter['text'], 'chapter_url' => $end_chapter['href']];
+
+                                $res = Db::table('books_chapter')->insert($chapter_data);
+                            }
+
+                            if ($res) {
+                                echo '-----最新章节更新成功' . PHP_EOL;
+                            } else {
+                                echo 'error-----章节更新失败' . PHP_EOL;
+                            }
+                        } else {
+                            echo 'error-----时间未匹配到结果' . PHP_EOL;
+                        }
+
+
+                        echo '-----开始匹配更新时间' . PHP_EOL;
+                        //更新时间和状态
+                        $content = array(
+                            'time' => [$has['books_time'], 'text'],
+                        );
+
+                        $res = query($data, $content);
+                        if ($res && isset($res[0]) && $res[0]) {
+                            $time = getDates($res[0]['time']);
+                            //如果最后一次更新时间大于现在时间半年 状态为完结
+                            $status = 0;
+                            if ($time) {
+                                if (time() - $time > 60 * 60 * 24 * 180) {
+                                    echo '-----状态改为完本' . PHP_EOL;
+                                    $status = 1;
+                                }
+                            }
+
+                            $ress = Db::table('books_cou')->where(['books_id' => $v['books_id'], 'books_status' => $status])->update(['books_time' => $time]);
+                            if ($ress) {
+                                echo '-----更新时间更新成功' . PHP_EOL;
+                            } else {
+                                echo 'error-----时间更新失败' . PHP_EOL;
+                            }
+                        } else {
+                            echo 'error-----时间未匹配到结果' . PHP_EOL;
+                        }
+                    } else {
+                        echo 'error-----未定义匹配规则' . PHP_EOL;
+                    }
+                    exit;
+                }
+            });
+    }
+
 
 
     /**

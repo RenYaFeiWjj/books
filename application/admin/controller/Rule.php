@@ -86,6 +86,8 @@ Class Rule extends Base
         return $this->fetch('template/rule_add');
     }
 
+
+
     public function edit(){
 
         $rule_id = input('param.rule_id');

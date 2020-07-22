@@ -66,6 +66,13 @@ function query($res, $data)
     return $info;
 }
 
+function getDates($string = null)
+{
+    $pattern = "/\\d{1,4}((-|\/)\d{1,2}){2}(\s{0,5}\\d{1,2}(\:\d{1,2}){1,2}){0,1}/";
+    preg_match_all($pattern, $string, $match);
+
+    return $match ? $match[0][0] : '';
+}
 
 /**
  * $msg 待提示的消息
