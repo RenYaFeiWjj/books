@@ -622,6 +622,9 @@ class Get extends Command
         }
     }
 
+    /**
+     * 更新最新章节和更新时间，连载状态
+     */
     public function updateChapter()
     {
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
@@ -698,7 +701,7 @@ class Get extends Command
                                     $status = 1;
                                 }
                             }
-                            $ress = Db::table('books_cou')->where(['books_id' => $v['books_id'], 'books_status' => $status])->update(['books_time' => $time]);
+                            $ress = Db::table('books_cou')->where(['books_id' => $v['books_id']])->update(['books_time' => $time, 'books_status' => $status]);
                             if ($ress) {
                                 echo '-----更新时间更新成功' . PHP_EOL;
                             } else {
