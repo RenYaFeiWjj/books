@@ -26,6 +26,16 @@ Class Books extends Base
      */
     public function add()
     {
+
+        Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
+            ->where(['c.books_status' => 0])
+            ->where('c.books_id','>',80)
+            ->field('c.*')
+//            ->limit(200,200)
+            ->chunk(20, function ($data) {
+                print_r($data);exit;
+            });
+        exit;
         $books_name = input('post.books_name');
         $rule_id = input('post.rule_id');
 
