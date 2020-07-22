@@ -624,23 +624,11 @@ class Get extends Command
 
     public function updateChapters()
     {
-        $count = Db::table('books_cou')->count();
-        $max = ceil($count / 1000) + 1;
-//        for ($i = 0; $i < $max; $i++) {
-//            echo '=====开始第' . $i. '进程' . PHP_EOL;
-//            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
-////                $this->updateChapter($i);
-//                echo $i. PHP_EOL;
-//            });
-//            $pid = $process->start();
-//            echo '=====开始第' . $i . '个子进程创建完毕' . PHP_EOL;
-//        }
-
-        for ($i = 0; $i < $max; $i++) {
+        for ($i = 0; $i < 30; $i++) {
                 echo '------开始' . $i . PHP_EOL;
                 $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
 //                    $this->process($i, $config, $config['menu'][$i]['url']);
-                    echo $i;
+                    echo $i. PHP_EOL;
                 });
                 $pid = $process->start();
                 echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
