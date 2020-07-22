@@ -692,8 +692,8 @@ class Get extends Command
                             $time = getDates($res[0]['time']);
                             //如果最后一次更新时间大于现在时间半年 状态为完结
                             $status = 0;
-                            print_r($time);
                             if ($time) {
+                                $time = date('Y-m-d' , strtotime($time));
                                 if (time() - $time > 60 * 60 * 24 * 180) {
                                     echo '-----状态改为完本' . PHP_EOL;
                                     $status = 1;
