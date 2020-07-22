@@ -622,16 +622,16 @@ class Get extends Command
         }
     }
 
+
     public function updateChapters()
     {
         for ($i = 0; $i < 30; $i++) {
-                echo '------开始' . $i . PHP_EOL;
-                $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
-//                    $this->process($i, $config, $config['menu'][$i]['url']);
-                    echo $i. PHP_EOL;
-                });
-                $pid = $process->start();
-                echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+            echo '------开始' . $i . PHP_EOL;
+            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
+                $this->updateChapter($i);
+            });
+            $pid = $process->start();
+            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
         }
     }
 
