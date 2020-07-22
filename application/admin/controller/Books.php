@@ -26,8 +26,6 @@ Class Books extends Base
      */
     public function add()
     {
-        $this->updateChapter();
-        exit;
         $books_name = input('post.books_name');
         $rule_id = input('post.rule_id');
 
@@ -76,13 +74,10 @@ Class Books extends Base
     }
 
 
-
-
     /**
      * 搜索小说后入库
      */
-    public
-    function Warehousing()
+    public function Warehousing()
     {
         $href = input('post.href');
         $name = input('post.name');
@@ -198,8 +193,7 @@ Class Books extends Base
      * @return mixed
      * 所有小说
      */
-    public
-    function booksList()
+    public function booksList()
     {
 
         $res['star_time'] = input("param.star_time");
@@ -238,8 +232,7 @@ Class Books extends Base
      * @return mixed|void
      * 编辑小说
      */
-    public
-    function edit()
+    public function edit()
     {
 
         $books_id = input('param.books_id');
@@ -262,8 +255,7 @@ Class Books extends Base
     }
 
 
-    public
-    function editBooks()
+    public function editBooks()
     {
         $result = input('post.');
 
@@ -328,8 +320,7 @@ Class Books extends Base
      * @return mixed
      * 手动新增小说
      */
-    public
-    function addBooks()
+    public function addBooks()
     {
         $address = array('首页', '小说管理', '小说添加');
         $this->view->address = $address;
@@ -341,8 +332,7 @@ Class Books extends Base
         return $this->fetch('template/books_add_manual');
     }
 
-    public
-    function appendBooks()
+    public function appendBooks()
     {
         $result = input('post.');
         //进行规则验证
@@ -401,8 +391,7 @@ Class Books extends Base
      * @return \think\response\Json
      * 上传小说封面
      */
-    public
-    function upload_photo()
+    public function upload_photo()
     {
 
         $file = $this->request->file('file');
@@ -442,8 +431,7 @@ Class Books extends Base
     /**
      *删除小说
      */
-    public
-    function delete()
+    public function delete()
     {
         $books_id = input('param.books_id');
 
@@ -464,8 +452,7 @@ Class Books extends Base
     /**
      *批量删除小说
      */
-    public
-    function delAllList()
+    public function delAllList()
     {
         $books_ids = input('post.books_ids/a');
 
@@ -490,8 +477,7 @@ Class Books extends Base
     /**
      * 清空小说
      */
-    public
-    function delAllBooks()
+    public function delAllBooks()
     {
 
         $res = Db::execute('TRUNCATE table books_cou');
@@ -512,8 +498,7 @@ Class Books extends Base
 
     }
 
-    public
-    function deldir($path)
+    public function deldir($path)
     {
         //如果是目录则继续
         if (is_dir($path)) {
@@ -541,8 +526,7 @@ Class Books extends Base
      * @return mixed
      * 添加或修改小说最新章节
      */
-    public
-    function books_chapter()
+    public function books_chapter()
     {
         $address = array('小说管理', '小说添加', '最新章节');
         $this->view->address = $address;
@@ -594,8 +578,7 @@ Class Books extends Base
 
 
 //二维数组去掉重复值
-    public
-    function array_unique_fb($array)
+    public function array_unique_fb($array)
     {
 
         $array = array_reverse($array);
