@@ -625,6 +625,7 @@ class Get extends Command
     public function updateChapters()
     {
         $count = Db::table('books_cou')->count();
+        print_r($count);exit;
         $max = $count / 1000 + 1;
         for ($i = 0; $i < $max; $i++) {
             echo '=====开始第' . $i. '进程' . PHP_EOL;
