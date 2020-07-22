@@ -127,21 +127,16 @@ class Curl extends Model
         $html = curl_exec($ch);
 
 
-        $num = 3;
-        for ($i = 1; $i <= $num; $i++) {
-            if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == '0' && $i <= $num) {
-                echo "retry $i 次" . PHP_EOL;
-                if ($i == 3) {
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                }
-                $html = curl_exec($ch);
-            }
-        }
-
-        var_dump($html);
-
-        var_dump(curl_error($ch));
-
+//        $num = 3;
+//        for ($i = 1; $i <= $num; $i++) {
+//            if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == '0' && $i <= $num) {
+//                echo "retry $i 次" . PHP_EOL;
+//                if ($i == 3) {
+//                    curl_setopt($ch, CURLOPT_URL, $url);
+//                }
+//                $html = curl_exec($ch);
+//            }
+//        }
 // var_dump(curl_getinfo($ch));
 
 //        $curl = curl_init();
