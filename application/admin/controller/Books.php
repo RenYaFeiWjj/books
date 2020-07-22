@@ -9,6 +9,7 @@
 namespace app\admin\controller;
 
 use app\admin\model\Curl;
+use think\Cache;
 use think\Controller;
 use think\Model;
 use think\Db;
@@ -18,6 +19,125 @@ use think\loader;
 
 Class Books extends Base
 {
+    /**
+     * 更新最新章节和更新时间，连载状态
+     */
+    public function updateChapter($k)
+    {
+        $data = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
+            ->where(['c.books_status' => 0])
+            ->where(['c.books_id' => 12439])
+            ->limit($k * 500, 500)
+            ->select();
+
+//        Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
+//            ->where(['c.books_status' => 0])
+//            ->where(['c.books_id' => 236])
+//            ->field('c.*')
+//            ->chunk(20, function ($data) {
+
+        if (!$data) {
+            echo $k.'------第' . $k . '个没有数据' . PHP_EOL;
+            return false;
+        }
+
+
+        foreach ($data as $v) {
+            echo $k.'-----' . $v['books_id'] . PHP_EOL;
+            echo $k.'-----' . $v['books_name'] . PHP_EOL;
+            echo $k.'-----' . $v['books_url'] . PHP_EOL;
+            $books_url = parse_url($v['books_url']);
+            $host = $books_url['host'];
+            $content = [];
+            $has = Db::table('books_rule_info')->alias('i')->field('i.*')->join('books_rule r', 'r.rule_id=i.rule_id')->where('r.rule_url', 'like', "%{$host}%")->find();
+            if ($has) {
+                $content = array(
+                    'text' => [$has['chapter_name'], 'text'],
+                    'href' => [$has['chapter_url'], 'href'],
+                );
+
+                echo $k.'-----开始匹配最新章节' . PHP_EOL;
+                $curl = new Curl();
+                $datas = $curl->getDataHttps($v['books_url']);
+                if(!$datas){
+                    echo $k.'-----没有匹配到最新章节' . PHP_EOL;
+                    continue;
+                }
+                $match = query($datas, $content);
+                if(!$match){
+                    echo $k.'-----没有匹配到数据' . PHP_EOL;
+                    continue;
+                }
+                //去除前面重复的几个最新章节
+                $match = array_unique_fb($match);
+                $chapter = [];
+                if ($match) {
+                    foreach ($match as $key => $val) {
+
+                        //使用该函数对结果进行转码
+                        $chapter[$key]['text'] = mb_convert_encoding($val[0], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
+                        $chapter[$key]['href'] = correct_url($v['books_url'], $val[1]);
+
+                    }
+                    echo $k.'-----准备更新' . PHP_EOL;
+                    $end_chapter = $has['is_zuixin'] == 2 ? $chapter[count($chapter) - 1] : $chapter[0];
+
+                    $c = Db::table('books_chapter')->where(['books_id' => $v['books_id']])->find();
+                    if ($c) {
+                        $chapter_data = ['chapter_name' => $end_chapter['text'], 'chapter_url' => $end_chapter['href']];
+                        $res = Db::table('books_chapter')->where(['books_id' => $v['books_id']])->update($chapter_data);
+                    } else {
+                        $chapter_data = ['books_id' => $v['books_id'], 'chapter_name' => $end_chapter['text'], 'chapter_url' => $end_chapter['href']];
+
+                        $res = Db::table('books_chapter')->insert($chapter_data);
+                    }
+
+                    if ($res) {
+                        $zhang = Cache::get('zhang') ? Cache::get('zhang') : 0;
+                        echo '更新成功' . $zhang . '个' . PHP_EOL;
+                        Cache::set('zhang', $zhang + 1 ,3600);
+                        echo $k.'-----最新章节更新成功' . PHP_EOL;
+                    } else {
+                        echo $k.'error-----章节更新失败' . PHP_EOL;
+                    }
+                } else {
+                    echo $k.'error-----时间未匹配到结果' . PHP_EOL;
+                }
+
+
+                echo $k.'-----开始匹配更新时间' . PHP_EOL;
+                //更新时间和状态
+                $content = array(
+                    'time' => [$has['books_time'], 'text'],
+                );
+
+                $res = query($datas, $content);
+                if ($res && isset($res[0]) && $res[0]) {
+                    $time = getDates($res[0]['time']);
+                    //如果最后一次更新时间大于现在时间半年 状态为完结
+                    $status = 0;
+                    if ($time) {
+                        $time = date('Y-m-d', strtotime($time));
+                        if (time() - strtotime($time) > 60 * 60 * 24 * 180) {
+                            echo $k.'-----状态改为完本' . PHP_EOL;
+                            $status = 1;
+                        }
+                    }
+                    $ress = Db::table('books_cou')->where(['books_id' => $v['books_id']])->update(['books_time' => $time, 'books_status' => $status]);
+                    if ($ress) {
+                        echo $k.'-----更新时间更新成功' . PHP_EOL;
+                    } else {
+                        echo $k.'error-----时间更新失败' . PHP_EOL;
+                    }
+                } else {
+                    echo $k.'error-----时间未匹配到结果' . PHP_EOL;
+                }
+            } else {
+                echo $k.'error-----未定义匹配规则' . PHP_EOL;
+            }
+        }
+//            });
+    }
 
 
     /**
@@ -26,6 +146,8 @@ Class Books extends Base
      */
     public function add()
     {
+        $this->updateChapter(0);
+        exit;
         $books_name = input('post.books_name');
         $rule_id = input('post.rule_id');
 
@@ -193,7 +315,8 @@ Class Books extends Base
      * @return mixed
      * 所有小说
      */
-    public function booksList()
+    public
+    function booksList()
     {
 
         $res['star_time'] = input("param.star_time");
@@ -232,7 +355,8 @@ Class Books extends Base
      * @return mixed|void
      * 编辑小说
      */
-    public function edit()
+    public
+    function edit()
     {
 
         $books_id = input('param.books_id');
@@ -255,7 +379,8 @@ Class Books extends Base
     }
 
 
-    public function editBooks()
+    public
+    function editBooks()
     {
         $result = input('post.');
 
@@ -320,7 +445,8 @@ Class Books extends Base
      * @return mixed
      * 手动新增小说
      */
-    public function addBooks()
+    public
+    function addBooks()
     {
         $address = array('首页', '小说管理', '小说添加');
         $this->view->address = $address;
@@ -332,7 +458,8 @@ Class Books extends Base
         return $this->fetch('template/books_add_manual');
     }
 
-    public function appendBooks()
+    public
+    function appendBooks()
     {
         $result = input('post.');
         //进行规则验证
@@ -391,7 +518,8 @@ Class Books extends Base
      * @return \think\response\Json
      * 上传小说封面
      */
-    public function upload_photo()
+    public
+    function upload_photo()
     {
 
         $file = $this->request->file('file');
@@ -431,7 +559,8 @@ Class Books extends Base
     /**
      *删除小说
      */
-    public function delete()
+    public
+    function delete()
     {
         $books_id = input('param.books_id');
 
@@ -452,7 +581,8 @@ Class Books extends Base
     /**
      *批量删除小说
      */
-    public function delAllList()
+    public
+    function delAllList()
     {
         $books_ids = input('post.books_ids/a');
 
@@ -477,7 +607,8 @@ Class Books extends Base
     /**
      * 清空小说
      */
-    public function delAllBooks()
+    public
+    function delAllBooks()
     {
 
         $res = Db::execute('TRUNCATE table books_cou');
@@ -498,7 +629,8 @@ Class Books extends Base
 
     }
 
-    public function deldir($path)
+    public
+    function deldir($path)
     {
         //如果是目录则继续
         if (is_dir($path)) {

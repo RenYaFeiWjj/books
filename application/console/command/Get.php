@@ -683,6 +683,10 @@ class Get extends Command
                 }
                 $match = query($datas, $content);
 
+                if(!$match){
+                    echo $k.'-----没有匹配到数据' . PHP_EOL;
+                    continue;
+                }
                 //去除前面重复的几个最新章节
                 $match = array_unique_fb($match);
                 if ($match) {

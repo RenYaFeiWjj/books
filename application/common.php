@@ -215,18 +215,29 @@ function correct_url($url, $basename)
 function array_unique_fb($array)
 {
 
-    $array = array_reverse($array);
-    foreach ($array as $v) {
-        $v = join(",?*", $v); //降维,也可以用implode,将一维数组转换为用,?*连接的字符串
-        $temp[] = $v;
-    }
+//    $array = array_reverse($array);
+//    foreach ($array as $v) {
+//        $v = join(",?*", $v); //降维,也可以用implode,将一维数组转换为用,?*连接的字符串
+//        $temp[] = $v;
+//    }
+//
+//    $temp = array_unique($temp);//去掉重复的字符串,也就是重复的一维数组
+//    foreach ($temp as $k => $v) {
+//        $temp[$k] = explode(",?*", $v);//再将拆开的数组重新组装
+//    }
+//
+//    return $temp;
+    $t = array_map('serialize', $array);//利用serialize()方法将数组转换为以字符串形式的一维数组
 
-    $temp = array_unique($temp);//去掉重复的字符串,也就是重复的一维数组
-    foreach ($temp as $k => $v) {
-        $temp[$k] = explode(",?*", $v);//再将拆开的数组重新组装
-    }
+    $t = array_unique($t);//去掉重复值
 
-    return $temp;
+    $new_arr = array_map('unserialize', $t);//然后将刚组建的一维数组转回为php值
+
+    $arr = [];
+    foreach ($new_arr as $k => $v){
+        $arr[] = array_values($v);
+    }
+    return $arr;
 
 
 }
