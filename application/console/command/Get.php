@@ -629,7 +629,8 @@ class Get extends Command
         for ($i = 0; $i < $max; $i++) {
             echo '=====开始第' . $i + 1 . '进程' . PHP_EOL;
             $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
-                $this->updateChapter($i);
+//                $this->updateChapter($i);
+                echo $i. PHP_EOL;
             });
             $pid = $process->start();
             echo '=====开始第' . $i + 1 . '个子进程创建完毕' . PHP_EOL;
