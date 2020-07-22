@@ -676,8 +676,12 @@ class Get extends Command
 
                 echo $k.'-----开始匹配最新章节' . PHP_EOL;
                 $curl = new Curl();
-                $data = $curl->getDataHttps($v['books_url']);
-                $match = query($data, $content);
+                $datas = $curl->getDataHttps($v['books_url']);
+                if(!$datas){
+                    echo $k.'-----没有匹配到最新章节' . PHP_EOL;
+                    continue;
+                }
+                $match = query($datas, $content);
 
                 //去除前面重复的几个最新章节
                 $match = array_unique_fb($match);
@@ -721,7 +725,7 @@ class Get extends Command
                     'time' => [$has['books_time'], 'text'],
                 );
 
-                $res = query($data, $content);
+                $res = query($datas, $content);
                 if ($res && isset($res[0]) && $res[0]) {
                     $time = getDates($res[0]['time']);
                     //如果最后一次更新时间大于现在时间半年 状态为完结
