@@ -626,7 +626,7 @@ class Get extends Command
 
     public function updateChapters()
     {
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 60; $i++) {
             echo '------开始' . $i . PHP_EOL;
             $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
                 $this->updateChapter($i);
@@ -645,7 +645,7 @@ class Get extends Command
     {
         $data = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['c.books_status' => 0])
-            ->limit($k * 1000, 1000)
+            ->limit($k * 500, 500)
             ->select();
 
 //        Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
