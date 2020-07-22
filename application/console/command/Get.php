@@ -694,7 +694,8 @@ class Get extends Command
                             $status = 0;
                             if ($time) {
                                 $time = date('Y-m-d' , strtotime($time));
-                                if (time() - $time > 60 * 60 * 24 * 180) {
+                                echo $time;
+                                if (time() - strtotime($time) > 60 * 60 * 24 * 180) {
                                     echo '-----状态改为完本' . PHP_EOL;
                                     $status = 1;
                                 }
