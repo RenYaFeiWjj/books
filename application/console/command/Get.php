@@ -642,7 +642,7 @@ class Get extends Command
                         );
 
                         echo '-----开始匹配最新章节' . PHP_EOL;
-                        $curl = model('Curl');
+                        $curl = new Curl();
                         $data = $curl->getDataHttps($v['books_url']);
 
                         $match = query($data, $content);
