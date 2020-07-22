@@ -629,7 +629,7 @@ class Get extends Command
         for ($i = 0; $i < 60; $i++) {
             echo '------开始' . $i . PHP_EOL;
             $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
-//                $this->updateChapter($i);
+                $this->updateChapter($i);
             });
             $pid = $process->start();
             \swoole_process::wait();
