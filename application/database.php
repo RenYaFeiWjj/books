@@ -28,6 +28,8 @@ return [
     'params'          => [],
     // 数据库编码默认采用utf8
     'charset'         => 'utf8',
+    //是否需要断线重连
+    'break_reconnect' => true,
     // 数据库表前缀
     'prefix'          => 'books_',
     // 数据库调试模式
