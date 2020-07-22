@@ -645,7 +645,8 @@ class Get extends Command
     public function updateChapter($k)
     {
         $data = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
-            ->where(['c.books_status' => 0])
+//            ->where(['c.books_status' => 0])
+            ->where(['a.chapter_name' => ''])
             ->limit($k * 500, 500)
             ->select();
 
