@@ -710,7 +710,6 @@ class Get extends Command
                     } else {
                         echo 'error-----未定义匹配规则' . PHP_EOL;
                     }
-                    exit;
                 }
             });
     }
