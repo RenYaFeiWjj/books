@@ -655,7 +655,7 @@ class Get extends Command
 //            ->chunk(20, function ($data) {
 
         if (!$data) {
-            echo '------第' . $k . '个没有数据' . PHP_EOL;
+            echo $k.'------第' . $k . '个没有数据' . PHP_EOL;
             return false;
         }
 
@@ -674,7 +674,7 @@ class Get extends Command
                     'herf' => [$has['chapter_url'], 'href'],
                 );
 
-                echo '-----开始匹配最新章节' . PHP_EOL;
+                echo $k.'-----开始匹配最新章节' . PHP_EOL;
                 $curl = new Curl();
                 $data = $curl->getDataHttps($v['books_url']);
                 $match = query($data, $content);
@@ -689,7 +689,7 @@ class Get extends Command
                         $chapter[$key]['href'] = correct_url($v['books_url'], $val[1]);
 
                     }
-                    echo '-----准备更新' . PHP_EOL;
+                    echo $k.'-----准备更新' . PHP_EOL;
                     $end_chapter = $has['is_zuixin'] == 2 ? $chapter[count($chapter) - 1] : $chapter[0];
 
                     $c = Db::table('books_chapter')->where(['books_id' => $v['books_id']])->find();
@@ -705,16 +705,16 @@ class Get extends Command
                     if ($res) {
                         $zhang = Cache::get('zhang') ? Cache::get('zhang') : 0;
                         Cache::set('zhang', $zhang + 1);
-                        echo '-----最新章节更新成功' . PHP_EOL;
+                        echo $k.'-----最新章节更新成功' . PHP_EOL;
                     } else {
-                        echo 'error-----章节更新失败' . PHP_EOL;
+                        echo $k.'error-----章节更新失败' . PHP_EOL;
                     }
                 } else {
-                    echo 'error-----时间未匹配到结果' . PHP_EOL;
+                    echo $k.'error-----时间未匹配到结果' . PHP_EOL;
                 }
 
 
-                echo '-----开始匹配更新时间' . PHP_EOL;
+                echo $k.'-----开始匹配更新时间' . PHP_EOL;
                 //更新时间和状态
                 $content = array(
                     'time' => [$has['books_time'], 'text'],
@@ -728,21 +728,21 @@ class Get extends Command
                     if ($time) {
                         $time = date('Y-m-d', strtotime($time));
                         if (time() - strtotime($time) > 60 * 60 * 24 * 180) {
-                            echo '-----状态改为完本' . PHP_EOL;
+                            echo $k.'-----状态改为完本' . PHP_EOL;
                             $status = 1;
                         }
                     }
                     $ress = Db::table('books_cou')->where(['books_id' => $v['books_id']])->update(['books_time' => $time, 'books_status' => $status]);
                     if ($ress) {
-                        echo '-----更新时间更新成功' . PHP_EOL;
+                        echo $k.'-----更新时间更新成功' . PHP_EOL;
                     } else {
-                        echo 'error-----时间更新失败' . PHP_EOL;
+                        echo $k.'error-----时间更新失败' . PHP_EOL;
                     }
                 } else {
-                    echo 'error-----时间未匹配到结果' . PHP_EOL;
+                    echo $k.'error-----时间未匹配到结果' . PHP_EOL;
                 }
             } else {
-                echo 'error-----未定义匹配规则' . PHP_EOL;
+                echo $k.'error-----未定义匹配规则' . PHP_EOL;
             }
         }
 //            });
