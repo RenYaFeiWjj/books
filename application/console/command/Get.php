@@ -235,7 +235,7 @@ class Get extends Command
     public function updateChapter()
     {
 //        select a.* from books_chapter a LEFT JOIN books_cou c on a.books_id = c.books_id where  c.books_status = 0
-        Db::table('books_chapter')->alias('a')->join('books_cou a', 'a.books_id = c.books_id', 'left')
+        Db::table('books_chapter')->alias('a')->join('books_cou c', 'a.books_id = c.books_id', 'left')
             ->where(['c.status' => 0])->chunk(100, function ($data) {
                 print_r($data);exit;
             });
