@@ -26,7 +26,7 @@ Class Books extends Base
     {
         $data = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['c.books_status' => 0])
-            ->where(['c.books_id' => 12439])
+            ->where(['c.books_id' => 21595])
             ->limit($k * 500, 500)
             ->select();
 
@@ -146,8 +146,8 @@ Class Books extends Base
      */
     public function add()
     {
-//        $this->updateChapter(0);
-//        exit;
+        $this->updateChapter(0);
+        exit;
         $books_name = input('post.books_name');
         $rule_id = input('post.rule_id');
 
