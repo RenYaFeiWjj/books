@@ -632,7 +632,7 @@ class Get extends Command
                 $this->updateChapter($i);
             });
             $pid = $process->start();
-            \swoole_process::wait();
+//            \swoole_process::wait();
             echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
         }
     }
