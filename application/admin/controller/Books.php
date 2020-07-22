@@ -146,8 +146,8 @@ Class Books extends Base
      */
     public function add()
     {
-        $this->updateChapter(0);
-        exit;
+//        $this->updateChapter(0);
+//        exit;
         $books_name = input('post.books_name');
         $rule_id = input('post.rule_id');
 
