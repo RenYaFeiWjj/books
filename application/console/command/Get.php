@@ -661,9 +661,9 @@ class Get extends Command
 
 
         foreach ($data as $v) {
-            echo '-----' . $v['books_id'] . PHP_EOL;
-            echo '-----' . $v['books_name'] . PHP_EOL;
-            echo '-----' . $v['books_url'] . PHP_EOL;
+            echo $k.'-----' . $v['books_id'] . PHP_EOL;
+            echo $k.'-----' . $v['books_name'] . PHP_EOL;
+            echo $k.'-----' . $v['books_url'] . PHP_EOL;
             $books_url = parse_url($v['books_url']);
             $host = $books_url['host'];
             $content = [];
@@ -704,6 +704,7 @@ class Get extends Command
 
                     if ($res) {
                         $zhang = Cache::get('zhang') ? Cache::get('zhang') : 0;
+                        echo '更新成功' . $zhang . '个' . PHP_EOL;
                         Cache::set('zhang', $zhang + 1);
                         echo $k.'-----最新章节更新成功' . PHP_EOL;
                     } else {
