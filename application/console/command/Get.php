@@ -709,7 +709,7 @@ class Get extends Command
                     if ($res) {
                         $zhang = Cache::get('zhang') ? Cache::get('zhang') : 0;
                         echo '更新成功' . $zhang . '个' . PHP_EOL;
-                        Cache::set('zhang', $zhang + 1);
+                        Cache::set('zhang', $zhang + 1 ,3600);
                         echo $k.'-----最新章节更新成功' . PHP_EOL;
                     } else {
                         echo $k.'error-----章节更新失败' . PHP_EOL;
