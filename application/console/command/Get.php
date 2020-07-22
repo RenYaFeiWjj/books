@@ -626,7 +626,6 @@ class Get extends Command
     {
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['c.books_status' => 0])
-            ->where(['c.books_id' => 131])
             ->field('c.*')
             ->chunk(20, function ($data) {
                 foreach ($data as $v) {
