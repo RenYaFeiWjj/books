@@ -705,7 +705,7 @@ class Get extends Command
                                 $chapter[$key]['href'] = correct_url($v['books_url'], $val[1]);
 
                             }
-                            print_r($chapter);exit;
+                            print_r($chapter);
                             echo $k . $v['books_id'] . '-----准备更新' . PHP_EOL;
                             $end_chapter = $has['is_zuixin'] == 2 ? $chapter[count($chapter) - 1] : $chapter[0];
                             echo $k . $v['books_id'] . '-----' . $end_chapter['text'] . PHP_EOL;
