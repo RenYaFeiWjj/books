@@ -122,6 +122,7 @@ class Catalog extends Model
             }
 
         }
+        print_r($match);exit;
         return $match;
     }
 
