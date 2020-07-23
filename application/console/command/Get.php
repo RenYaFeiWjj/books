@@ -658,7 +658,8 @@ class Get extends Command
 //            ->select();
 
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
-            ->where(['c.books_status' => 0])
+            ->where(['a.chapter_name' => ''])
+//            ->where(['c.books_status' => 0])
             ->where('c.books_url','not like','%m.37zw.n%')
             ->where('c.books_id' , '>' , $k * 100)
             ->where('c.books_id' , '<=' , ($k+1) * 100)
