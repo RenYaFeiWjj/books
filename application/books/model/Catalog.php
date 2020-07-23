@@ -65,7 +65,6 @@ class Catalog extends Model
     public function getCatalog($books_id)
     {
         $match = cache($books_id . '_catalog');
-        print_r($match);exit;
 //        $match = '';
         if (empty($match)) {
 
