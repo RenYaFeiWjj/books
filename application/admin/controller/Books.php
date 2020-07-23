@@ -34,7 +34,7 @@ Class Books extends Base
             ->where(['c.books_status' => 0])
 //            ->where('c.books_id' , '>' , $k * 500)
 //            ->where('c.books_id' , '<=' , ($k+1) * 500)
-            ->where(['c.books_id' => '5904'])
+            ->where(['c.books_id' => '4158'])
 //            ->where('books_id' , '>' , $k)
 //            ->where(['c.books_id' => 236])
             ->field('c.*')

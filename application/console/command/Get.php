@@ -634,7 +634,7 @@ class Get extends Command
     {
         Cache::set('zhang', 0, 3600);
 //        $this->updateChapter(2);
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             echo '------开始' . $i . PHP_EOL;
             $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
                 $this->updateChapter($i);
@@ -659,8 +659,8 @@ class Get extends Command
 
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['c.books_status' => 0])
-            ->where('c.books_id' , '>' , $k * 500)
-            ->where('c.books_id' , '<=' , ($k+1) * 500)
+            ->where('c.books_id' , '>' , $k * 250)
+            ->where('c.books_id' , '<=' , ($k+1) * 250)
 //            ->where(['c.books_id' => 18])
 //            ->where('books_id' , '>' , $k)
 //            ->where(['c.books_id' => 236])
