@@ -246,7 +246,7 @@ class Get extends Command
 //                echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
 //            }
 //        }
-        $this->process(3, $config, $config['menu'][2]['url']);
+        $this->process(2, $config, $config['menu'][2]['url']);
     }
 
     public function process($k, $config, $url)
