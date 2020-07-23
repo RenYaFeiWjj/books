@@ -215,10 +215,10 @@ class Get extends Command
         echo '------开始咯' . PHP_EOL;
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
 
-//        echo "采集m.37zw.net" . PHP_EOL;
-//        $this->ready($this->config['m.37zw.net']);
-//        echo "采集m.biquge5200.cc" . PHP_EOL;
-//        $this->ready($this->config['m.biquge5200.cc']);
+        echo "采集m.37zw.net" . PHP_EOL;
+        $this->ready($this->config['m.37zw.net']);
+        echo "采集m.biquge5200.cc" . PHP_EOL;
+        $this->ready($this->config['m.biquge5200.cc']);
 //        echo "采集起点" . PHP_EOL;
 //        $this->getCaiji($output); //采集笔趣pc端
 //        echo "更新biquge5200作者" . PHP_EOL;
@@ -226,7 +226,7 @@ class Get extends Command
 //        echo "更新37zw作者" . PHP_EOL;
 //        $this->updateMData($output, 14, 'm.37zw.net'); //更新作者和更新时间
 //        echo '------结束咯' . PHP_EOL;
-        $this->updateChapters();
+//        $this->updateChapters();
 //        $output->writeln("更新成功" . $this->update_count);
 //        $output->writeln("用时" . $this->end_time - $this->start_time);
 
