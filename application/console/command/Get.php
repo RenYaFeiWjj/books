@@ -682,13 +682,13 @@ class Get extends Command
                         $curl = new Curl();
                         $datas = $curl->getDataHttps($v['books_url']);
                         if (!$datas) {
-                            echo $k . '-----没有匹配到最新章节' . PHP_EOL;
+                            echo $k . $v['books_id'] . '-----没有匹配到最新章节' . PHP_EOL;
                             continue;
                         }
                         $match = query($datas, $content);
 
                         if (!$match) {
-                            echo $k . '-----没有匹配到数据' . PHP_EOL;
+                            echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
                             continue;
                         }
                         //去除前面重复的几个最新章节
@@ -701,9 +701,9 @@ class Get extends Command
                                 $chapter[$key]['href'] = correct_url($v['books_url'], $val[1]);
 
                             }
-                            echo $k . '-----准备更新' . PHP_EOL;
+                            echo $k . $v['books_id'] . '-----准备更新' . PHP_EOL;
                             $end_chapter = $has['is_zuixin'] == 2 ? $chapter[count($chapter) - 1] : $chapter[0];
-
+                            echo $k . $v['books_id'] . '-----' . $end_chapter['text'] . PHP_EOL;
                             $c = Db::table('books_chapter')->where(['books_id' => $v['books_id']])->find();
                             if ($c) {
                                 $chapter_data = ['chapter_name' => $end_chapter['text'], 'chapter_url' => $end_chapter['href']];
@@ -716,9 +716,9 @@ class Get extends Command
 
                             if ($res) {
                                 $zhang = Cache::get('zhang') ? Cache::get('zhang') : 0;
-                                echo '更新成功' . $zhang . '个' . PHP_EOL;
+                                echo $v['books_id'] . '--更新成功' . $zhang . '个' . PHP_EOL;
                                 Cache::set('zhang', $zhang + 1, 3600);
-                                echo $k . '-----最新章节更新成功' . PHP_EOL;
+                                echo $k . $v['books_id'] .  '-----最新章节更新成功' . PHP_EOL;
                             } else {
                                 echo $k . 'error-----章节更新失败' . PHP_EOL;
                             }
