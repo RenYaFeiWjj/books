@@ -690,7 +690,7 @@ class Get extends Command
                         echo $k . '-----开始匹配最新章节' . PHP_EOL;
                         $curl = new Curl();
                         $datas = [];
-                        $datas = $curl->getUrlData($v['books_url']);
+                        $datas = $curl->getDataHttps($v['books_url']);
                         if (!$datas) {
                             echo $k . $v['books_id'] . '-----没有匹配到最新章节' . PHP_EOL;
                             continue;

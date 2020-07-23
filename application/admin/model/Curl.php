@@ -111,73 +111,39 @@ class Curl extends Model
     public function getDataHttps($url)
     {
 
-//        $curl = curl_init();
-//
-//        //设置抓取的url
-//        curl_setopt($curl, CURLOPT_URL, $url);
-//        //设置头文件的信息作为数据流输出
-//        curl_setopt($curl, CURLOPT_HEADER, 0);
-//        //设置获取的信息以文件流的形式返回，而不是直接输出。
-//        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Expect:'));
-//
-//        curl_setopt($curl, CURLOPT_TIMEOUT,60);   //只需要设置一个秒的数量就可以
-//
-//        //重要！
-//        curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, true);
-//        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
-//        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-//        curl_setopt($curl, CURLOPT_ENCODING, '');   //设置编码格式，为空表示支持所有格式的编码
-//        //header中“Accept-Encoding: ”部分的内容，支持的编码格式为："identity"，"deflate"，"gzip"。
-//        curl_setopt($curl,CURLOPT_USERAGENT,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"); //模拟浏览器代理
+        $curl = curl_init();
+
+        //设置抓取的url
+        curl_setopt($curl, CURLOPT_URL, $url);
+        //设置头文件的信息作为数据流输出
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        //设置获取的信息以文件流的形式返回，而不是直接输出。
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Expect:'));
+
+        curl_setopt($curl, CURLOPT_TIMEOUT, 60);   //只需要设置一个秒的数量就可以
+
+        //重要！
+        curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($curl, CURLOPT_ENCODING, '');   //设置编码格式，为空表示支持所有格式的编码
+        //header中“Accept-Encoding: ”部分的内容，支持的编码格式为："identity"，"deflate"，"gzip"。
+        curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"); //模拟浏览器代理
 
 
-        $binfo = array('Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; InfoPath.2; AskTbPTV/5.17.0.25589; Alexa Toolbar)', 'Mozilla/5.0 (Windows NT 5.1; rv:22.0) Gecko/20100101 Firefox/22.0', 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET4.0C; Alexa Toolbar)', 'Mozilla/4.0(compatible; MSIE 6.0; Windows NT 5.1; SV1)');
-//218.242.124.16*
-//125.90.88.*
-        $cip = '218.242.124.' . mt_rand(0, 254);
-        $xip = '218.242.124.' . mt_rand(0, 254);
-        $header = array(
-            'CLIENT-IP:' . $cip,
-            'X-FORWARDED-FOR:' . $xip,
-        );
-        $u=$binfo[mt_rand(0,3)];
-        $ch = curl_init();
-        $timeout = 50;
-        curl_setopt($ch, CURLOPT_URL, "$url");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_REFERER, "http://www.sgs.gov.cn/lz/etpsInfo.do?method=index");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_USERAGENT, "$u");
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-//        $contents = curl_exec($ch);
-//        curl_close($ch);
-
-//
-//        $ch = curl_init($url);
-//        curl_setopt($ch, CURLOPT_HEADER, 0); // 过滤HTTP头
-//        curl_setopt($ch, CURLOPT_TIMEOUT, 40);
-//        curl_setopt($ch, CURLOPT_USERAGENT, 'Baiduspider+(+http://www.baidu.com/search/spider.htm)');
-//
-//        $ip = '220.181.7.121';
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, array('X-FORWARDED-FOR:' . $ip, 'CLIENT-IP:' . $ip));
-//        curl_setopt($ch, CURLOPT_REFERER, "http://www.baidu.com/search/spider.html");
-//
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);// 显示输出结
         //执行命令
-        $data = curl_exec($ch);
+        $data = curl_exec($curl);
 
-        if (curl_errno($ch)) {
+        if (curl_errno()) {
 
-            echo 'Curl error: ' . curl_error($ch) . "<br/>";
+            echo 'Curl error: ' . curl_error() . "<br/>";
             // $data = file_get_contents($url);
 
         }
 
         //关闭URL请求
-        curl_close($ch);
+        curl_close();
 
 
         return $data;
