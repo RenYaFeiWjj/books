@@ -653,7 +653,7 @@ class Get extends Command
 
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
 //            ->where(['c.books_status' => 0])
-            ->where(['c.books_id' => 17])
+            ->where(['c.books_id' => 18])
 //            ->where('books_id' , '>' , $k)
 //            ->where(['c.books_id' => 236])
             ->field('c.*')
