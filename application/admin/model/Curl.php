@@ -135,15 +135,15 @@ class Curl extends Model
         //执行命令
         $data = curl_exec($curl);
 
-        if (curl_errno()) {
+        if (curl_errno($curl)) {
 
-            echo 'Curl error: ' . curl_error() . "<br/>";
+            echo 'Curl error: ' . curl_error($curl) . "<br/>";
             // $data = file_get_contents($url);
 
         }
 
         //关闭URL请求
-        curl_close();
+        curl_close($curl);
 
 
         return $data;
