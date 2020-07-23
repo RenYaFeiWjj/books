@@ -762,7 +762,7 @@ class Get extends Command
                         echo $k . 'error-----未定义匹配规则' . PHP_EOL;
                     }
                 }
-            },'c.books_id','desc');
+            },'c.books_id','asc');
     }
 
 
