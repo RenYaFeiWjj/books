@@ -652,7 +652,8 @@ class Get extends Command
 //            ->select();
 
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
-            ->where(['c.books_status' => 0])
+//            ->where(['c.books_status' => 0])
+            ->where(['c.books_id' => 17])
 //            ->where('books_id' , '>' , $k)
 //            ->where(['c.books_id' => 236])
             ->field('c.*')
@@ -670,7 +671,6 @@ class Get extends Command
                     echo $k . '-----' . $v['books_url'] . PHP_EOL;
                     $books_url = parse_url($v['books_url']);
                     $host = $books_url['host'];
-                    $content = [];
                     $has = Db::table('books_rule_info')->alias('i')->field('i.*')->join('books_rule r', 'r.rule_id=i.rule_id')->where('r.rule_url', 'like', "%{$host}%")->find();
                     if ($has) {
                         $content = array(
