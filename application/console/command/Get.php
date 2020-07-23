@@ -634,7 +634,7 @@ class Get extends Command
     {
         Cache::set('zhang', 0, 3600);
 //        $this->updateChapter(2);
-        for ($i = 0; $i < 60; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             echo '------开始' . $i . PHP_EOL;
             $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
                 $this->updateChapter($i);

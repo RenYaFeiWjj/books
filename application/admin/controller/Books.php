@@ -32,15 +32,13 @@ Class Books extends Base
 
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['c.books_status' => 0])
-            ->where('c.books_id' , '>' , $k * 500)
-            ->where('c.books_id' , '<=' , ($k+1) * 500)
-//            ->where(['c.books_id' => 18])
+//            ->where('c.books_id' , '>' , $k * 500)
+//            ->where('c.books_id' , '<=' , ($k+1) * 500)
+            ->where(['c.books_id' => '5904'])
 //            ->where('books_id' , '>' , $k)
 //            ->where(['c.books_id' => 236])
             ->field('c.*')
             ->chunk(100, function ($data) use ($k) {
-                $match = [];
-
                 if (!$data) {
                     echo $k . '------第' . $k . '个没有数据' . PHP_EOL;
                     return false;
@@ -68,6 +66,7 @@ Class Books extends Base
                             echo $k . $v['books_id'] . '-----没有匹配到最新章节' . PHP_EOL;
                             continue;
                         }
+                        $match = [];
                         $match = query($datas, $content);
                         if (!$match) {
                             echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
