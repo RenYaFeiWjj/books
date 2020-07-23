@@ -226,7 +226,7 @@ class Get extends Command
 //        echo "更新37zw作者" . PHP_EOL;
 //        $this->updateMData($output, 14, 'm.37zw.net'); //更新作者和更新时间
 //        echo '------结束咯' . PHP_EOL;
-//        $this->updateChapters();
+        $this->updateChapters();
 //        $output->writeln("更新成功" . $this->update_count);
 //        $output->writeln("用时" . $this->end_time - $this->start_time);
 
@@ -627,16 +627,16 @@ class Get extends Command
     public function updateChapters()
     {
         Cache::set('zhang', 0, 3600);
-        $this->updateChapter(2);
-//        for ($i = 0; $i < 2; $i++) {
-//            echo '------开始' . $i . PHP_EOL;
-//            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
-//                $this->updateChapter($i);
-//            });
-//            $pid = $process->start();
-////            \swoole_process::wait();
-//            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
-//        }
+//        $this->updateChapter(2);
+        for ($i = 0; $i < 60; $i++) {
+            echo '------开始' . $i . PHP_EOL;
+            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
+                $this->updateChapter($i);
+            });
+            $pid = $process->start();
+//            \swoole_process::wait();
+            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+        }
     }
 
 
@@ -653,8 +653,8 @@ class Get extends Command
 
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['c.books_status' => 0])
-            ->where('c.books_id' , '>' , $k * 1000)
-            ->where('c.books_id' , '<=' , ($k+1) * 1000)
+            ->where('c.books_id' , '>' , $k * 500)
+            ->where('c.books_id' , '<=' , ($k+1) * 500)
 //            ->where(['c.books_id' => 18])
 //            ->where('books_id' , '>' , $k)
 //            ->where(['c.books_id' => 236])
