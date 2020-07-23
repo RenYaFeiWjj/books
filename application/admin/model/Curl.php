@@ -109,38 +109,49 @@ class Curl extends Model
     //php curl模拟https请求
     public function getDataHttps($url){
 
-        $curl = curl_init();
+//        $curl = curl_init();
+//
+//        //设置抓取的url
+//        curl_setopt($curl, CURLOPT_URL, $url);
+//        //设置头文件的信息作为数据流输出
+//        curl_setopt($curl, CURLOPT_HEADER, 0);
+//        //设置获取的信息以文件流的形式返回，而不是直接输出。
+//        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Expect:'));
+//
+//        curl_setopt($curl, CURLOPT_TIMEOUT,60);   //只需要设置一个秒的数量就可以
+//
+//        //重要！
+//        curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, true);
+//        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
+//        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
+//        curl_setopt($curl, CURLOPT_ENCODING, '');   //设置编码格式，为空表示支持所有格式的编码
+//        //header中“Accept-Encoding: ”部分的内容，支持的编码格式为："identity"，"deflate"，"gzip"。
+//        curl_setopt($curl,CURLOPT_USERAGENT,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"); //模拟浏览器代理
 
-        //设置抓取的url
-        curl_setopt($curl, CURLOPT_URL, $url);
-        //设置头文件的信息作为数据流输出
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        //设置获取的信息以文件流的形式返回，而不是直接输出。
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Expect:'));
 
-        curl_setopt($curl, CURLOPT_TIMEOUT,60);   //只需要设置一个秒的数量就可以
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HEADER, 0 ); // 过滤HTTP头
+        curl_setopt($ch, CURLOPT_TIMEOUT, 40);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Baiduspider+(+http://www.baidu.com/search/spider.htm)');
 
-        //重要！
-        curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($curl, CURLOPT_ENCODING, '');   //设置编码格式，为空表示支持所有格式的编码
-        //header中“Accept-Encoding: ”部分的内容，支持的编码格式为："identity"，"deflate"，"gzip"。
-        curl_setopt($curl,CURLOPT_USERAGENT,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"); //模拟浏览器代理
+        $ip = '220.181.7.121';
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('X-FORWARDED-FOR:' . $ip, 'CLIENT-IP:' . $ip));
+        curl_setopt($ch, CURLOPT_REFERER, "http://www.baidu.com/search/spider.html");
 
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);// 显示输出结
         //执行命令
-        $data = curl_exec($curl);
+        $data = curl_exec($ch);
 
-        if (curl_errno($curl)) {
+        if (curl_errno($ch)) {
 
-            echo 'Curl error: ' . curl_error($curl)."<br/>";
+            echo 'Curl error: ' . curl_error($ch)."<br/>";
            // $data = file_get_contents($url);
 
         }
 
         //关闭URL请求
-        curl_close($curl);
+        curl_close($ch);
 
 
         return $data;
