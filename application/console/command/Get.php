@@ -689,7 +689,7 @@ class Get extends Command
                         }
                         $match = query($datas, $content);
                         sleep(10);
-                        print_r($match);exit;
+                        print_r($match);
                         if (!$match) {
                             echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
                             continue;
