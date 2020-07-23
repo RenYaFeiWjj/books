@@ -688,8 +688,6 @@ class Get extends Command
                             continue;
                         }
                         $match = query($datas, $content);
-                        sleep(10);
-                        print_r($match);
                         if (!$match) {
                             echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
                             continue;
@@ -705,10 +703,8 @@ class Get extends Command
                                 $chapter[$key]['href'] = correct_url($v['books_url'], $val[1]);
 
                             }
-                            print_r($chapter);
                             echo $k . $v['books_id'] . '-----准备更新' . PHP_EOL;
                             $end_chapter = $has['is_zuixin'] == 2 ? $chapter[count($chapter) - 1] : $chapter[0];
-                            print_r($end_chapter);
                             echo $k . $v['books_id'] . '-----' . $end_chapter['text'] . PHP_EOL;
                             $c = Db::table('books_chapter')->where(['books_id' => $v['books_id']])->find();
                             if ($c) {
