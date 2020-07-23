@@ -113,15 +113,17 @@ class Curl extends Model
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch,CURLOPT_USERAGENT,"Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; .NET CLR 3.5.21022; .NET CLR 1.0.3705; .NET CLR 1.1.4322)'"); //模拟浏览器代理
-
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_AUTOREFERER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($ch, CURLOPT_TIMEOUT,120);
+        curl_setopt($ch, CURLOPT_TIMEOUT,60);
         $html = curl_exec($ch);
-
+        //post提交方式
+//        curl_setopt($ch, CURLOPT_POST, TRUE);
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
 
 //        $num = 3;
 //        for ($i = 1; $i <= $num; $i++) {
