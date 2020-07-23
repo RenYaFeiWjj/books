@@ -132,7 +132,7 @@ class Curl extends Model
 //        curl_setopt($curl,CURLOPT_USERAGENT,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"); //模拟浏览器代理
 
 
-        $binfo = array('Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; InfoPath.2; AskTbPTV/5.17.0.25589; Alexa Toolbar)', 'Mozilla/5.0 (Windows NT 5.1; rv:22.0) Gecko/20100101 Firefox/22.0', 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET4.0C; Alexa Toolbar)', 'Mozilla/4.0(compatible; MSIE 6.0; Windows NT 5.1; SV1)', $_SERVER['HTTP_USER_AGENT']);
+        $binfo = array('Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; InfoPath.2; AskTbPTV/5.17.0.25589; Alexa Toolbar)', 'Mozilla/5.0 (Windows NT 5.1; rv:22.0) Gecko/20100101 Firefox/22.0', 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET4.0C; Alexa Toolbar)', 'Mozilla/4.0(compatible; MSIE 6.0; Windows NT 5.1; SV1)');
 //218.242.124.16*
 //125.90.88.*
         $cip = '218.242.124.' . mt_rand(0, 254);
