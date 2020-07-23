@@ -627,16 +627,16 @@ class Get extends Command
     public function updateChapters()
     {
         Cache::set('zhang', 0, 3600);
-        $this->updateChapter(0);
-//        for ($i = 0; $i < 1; $i++) {
-//            echo '------开始' . $i . PHP_EOL;
-//            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
-//                $this->updateChapter($i);
-//            });
-//            $pid = $process->start();
-////            \swoole_process::wait();
-//            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
-//        }
+//        $this->updateChapter(0);
+        for ($i = 0; $i < 2; $i++) {
+            echo '------开始' . $i . PHP_EOL;
+            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
+                $this->updateChapter($i);
+            });
+            $pid = $process->start();
+//            \swoole_process::wait();
+            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+        }
     }
 
 
@@ -653,6 +653,8 @@ class Get extends Command
 
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['c.books_status' => 0])
+            ->where('c.books_id' , '>' , $k * 1000)
+            ->where('c.books_id' , '<=' , ($k+1) * 1000)
 //            ->where(['c.books_id' => 18])
 //            ->where('books_id' , '>' , $k)
 //            ->where(['c.books_id' => 236])
@@ -760,7 +762,7 @@ class Get extends Command
                         echo $k . 'error-----未定义匹配规则' . PHP_EOL;
                     }
                 }
-            });
+            },'c.books_id','desc');
     }
 
 
