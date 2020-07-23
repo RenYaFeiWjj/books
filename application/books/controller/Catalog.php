@@ -27,7 +27,6 @@ class Catalog extends Base
         $catalog = model("Catalog");
         $books = $catalog->getBook($books_id);
         $match = $catalog->getCatalog($books_id);
-        print_r($match);exit;
         $chapter_num = count($match);
 
         $this->view->books_id = $books_id;
