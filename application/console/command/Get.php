@@ -339,7 +339,7 @@ class Get extends Command
                     $chapter_all = $config['chapter_rule'];
                     //匹配出所有章节
                     $match = query($all, $chapter_all);
-
+        print_r($match);exit;
                     //去除前面重复的几个最新章节
                     $match = array_unique_fb($match);
                     $chapter = [];//218 美女
