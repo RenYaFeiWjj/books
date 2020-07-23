@@ -32,9 +32,10 @@ Class Books extends Base
 
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['c.books_status' => 0])
+            ->where('c.books_url','not like','%m.37zw.n%')
 //            ->where('c.books_id' , '>' , $k * 500)
 //            ->where('c.books_id' , '<=' , ($k+1) * 500)
-            ->where(['c.books_id' => '4158'])
+//            ->where(['c.books_id' => '4158'])
 //            ->where('books_id' , '>' , $k)
 //            ->where(['c.books_id' => 236])
             ->field('c.*')
