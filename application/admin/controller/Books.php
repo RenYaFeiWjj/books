@@ -32,7 +32,7 @@ Class Books extends Base
 
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['c.books_status' => 0])
-            ->where('c.books_url','not like','%m.37zw.n%')
+            ->where('c.books_url', 'not like', '%m.37zw.n%')
 //            ->where('c.books_id' , '>' , $k * 500)
 //            ->where('c.books_id' , '<=' , ($k+1) * 500)
 //            ->where(['c.books_id' => '4158'])
@@ -101,7 +101,7 @@ Class Books extends Base
                                 $zhang = Cache::get('zhang') ? Cache::get('zhang') : 0;
                                 echo $v['books_id'] . '--更新成功' . $zhang . '个' . PHP_EOL;
                                 Cache::set('zhang', $zhang + 1, 3600);
-                                echo $k . $v['books_id'] .  '-----最新章节更新成功' . PHP_EOL;
+                                echo $k . $v['books_id'] . '-----最新章节更新成功' . PHP_EOL;
                             } else {
                                 echo $k . 'error-----章节更新失败' . PHP_EOL;
                             }
@@ -141,9 +141,8 @@ Class Books extends Base
                         echo $k . 'error-----未定义匹配规则' . PHP_EOL;
                     }
                 }
-            },'c.books_id','asc');
+            }, 'c.books_id', 'asc');
     }
-
 
 
     /**
@@ -154,15 +153,17 @@ Class Books extends Base
     {
 //        $this->updateChapter(2);
         \think\Loader::import('QueryList', EXTEND_PATH);
-        $url = 'https://www.biquge5200.cc/102_102537/';
+        $url = 'https://m.biquge5200.cc/info-76216/';
+        $curl = model("Curl");
+        $res = $curl->getDataHttps($url);
 // 定义采集规则
         $rules = [
-//            'text' => ['.chapter>li>a', 'text'],
-            'text' => ['dd>a', 'text'],
-//            'herf' => ['.chapter>li>a', 'href'],
-            'herf' => ['dd>a', 'href'],
+            'text' => ['.chapter>li>a', 'text'],
+//            'text' => ['dd>a', 'text'],
+            'herf' => ['.chapter>li>a', 'href'],
+//            'herf' => ['dd>a', 'href'],
         ];
-        $rt = QueryList::query($url,$rules, '', 'UTF-8', 'GB2312')->getData();
+        $rt = QueryList::query($res, $rules, '', 'UTF-8', 'GB2312')->getData();
         print_r($rt);
         exit;
         $books_name = input('post.books_name');

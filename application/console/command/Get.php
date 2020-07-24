@@ -210,7 +210,7 @@ class Get extends Command
     protected function execute(Input $input, Output $output)
     {
         ini_set('memory_limit', '1024M');
-        //设置永不超时
+//设置永不超时
         set_time_limit(0);
         \think\Loader::import('QueryList', EXTEND_PATH);
         $this->start_time = $this->getCurrentTime();
@@ -265,13 +265,13 @@ class Get extends Command
     {
         $curl = new Curl();
         $html = $curl->getDataHttps($url);
-        //第三方类库
+//第三方类库
         Loader::import('QueryList', EXTEND_PATH);
-        //取得更新时间
+//取得更新时间
         $content = $config['search_rule'];
 
         echo $k . '------匹配出信息' . PHP_EOL;
-        //匹配出信息
+//匹配出信息
         $data = query($html, $content);
         if (!$data) {
             echo $k . '------没有数据了' . PHP_EOL;
@@ -299,14 +299,14 @@ class Get extends Command
      */
     public function Warehousings($href, $name, $config)
     {
-        //引入curl方法
+//引入curl方法
         $curl = new Curl();
         $all = $curl->getDataHttps($href);
-        //第三方类库
+//第三方类库
         Loader::import('QueryList', EXTEND_PATH);
-        //取得小说信息
+//取得小说信息
         $content = $config['match_rule'];
-        //匹配出信息
+//匹配出信息
         $info = query($all, $content);
         if (!empty($info[0]) && isset($info[0]['author'])) {
             $author = str_replace('作者：', '', $info[0]['author']);
@@ -314,7 +314,7 @@ class Get extends Command
             $books_status = strpos($info[0]['status'], '连载') ? 0 : 1;
             $has = Db::table('books_cou')->where('books_name', $name)->find();
             if (empty($has)) {
-                //使用该函数对结果进行转码
+//使用该函数对结果进行转码
                 $synopsis = mb_convert_encoding($info[0]['synopsis'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
                 $url = $info[0]['img'];
                 $types = mb_convert_encoding($info[0]['type'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
@@ -327,27 +327,27 @@ class Get extends Command
                 $type_id = Db::table('books_type')->where('type_name', 'like', "%{$types}%")->value('type_id');
                 $type_id = !empty($type_id) ? $type_id : '14';
 
-                //下载小说封面
+//下载小说封面
                 $path = ROOT_PATH . 'public/static/images/books_img/';
                 $imgName = $curl->downloadImg($url, $path);
                 $result = ['books_name' => $name, 'books_author' => $author, 'books_synopsis' => $synopsis, 'books_time' => $time, 'books_img' => $imgName, 'books_type' => $type_id, 'books_status' => $books_status, 'books_url' => $href];
 
                 $books_id = Db::table('books_cou')->insertGetId($result);
-                //最新章
+//最新章
                 $end_chapter = [];
                 if (isset($info[0]['chapter_name']) && $info[0]['chapter_name']) {
                     $chapter_href = correct_url($href, $info[0]['chapter_href']);
                     $end_chapter = ['text' => $info[0]['chapter_name'], 'href' => $chapter_href];
                 } else {
                     $chapter_all = $config['chapter_rule'];
-                    //匹配出所有章节
+//匹配出所有章节
                     $match = query($all, $chapter_all);
                     if ($match) {
-                        //去除前面重复的几个最新章节
+//去除前面重复的几个最新章节
                         $match = array_unique_fb($match);
                         $chapter = [];//218 美女
                         foreach ($match as $key => $val) {
-                            //使用该函数对结果进行转码
+//使用该函数对结果进行转码
                             $chapter[$key]['text'] = mb_convert_encoding($val[0], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
                             $chapter[$key]['href'] = correct_url($href, $val[1]);
                         }
@@ -403,9 +403,9 @@ class Get extends Command
         foreach ($data as $v) {
             $this->gather($v, $output);
         }
-        // 输出到日志文件
+// 输出到日志文件
         $output->writeln("TestCommand:");
-        // 定时器需要执行的内容
+// 定时器需要执行的内容
         $output->writeln("TestCommand:");
 
         $output->writeln("end....");
@@ -429,14 +429,14 @@ class Get extends Command
             $curl = new Curl();
             $html = $curl->getDataHttps($url);
 
-            //第三方类库
+//第三方类库
             Loader::import('QueryList', EXTEND_PATH);
-            //取得更新时间
+//取得更新时间
             $content = array(
                 'text' => array('.book-img-text>>h4', 'text'),
             );
             $data = [];
-            //匹配出信息
+//匹配出信息
             $data = QueryList::Query($html, $content)->getData();;
 
             $output->writeln("匹配到结果" . count($data) . '条');
@@ -448,20 +448,20 @@ class Get extends Command
                     $key = urlencode($val['text']);
                     $url = 'https://www.23txt.com/search.php?keyword=' . $key;
 
-                    //引入curl方法
+//引入curl方法
                     $html = $curl->getDataHttps($url);
                     if (empty($html)) {
                         continue;
                     }
 
-                    //取得地址
+//取得地址
                     $content = array(
                         'books_name' => array('.result-game-item-detail>h3>a>span', 'text'),
                         'books_url' => array('.result-game-item-detail>h3>a', 'href'),
                     );
 
 
-                    //匹配出信息
+//匹配出信息
                     $info = QueryList::Query($html, $content)->data;
                     $output->writeln("匹配到信息" . count($info) . '条');
                     foreach ($info as $tal) {
@@ -498,22 +498,22 @@ class Get extends Command
         $output->writeln("共有数据" . count($data) . '需更新');
         foreach ($data as $v) {
             $output->writeln('查询' . $v['books_name'] . "数据");
-            //引入curl方法
+//引入curl方法
             $curl = new Curl();
             $all = $curl->getDataHttps($v['books_url']);
 
-            //规则匹配方法
+//规则匹配方法
             $rule = Db::table('books_rule_info')->where('rule_id', $rule_id)->find();
-            //第三方类库
+//第三方类库
             Loader::import('QueryList', EXTEND_PATH);
-            //取得小说信息
+//取得小说信息
             $content = array(
                 'author' => array($rule['books_author'], 'text'),
                 'authors' => array($rule['books_author'] . '>a', 'text'),
                 'time' => array($rule['books_time'], 'text'),
                 'books_status' => array('.block_txt2>p:eq(3)', 'text'),
             );
-            //匹配出信息
+//匹配出信息
             $info = query($all, $content);
 
             if (!$info) {
@@ -548,15 +548,15 @@ class Get extends Command
     public function Warehousing($href, $name, $rule_id = 2, $output)
     {
 
-        //引入curl方法
+//引入curl方法
         $curl = new Curl();
         $all = $curl->getDataHttps($href);
 
-        //规则匹配方法
+//规则匹配方法
         $rule = Db::table('books_rule_info')->where('rule_id', $rule_id)->find();
-        //第三方类库
+//第三方类库
         Loader::import('QueryList', EXTEND_PATH);
-        //取得小说信息
+//取得小说信息
         $content = array(
             'name' => array($rule['books_name'], 'text'),
             'type' => array($rule['books_type'], 'text'),
@@ -565,13 +565,13 @@ class Get extends Command
             'synopsis' => array($rule['books_synopsis'], 'text'),
             'img' => array($rule['books_img'], 'src'),
         );
-        //匹配出信息
+//匹配出信息
         $info = QueryList::Query($all, $content)->data;
         if (!empty($info[0]) && isset($info[0]['author'])) {
             $has = Db::table('books_cou')->where('books_name', $name)->find();
 
             if (empty($has)) {
-                //使用该函数对结果进行转码
+//使用该函数对结果进行转码
                 $author = mb_convert_encoding($info[0]['author'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
                 $author = substr($author, 33);
 
@@ -595,7 +595,7 @@ class Get extends Command
                 $type_id = !empty($type_id) ? $type_id : '14';
 
 
-                //下载小说封面
+//下载小说封面
                 $path = ROOT_PATH . 'public/static/images/books_img/';
                 $imgName = $curl->downloadImg($url, $path);
 
@@ -606,16 +606,16 @@ class Get extends Command
                     'text' => array($rule['chapter_name'], 'text'),
                     'href' => array($rule['chapter_url'], 'href'),
                 );
-                //匹配出所有章节
+//匹配出所有章节
                 $match = QueryList::Query($all, $chapter_all)->data;
 
-                //去除前面重复的几个最新章节
+//去除前面重复的几个最新章节
                 $match = array_unique_fb($match);
 
 
                 foreach ($match as $key => $val) {
 
-                    //使用该函数对结果进行转码
+//使用该函数对结果进行转码
                     $chapter[$key]['text'] = mb_convert_encoding($val[0], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
                     $chapter[$key]['href'] = correct_url($href, $val[1]);
 
@@ -695,7 +695,7 @@ class Get extends Command
 
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
         $baseUrl = "http://www.baidu.com/";//自定义网页
-        $count = 1000;//为了方便演示，此处用1000意思一下
+        $count = 100;//为了方便演示，此处用1000意思一下
         for ($i = 0; $i < $count; $i++) {
             $this->creatProcess($i, $baseUrl);
         }
@@ -709,10 +709,11 @@ class Get extends Command
 //    每次过来统计一下进程数量
         $cmd = "ps -ef |grep get |grep -v grep |wc -l";
         $pCount = system($cmd);//进程数量
-        if ($pCount < 200) {
-            //    创建子进程
+        if ($pCount < 20) {
+//    创建子进程
             $process = new \swoole_process(function (\swoole_process $worker) use ($i, $url) {
-                $content = $this->curlData($url);//方法里面处理你的逻辑
+//                $content = $this->curlData($url);//方法里面处理你的逻辑
+                $this->updateChapter($i);
             });
             $pid = $process->start();
             echo $url . '------第' . $i . '个子进程创建完毕'.PHP_EOL;
@@ -735,9 +736,12 @@ class Get extends Command
      */
     public function updateChapter($k)
     {
-        $data = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
+        $books_ids = Db::table('books_chapter')->column('books_id');
+        $data = Db::table('books_cou')->alias('c')
+//            ->join('books_chapter a', 'a.books_id = c.books_id', 'left')
 //            ->where(['a.chapter_name' => ''])
 //            ->where(['c.books_status' => 0])
+            ->where('c.books_id','not in',$books_ids)
 //            ->where('c.books_id' ,'in',$arr)
             ->where('c.books_url', 'not like', '%m.37zw.n%')
             ->field('c.*')
@@ -754,6 +758,12 @@ class Get extends Command
             echo $k . '-----' . $v['books_url'] . PHP_EOL;
             $books_url = parse_url($v['books_url']);
 //            print_r($books_url);
+            $curl = new Curl();
+            $ress = $curl->getDataHttps($v['books_url']);
+            if(!$ress){
+                echo '获取页面失败' . PHP_EOL;
+                continue;
+            }
             $host = $books_url['host'];
             $has = Db::table('books_rule_info')->alias('i')->field('i.*')->join('books_rule r', 'r.rule_id=i.rule_id')->where('r.rule_url', 'like', "%{$host}%")->find();
             if ($has) {
@@ -764,7 +774,7 @@ class Get extends Command
 //                print_r($content);
                 echo $k . '-----开始匹配最新章节' . PHP_EOL;
                 $match = [];
-                $match = QueryList::query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->getData();
+                $match = query($ress, $content)->getData();
 //                print_r($match);
                 if (!$match) {
                     echo $k . 'ERROR' . $v['books_id'] . '-----没有匹配到最新章节' . PHP_EOL;
@@ -772,7 +782,7 @@ class Get extends Command
                         'text' => ['.block_txt2>p:eq(5) a', 'text'],
                         'herf' => ['.block_txt2>p:eq(5) a', 'href'],
                     ];
-                    $match = QueryList::query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->getData();
+                    $match = query($ress, $content);
                     if (!$match) {
                         echo $k . 'ERROR二次' . $v['books_id'] . '-----没有匹配到最新章节' . PHP_EOL;
                         $p = Cache::get('p');
@@ -790,13 +800,13 @@ class Get extends Command
                     echo $k . 'YES' . $v['books_id'] . '-----已匹配到最新章节' . PHP_EOL;
                 }
 
-                //去除前面重复的几个最新章节
+//去除前面重复的几个最新章节
                 $match = array_unique_fb($match);
                 $chapter = [];
                 if ($match) {
                     foreach ($match as $key => $val) {
 
-                        //使用该函数对结果进行转码
+//使用该函数对结果进行转码
                         $chapter[$key]['text'] = mb_convert_encoding($val[0], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
                         $chapter[$key]['href'] = correct_url($v['books_url'], $val[1]);
 
@@ -828,15 +838,15 @@ class Get extends Command
 
 
                 echo $k . '-----开始匹配更新时间' . PHP_EOL;
-                //更新时间和状态
+//更新时间和状态
                 $content = array(
                     'time' => [$has['books_time'], 'text'],
                 );
 
-                $res = QueryList::query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->getData();
+                $res = query($ress, $content);
                 if ($res && isset($res[0]) && $res[0]) {
                     $time = getDates($res[0]['time']);
-                    //如果最后一次更新时间大于现在时间半年 状态为完结
+//如果最后一次更新时间大于现在时间半年 状态为完结
                     $status = 0;
                     if ($time) {
                         $time = date('Y-m-d', strtotime($time));
@@ -924,13 +934,13 @@ class Get extends Command
                 }
                 print_r($match);
                 exit;
-                //去除前面重复的几个最新章节
+//去除前面重复的几个最新章节
                 $match = array_unique_fb($match);
                 $chapter = [];
                 if ($match) {
                     foreach ($match as $key => $val) {
 
-                        //使用该函数对结果进行转码
+//使用该函数对结果进行转码
                         $chapter[$key]['text'] = mb_convert_encoding($val[0], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
                         $chapter[$key]['href'] = correct_url($v['books_url'], $val[1]);
 
@@ -968,7 +978,7 @@ class Get extends Command
 
 
                 echo $k . '-----开始匹配更新时间' . PHP_EOL;
-                //更新时间和状态
+//更新时间和状态
                 $content = array(
                     'time' => [$has['books_time'], 'text'],
                 );
@@ -976,7 +986,7 @@ class Get extends Command
                 $res = query($datas, $content);
                 if ($res && isset($res[0]) && $res[0]) {
                     $time = getDates($res[0]['time']);
-                    //如果最后一次更新时间大于现在时间半年 状态为完结
+//如果最后一次更新时间大于现在时间半年 状态为完结
                     $status = 0;
                     if ($time) {
                         $time = date('Y-m-d', strtotime($time));

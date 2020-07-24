@@ -111,17 +111,25 @@ class Curl extends Model
     public function getDataHttps($url)
     {
 
-        $curl = curl_init();
+        $header_ip = array('CLIENT-IP:8.8.8.8', 'X-FORWARDED-FOR:8.8.8.8',);
 
+
+        $curl = curl_init();
         //设置抓取的url
         curl_setopt($curl, CURLOPT_URL, $url);
         //设置头文件的信息作为数据流输出
         curl_setopt($curl, CURLOPT_HEADER, 0);
         //设置获取的信息以文件流的形式返回，而不是直接输出。
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Expect:'));
+//        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Expect:'));
 
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);   //只需要设置一个秒的数量就可以
+
+        //伪造来源referer
+        curl_setopt($curl, CURLOPT_REFERER, 'http://www.baidu.com/');//模拟来路
+        // //伪造来源ip
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header_ip);
+
 
         //重要！
         curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, true);
@@ -129,22 +137,21 @@ class Curl extends Model
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($curl, CURLOPT_ENCODING, '');   //设置编码格式，为空表示支持所有格式的编码
         //header中“Accept-Encoding: ”部分的内容，支持的编码格式为："identity"，"deflate"，"gzip"。
-        curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"); //模拟浏览器代理
-
+        curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; .NET CLR 3.5.21022; .NET CLR 1.0.3705; .NET CLR 1.1.4322)'"); //模拟浏览器代理
 
         //执行命令
         $data = curl_exec($curl);
 
         if (curl_errno($curl)) {
 
-            echo 'Curl error: ' . curl_error($curl) . "<br/>";
+//            return 'Curl error: ' . curl_error($curl) . "<br/>";
+            return false;
             // $data = file_get_contents($url);
 
         }
 
         //关闭URL请求
         curl_close($curl);
-
 
         return $data;
     }
