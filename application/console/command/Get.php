@@ -227,7 +227,7 @@ class Get extends Command
 //        $this->updateMData($output, 14, 'm.37zw.net'); //更新作者和更新时间
 //        echo '------结束咯' . PHP_EOL;
         $this->updateChapters();
-        $this->updateChapterid();
+//        $this->updateChapterid();
 //        $output->writeln("更新成功" . $this->update_count);
 //        $output->writeln("用时" . $this->end_time - $this->start_time);
 
