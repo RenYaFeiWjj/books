@@ -721,6 +721,13 @@ class Get extends Command
             $this->creatProcess($i, $url);
         }
 
+        while (true) {
+            echo "Time" . date("Ymd H:i:s") . '----------';
+
+            sleep(1);
+            $cmd = "ps -ef |grep test1 |grep -v grep |wc -l";
+            $ret1 = system($cmd);
+        }
     }
 
     public function curlData($url)
