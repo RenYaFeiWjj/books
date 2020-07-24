@@ -656,6 +656,8 @@ class Get extends Command
         $work_number = 10;
         $worker = [];
 
+        $redirect_stdout = false;
+
         for ($i = 0; $i < $work_number; $i++) {
 
             //创建多线程
@@ -663,28 +665,28 @@ class Get extends Command
             $pro = new \swoole_process(function (\swoole_process $work) use ($i) {
 
                 //获取html文件
-
-                $content = $this->updateChapter($i);
-
+//                $content = $this->updateChapter($i);
+                $this->aaa($work);
                 //写入管道
-
-                $work->write($content . PHP_EOL);
 
             }, true);
 
             $pro_id = $pro->start();
-
-            $worker[$pro_id] = $pro;
-
-        }
-        echo '00000000000000000';
-        foreach ($worker as $v) {
-
-            echo $v->read() . PHP_EOL;
+            $pro->write('index:' . $i);
+            $pro->push('进程的消息队列内容');
+            $work[$pro_id] = $pro;
 
         }
 
-        \swoole_process::wait();
+        while (1) {
+            $ret = swoole_process::wait();
+            if ($ret) {// $ret 是个数组 code是进程退出状态码，
+                $pid = $ret['pid'];
+                echo PHP_EOL . "Worker Exit, PID=" . $pid . PHP_EOL;
+            } else {
+                break;
+            }
+        }
 
 
         $e_time = time();
@@ -693,6 +695,19 @@ class Get extends Command
 
 
         echo '所用时间:' . ($e_time - $s_time) . '秒' . PHP_EOL;
+    }
+
+    public function aaa($worker)
+    {
+        $recv = $worker->pop();
+        echo "子输出主内容: {$recv}" . PHP_EOL;
+        //get guandao content
+        $recv = $worker->read();
+        sleep(2);
+        echo PHP_EOL . $worker->pid . '===' . $recv;
+
+        $worker->exit(0);
+
     }
 
 
