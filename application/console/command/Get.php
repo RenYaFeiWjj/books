@@ -32,6 +32,7 @@ use think\model;
  */
 class Get extends Command
 {
+
     public $config = [
         'www.qidian.com' => [
             'menu' => [
@@ -211,6 +212,7 @@ class Get extends Command
         ini_set('memory_limit', '1024M');
         //设置永不超时
         set_time_limit(0);
+        \think\Loader::import('QueryList', EXTEND_PATH);
         $this->start_time = $this->getCurrentTime();
         echo '------开始咯' . PHP_EOL;
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
