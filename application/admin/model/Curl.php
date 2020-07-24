@@ -123,7 +123,7 @@ class Curl extends Model
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 //        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Expect:'));
 
-        curl_setopt($curl, CURLOPT_TIMEOUT, 60);   //只需要设置一个秒的数量就可以
+        curl_setopt($curl, CURLOPT_TIMEOUT, 150);   //只需要设置一个秒的数量就可以
 
         //伪造来源referer
         curl_setopt($curl, CURLOPT_REFERER, 'http://www.baidu.com/');//模拟来路
