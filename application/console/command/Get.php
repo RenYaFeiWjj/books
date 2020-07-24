@@ -641,7 +641,7 @@ class Get extends Command
         $p = Cache::set('p','');
         echo $p . '||' . PHP_EOL;
 //        $this->updateChapter(1);
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             echo '------开始' . $i . PHP_EOL;
             $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
                 $this->updateChapter($i);
@@ -664,7 +664,7 @@ class Get extends Command
 //            ->where('c.books_id' ,'in',$arr)
             ->where('c.books_url', 'not like', '%m.37zw.n%')
             ->field('c.*')
-            ->limit($k * 300, 300)
+            ->limit($k * 400, 400)
             ->select();
 
         if (!$data) {
