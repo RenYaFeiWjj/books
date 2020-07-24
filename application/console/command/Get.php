@@ -670,7 +670,7 @@ class Get extends Command
             echo $k . '------第' . $k . '个没有数据' . PHP_EOL;
             return false;
         }
-
+        $p = [];
         foreach ($data as $v) {
             echo $k . '-----' . $v['books_id'] . PHP_EOL;
             echo $k . '-----' . $v['books_name'] . PHP_EOL;
@@ -693,10 +693,13 @@ class Get extends Command
                     continue;
                 }
                 $match = [];
+                sleep(2);
                 $match = query($datas, $content);
                 print_r($match);
                 if (!$match) {
                     echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
+                    $p[] = ['url' => $v['books_url'] , 'data' => $datas , 'c' => $content];
+                    Cache::set('p', json_encode($p), 3600);
                     continue;
                 }
                 //去除前面重复的几个最新章节
