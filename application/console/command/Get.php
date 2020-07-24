@@ -636,7 +636,7 @@ class Get extends Command
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
 //        $this->updateChapter(1);
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             echo '------开始' . $i . PHP_EOL;
             $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
                 $this->updateChapter($i);
@@ -694,6 +694,7 @@ class Get extends Command
                 }
                 $match = [];
                 $match = query($datas, $content);
+                print_r($match);
                 if (!$match) {
                     echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
                     continue;
