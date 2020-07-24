@@ -709,7 +709,7 @@ class Get extends Command
     public function updateChapter($k)
     {
         $data = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
-            ->where(['a.chapter_name' => ''])
+//            ->where(['a.chapter_name' => ''])
 //            ->where(['c.books_status' => 0])
 //            ->where('c.books_id' ,'in',$arr)
             ->where('c.books_url', 'not like', '%m.37zw.n%')
