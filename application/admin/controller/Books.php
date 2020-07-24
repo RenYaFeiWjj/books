@@ -151,25 +151,7 @@ Class Books extends Base
      */
     public function add()
     {
-//        $this->updateChapter(2);
-        \think\Loader::import('QueryList', EXTEND_PATH);
-        $url = 'https://m.biquge5200.cc/info-76216/';
-        $url = urlencode($url);
-        print_r($url);exit;
-        $curl = model("Curl");
-        $res = $curl->getDataHttps($url);
-        $html = file_get_contents($url);
-        print_r($html);exit;
-// 定义采集规则
-        $rules = [
-            'text' => ['.chapter>li>a', 'text'],
-//            'text' => ['dd>a', 'text'],
-            'herf' => ['.chapter>li>a', 'href'],
-//            'herf' => ['dd>a', 'href'],
-        ];
-        $rt = QueryList::query($res, $rules, '', 'UTF-8', 'GB2312')->getData();
-        print_r($rt);
-        exit;
+
         $books_name = input('post.books_name');
         $rule_id = input('post.rule_id');
 
