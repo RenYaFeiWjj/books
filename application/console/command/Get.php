@@ -719,8 +719,8 @@ class Get extends Command
 
         echo $curl_arr.PHP_EOL;
 
-        file_get_contents($curl_arr);
-
+        $a = file_get_contents($curl_arr);
+        print_r($a);exit;
     }
 
 
