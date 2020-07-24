@@ -712,7 +712,7 @@ class Get extends Command
                         'text' => ['.block_txt2>p:eq(5) a', 'text'],
                         'herf' => ['.block_txt2>p:eq(5) a', 'href'],
                     ];
-                    $match = query($v['books_url'], $content, '', 'UTF-8', 'GB2312');
+                    $match = \QL\QueryList::Query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->data;
                     if (!$match) {
                         echo $k . $v['books_id'] . '二次-----没有匹配到数据' . PHP_EOL;
                         $p = Cache::get('p');
@@ -722,8 +722,10 @@ class Get extends Command
                         Cache::set('p', $p, 60 * 60 * 24);
                         echo 'exit--------' . PHP_EOL;
                         exit;
+
                     }
                     print_r($match);
+
                 }
 //                //去除前面重复的几个最新章节
 //                $match = array_unique_fb($match);
