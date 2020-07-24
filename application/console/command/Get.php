@@ -10,7 +10,7 @@
 
 namespace app\console\command;
 
-use AlibabaCloud\SDK\OSS\OSS\GetBucketWebsiteResponse\websiteConfiguration\routingRules\routingRule\condition;
+
 use QL\QueryList;
 use think\Cache;
 use think\console\Command;
@@ -774,7 +774,7 @@ class Get extends Command
 //                print_r($content);
                 echo $k . '-----开始匹配最新章节' . PHP_EOL;
                 $match = [];
-                $match = query($ress, $content)->getData();
+                $match = query($ress, $content);
 //                print_r($match);
                 if (!$match) {
                     echo $k . 'ERROR' . $v['books_id'] . '-----没有匹配到最新章节' . PHP_EOL;
