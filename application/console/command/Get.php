@@ -709,7 +709,7 @@ class Get extends Command
 //    每次过来统计一下进程数量
         $cmd = "ps -ef |grep get |grep -v grep |wc -l";
         $pCount = system($cmd);//进程数量
-        if ($pCount < 30) {
+        if ($pCount < 20) {
 //    创建子进程
             $process = new \swoole_process(function (\swoole_process $worker) use ($i, $url) {
 //                $content = $this->curlData($url);//方法里面处理你的逻辑
