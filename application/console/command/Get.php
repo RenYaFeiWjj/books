@@ -785,6 +785,8 @@ class Get extends Command
                     $match = query($ress, $content);
                     if (!$match) {
                         echo $k . 'ERROR二次' . $v['books_id'] . '-----没有匹配到最新章节' . PHP_EOL;
+
+                        print_r($ress);
                         $p = Cache::get('p');
                         $p = explode(',', $p);
                         $p[] = $v['books_id'];
