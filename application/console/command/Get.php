@@ -650,30 +650,30 @@ class Get extends Command
 ////            \swoole_process::wait();
 //            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
 //        }
-        $this->updateChapter(0);
-        $s_time = time();
-        echo '开始时间:' . date('H:i:s', $s_time) . PHP_EOL;
-        $work_number = 10;
-
-        for ($i = 0; $i < $work_number; $i++) {
-
-            //创建多线程
-
-            $pro = new \swoole_process(function (\swoole_process $pro) use ($i) {
-
-                //获取html文件
-                $this->updateChapter($i);
-//                $this->aaa();
-                $pro->write('index:' . $i);
-                //写入管道
-
-            });
-            $pro_id = $pro->start();
-            sleep(1);
-            echo $pro->read();
-            $work[$pro_id] = $pro;
-
-        }
+//        $this->updateChapter(0);
+//        $s_time = time();
+//        echo '开始时间:' . date('H:i:s', $s_time) . PHP_EOL;
+//        $work_number = 10;
+//
+//        for ($i = 0; $i < $work_number; $i++) {
+//
+//            //创建多线程
+//
+//            $pro = new \swoole_process(function (\swoole_process $pro) use ($i) {
+//
+//                //获取html文件
+//                $this->updateChapter($i);
+////                $this->aaa();
+////                $pro->write('index:' . $i);
+//                //写入管道
+//
+//            });
+//            $pro_id = $pro->start();
+//            sleep(1);
+////            echo $pro->read();
+//            $work[$pro_id] = $pro;
+//
+//        }
 
 //        while (1) {
 //            $ret = \swoole_process::wait();
@@ -692,14 +692,41 @@ class Get extends Command
 //
 //
 //        echo '所用时间:' . ($e_time - $s_time) . '秒' . PHP_EOL;
+
+        echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
+        $baseUrl = "http://www.baidu.com/";//自定义网页
+        $count = 1000;//为了方便演示，此处用1000意思一下
+        for ($i = 0; $i < $count; $i++) {
+            $this->creatProcess($i, $baseUrl);
+        }
+
+        echo "process-end-time:" . date("Ymd H:i:s");
     }
 
-    public function aaa()
-    {
-       for ($i=0;$i<100;$i++){
-           echo '---' . $i . PHP_EOL;
-       }
 
+    public function creatProcess($i, $url)
+    {
+//    每次过来统计一下进程数量
+        $cmd = "ps -ef |grep test1 |grep -v grep |wc -l";
+        $pCount = system($cmd);//进程数量
+        if ($pCount < 200) {
+            //    创建子进程
+            $process = new \swoole_process(function (\swoole_process $worker) use ($i, $url) {
+                $content = curlData($url);//方法里面处理你的逻辑
+            });
+            $pid = $process->start();
+            echo $url . '------第' . $i . '个子进程创建完毕'.PHP_EOL;
+        } else {
+            sleep(10);//可以根据实际情况定义
+            creatProcess($i, $url);
+        }
+
+    }
+
+    public function curlData($url)
+    {
+        sleep(20);//为了让子进程多存在一段时间，让大家看到效果
+        echo '$url'.PHP_EOL;
     }
 
 
