@@ -9,12 +9,12 @@
 namespace app\admin\controller;
 
 use app\admin\model\Curl;
+use QL\QueryList;
 use think\Cache;
 use think\Controller;
 use think\Model;
 use think\Db;
 use think\View;
-use QL\QueryList;
 use think\loader;
 
 Class Books extends Base
@@ -153,7 +153,17 @@ Class Books extends Base
     public function add()
     {
 //        $this->updateChapter(2);
-//        exit;
+        \think\Loader::import('QueryList', EXTEND_PATH);
+        $url = 'https://m.37zw.net/12/12181/';
+// 定义采集规则
+        $rules = [
+            'text' => ['.chapter>li>a', 'text'],
+            'herf' => ['.chapter>li>a', 'href'],
+        ];
+        $rt = QueryList::query($url,$rules, '', 'UTF-8', 'GB2312')->getData();
+
+        print_r($rt);
+        exit;
         $books_name = input('post.books_name');
         $rule_id = input('post.rule_id');
 
