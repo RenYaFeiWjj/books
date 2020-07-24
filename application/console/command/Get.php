@@ -638,7 +638,7 @@ class Get extends Command
         Cache::set('zhang', 0, 3600);
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
 
-        $p = Cache::get('p');
+        $p = Cache::set('p','');
         echo $p . '||' . PHP_EOL;
 //        $this->updateChapter(1);
         for ($i = 0; $i < 10; $i++) {
@@ -701,16 +701,17 @@ class Get extends Command
                         $p[] = $v['books_id'];
                         $p = implode(',', $p);
                         Cache::set('p', $p, 60 * 60 * 24);
-                        echo 'exit--------' . PHP_EOL;
-                        exit;
+//                        echo 'exit--------' . PHP_EOL;
+//                        exit;
                         continue;
                     }else{
+                        print_r($match);exit;
                         echo $k . 'YES二次' . $v['books_id'] . '-----匹配到最新章节' . PHP_EOL;
                     }
                 } else {
                     echo $k . 'YES' . $v['books_id'] . '-----已匹配到最新章节' . PHP_EOL;
                 }
-
+//
 //                //去除前面重复的几个最新章节
 //                $match = array_unique_fb($match);
 //                $chapter = [];
