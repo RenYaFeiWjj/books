@@ -708,6 +708,7 @@ class Get extends Command
                 $match = query($datas, $content);
                 if (!$match) {
                     echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
+                    print_r($match);exit;
                     $p = Cache::get('p');
                     $p = explode(',', $p);
                     $p[] = $v['books_id'];
