@@ -634,12 +634,12 @@ class Get extends Command
     {
         Cache::set('zhang', 0, 3600);
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
-        $this->updateChapter(1);
+//        $this->updateChapter(1);
 
         $p = Cache::get('p');
         echo $p . '||' . PHP_EOL;
         Cache::set('p', '', 3600);
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             echo '------开始' . $i . PHP_EOL;
             $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
                 $this->updateChapter($i);
@@ -661,13 +661,21 @@ class Get extends Command
 //            ->where(['a.chapter_name' => ''])
 //            ->limit($k * 500, 500)
 //            ->select();
+        $count = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
+            ->where(['a.chapter_name' => ''])
+//            ->where(['c.books_status' => 0])
+//            ->where('c.books_id' ,'in',$arr)
+            ->where('c.books_url', 'not like', '%m.37zw.n%')
+            ->field('c.*')
+            ->count('*');
+        $limit = ceil($count / 5);
         $data = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['a.chapter_name' => ''])
 //            ->where(['c.books_status' => 0])
 //            ->where('c.books_id' ,'in',$arr)
             ->where('c.books_url', 'not like', '%m.37zw.n%')
             ->field('c.*')
-            ->limit($k * 100, 100)
+            ->limit($k * $limit, $limit)
             ->select();
 
         if (!$data) {
