@@ -712,13 +712,13 @@ class Get extends Command
         if ($pCount < 200) {
             //    创建子进程
             $process = new \swoole_process(function (\swoole_process $worker) use ($i, $url) {
-                $content = curlData($url);//方法里面处理你的逻辑
+                $content = $this->curlData($url);//方法里面处理你的逻辑
             });
             $pid = $process->start();
             echo $url . '------第' . $i . '个子进程创建完毕'.PHP_EOL;
         } else {
             sleep(10);//可以根据实际情况定义
-            creatProcess($i, $url);
+            $this->creatProcess($i, $url);
         }
 
     }
