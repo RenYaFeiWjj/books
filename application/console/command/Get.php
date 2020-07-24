@@ -670,7 +670,6 @@ class Get extends Command
                 //写入管道
 
             }, true);
-
             $pro_id = $pro->start();
             $pro->write('index:' . $i);
             $work[$pro_id] = $pro;
@@ -698,13 +697,13 @@ class Get extends Command
 
     public function aaa($worker)
     {
+        echo 111111111111111111111111;
         $recv = $worker->pop();
         echo "子输出主内容: {$recv}" . PHP_EOL;
         //get guandao content
         $recv = $worker->read();
         sleep(2);
         echo PHP_EOL . $worker->pid . '===' . $recv;
-
         $worker->exit(0);
 
     }
