@@ -654,9 +654,6 @@ class Get extends Command
         $s_time = time();
         echo '开始时间:' . date('H:i:s', $s_time) . PHP_EOL;
         $work_number = 10;
-        $worker = [];
-
-        $redirect_stdout = false;
 
         for ($i = 0; $i < $work_number; $i++) {
 
@@ -670,7 +667,7 @@ class Get extends Command
                 $pro->write('index:' . $i);
                 //写入管道
 
-            }, true);
+            });
             $pro_id = $pro->start();
             sleep(1);
             echo $pro->read();
