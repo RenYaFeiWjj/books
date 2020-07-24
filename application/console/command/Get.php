@@ -635,7 +635,10 @@ class Get extends Command
         Cache::set('zhang', 0, 3600);
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
 //        $this->updateChapter(1);
-//
+
+        $p = Cache::get('p');
+        echo $p . '||' . PHP_EOL;
+        Cache::set('p', '', 3600);
         for ($i = 0; $i < 10; $i++) {
             echo '------开始' . $i . PHP_EOL;
             $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
@@ -695,20 +698,13 @@ class Get extends Command
                 $match = [];
                 $match = query($datas, $content);
                 if (!$match) {
-                    $i = 0;
-                    while($i<=5)
-                    {
-                        $match = query($datas, $content);
-                        print_r($match);
-                        $i++;
-                    }
-                    print_r($match);
-                    if(!$match){
-                        echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
-                        $p[] = ['url' => $v['books_url'] , 'data' => $datas , 'c' => $content];
-                        Cache::set('p', json_encode($p), 3600);
-                        continue;
-                    }
+                    echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
+                    $p = Cache::get('p');
+                    $p = explode(',',$p);
+                    $p[] = $v['books_id'];
+                    $p = implode(',',$p);
+                    Cache::set('p', $p, 3600);
+                    continue;
                 }
                 //去除前面重复的几个最新章节
                 $match = array_unique_fb($match);

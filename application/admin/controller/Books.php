@@ -154,7 +154,7 @@ Class Books extends Base
     {
 //        $this->updateChapter(2);
         \think\Loader::import('QueryList', EXTEND_PATH);
-        $url = 'https://m.37zw.net/12/12181/';
+        $url = 'https://m.biquge5200.cc/info-56455/';
 // 定义采集规则
         $rules = [
             'text' => ['.chapter>li>a', 'text'],
