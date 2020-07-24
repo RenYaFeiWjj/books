@@ -636,8 +636,8 @@ class Get extends Command
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
         $this->updateChapter(1);
 
-//        $p = Cache::get('p');
-//        echo $p . '||' . PHP_EOL;
+        $p = Cache::get('p');
+        echo $p . '||' . PHP_EOL;
 //        Cache::set('p', '', 3600);
 //        for ($i = 0; $i < 10; $i++) {
 //            echo '------开始' . $i . PHP_EOL;
