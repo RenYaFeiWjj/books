@@ -652,53 +652,35 @@ class Get extends Command
 //        }
 
         $s_time = time();
-        echo '开始时间:'.date('H:i:s',$s_time).PHP_EOL;
-        $work_number=6;
-        $worker=[];
+        echo '开始时间:' . date('H:i:s', $s_time) . PHP_EOL;
+        $work_number = 10;
+        $worker = [];
 
-        //模拟地址
-
-        $curl=[
-
-            'https://blog.csdn.net/feiwutudou',
-
-            'https://wiki.swoole.com/wiki/page/215.html',
-
-            'http://fanyi.baidu.com/?aldtype=16047#en/zh/manager',
-
-            'http://wanguo.net/Salecar/index.html',
-
-            'http://o.ngking.com/themes/mskin/login/login.jsp',
-
-            'https://blog.csdn.net/marksinoberg/article/details/77816991'
-
-        ];
-
-        for ($i=0; $i < $work_number; $i++) {
+        for ($i = 0; $i < $work_number; $i++) {
 
             //创建多线程
 
-            $pro=new \swoole_process(function(\swoole_process $work) use($i,$curl){
+            $pro = new \swoole_process(function (\swoole_process $work) use ($i) {
 
                 //获取html文件
 
-                $content=$this->curldeta($curl[$i]);
+                $content = $this->updateChapter($i);
 
                 //写入管道
 
-                $work->write($content.PHP_EOL);
+                $work->write($content . PHP_EOL);
 
-            },true);
+            }, true);
 
-            $pro_id=$pro->start();
+            $pro_id = $pro->start();
 
-            $worker[$pro_id]=$pro;
+            $worker[$pro_id] = $pro;
 
         }
 
         foreach ($worker as $v) {
 
-            echo $v->read().PHP_EOL;
+            echo $v->read() . PHP_EOL;
 
         }
 
@@ -707,20 +689,10 @@ class Get extends Command
 
         $e_time = time();
 
-        echo '结束时间:'.date('H:i:s',$e_time).PHP_EOL;
+        echo '结束时间:' . date('H:i:s', $e_time) . PHP_EOL;
 
 
-
-        echo '所用时间:'.($e_time-$s_time).'秒'.PHP_EOL;
-    }
-
-    public function curldeta($curl_arr)
-    {//file_get_contents
-
-        echo $curl_arr.PHP_EOL;
-
-        $a = file_get_contents($curl_arr);
-        print_r($a);exit;
+        echo '所用时间:' . ($e_time - $s_time) . '秒' . PHP_EOL;
     }
 
 
@@ -765,7 +737,7 @@ class Get extends Command
                         'herf' => ['.block_txt2>p:eq(5) a', 'href'],
                     ];
                     $match = QueryList::query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->getData();
-                    if(!$match){
+                    if (!$match) {
                         echo $k . 'ERROR二次' . $v['books_id'] . '-----没有匹配到最新章节' . PHP_EOL;
                         $p = Cache::get('p');
                         $p = explode(',', $p);
@@ -775,7 +747,7 @@ class Get extends Command
 //                        echo 'exit--------' . PHP_EOL;
 //                        exit;
                         continue;
-                    }else{
+                    } else {
                         echo $k . 'YES二次' . $v['books_id'] . '-----匹配到最新章节' . PHP_EOL;
                     }
                 } else {
