@@ -759,8 +759,7 @@ class Get extends Command
             $books_url = parse_url($v['books_url']);
 //            print_r($books_url);
             $curl = new Curl();
-            $url = urlencode($v['books_url']);
-            $ress = $curl->getDataHttps($url);
+            $ress = $curl->getDataHttps($v['books_url']);
             if(!$ress){
                 echo '获取页面失败' . PHP_EOL;
                 continue;

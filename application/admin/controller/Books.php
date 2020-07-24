@@ -154,6 +154,8 @@ Class Books extends Base
 //        $this->updateChapter(2);
         \think\Loader::import('QueryList', EXTEND_PATH);
         $url = 'https://m.biquge5200.cc/info-76216/';
+        $url = urlencode($url);
+        print_r($url);exit;
         $curl = model("Curl");
         $res = $curl->getDataHttps($url);
         $html = file_get_contents($url);
