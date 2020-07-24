@@ -656,19 +656,6 @@ class Get extends Command
      */
     public function updateChapter($k)
     {
-//        $data = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
-//            ->where(['c.books_status' => 0])
-//            ->where(['a.chapter_name' => ''])
-//            ->limit($k * 500, 500)
-//            ->select();
-//        $count = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
-//            ->where(['a.chapter_name' => ''])
-////            ->where(['c.books_status' => 0])
-////            ->where('c.books_id' ,'in',$arr)
-//            ->where('c.books_url', 'not like', '%m.37zw.n%')
-//            ->field('c.*')
-//            ->count('*');
-//        $limit = ceil($count / 5);
         $data = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['a.chapter_name' => ''])
 //            ->where(['c.books_status' => 0])
@@ -682,7 +669,6 @@ class Get extends Command
             echo $k . '------第' . $k . '个没有数据' . PHP_EOL;
             return false;
         }
-        $p = [];
         foreach ($data as $v) {
             echo $k . '-----' . $v['books_id'] . PHP_EOL;
             echo $k . '-----' . $v['books_name'] . PHP_EOL;
@@ -697,26 +683,17 @@ class Get extends Command
                 );
 
                 echo $k . '-----开始匹配最新章节' . PHP_EOL;
-                $curl = new Curl();
-                $datas = [];
-                $datas = $curl->getDataHttps($v['books_url']);
-                if (!$datas) {
-                    echo $k . $v['books_id'] . '-----没有匹配到最新章节' . PHP_EOL;
-                    continue;
-                }
                 $match = [];
-                $match = query($datas, $content);
+                $match = QueryList::query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->getData();
                 if (!$match) {
-                    echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
+                    echo $k . 'ERROR' . $v['books_id'] . '-----没有匹配到最新章节' . PHP_EOL;
                     $content = [
                         'text' => ['.block_txt2>p:eq(5) a', 'text'],
                         'herf' => ['.block_txt2>p:eq(5) a', 'href'],
                     ];
-                    $match = \QL\QueryList::Query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->data;
-                    if (!$match) {
-                        print_r($match);
-                        print_r($datas);
-                        echo $k . $v['books_id'] . '二次-----没有匹配到数据' . PHP_EOL;
+                    $match = QueryList::query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->getData();
+                    if(!$match){
+                        echo $k . 'ERROR二次' . $v['books_id'] . '-----没有匹配到最新章节' . PHP_EOL;
                         $p = Cache::get('p');
                         $p = explode(',', $p);
                         $p[] = $v['books_id'];
@@ -724,9 +701,14 @@ class Get extends Command
                         Cache::set('p', $p, 60 * 60 * 24);
                         echo 'exit--------' . PHP_EOL;
                         exit;
-
+                        continue;
+                    }else{
+                        echo $k . 'YES二次' . $v['books_id'] . '-----匹配到最新章节' . PHP_EOL;
                     }
+                } else {
+                    echo $k . 'YES' . $v['books_id'] . '-----已匹配到最新章节' . PHP_EOL;
                 }
+
 //                //去除前面重复的几个最新章节
 //                $match = array_unique_fb($match);
 //                $chapter = [];
