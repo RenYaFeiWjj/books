@@ -634,17 +634,19 @@ class Get extends Command
     {
         Cache::set('zhang', 0, 3600);
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
+        $a = Cache::get('p');
+        print_r(\GuzzleHttp\json_decode($a ,true));exit;
 //        $this->updateChapter(1);
-
-        for ($i = 0; $i < 10; $i++) {
-            echo '------开始' . $i . PHP_EOL;
-            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
-                $this->updateChapter($i);
-            });
-            $pid = $process->start();
-//            \swoole_process::wait();
-            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
-        }
+//
+//        for ($i = 0; $i < 10; $i++) {
+//            echo '------开始' . $i . PHP_EOL;
+//            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
+//                $this->updateChapter($i);
+//            });
+//            $pid = $process->start();
+////            \swoole_process::wait();
+//            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+//        }
     }
 
 
