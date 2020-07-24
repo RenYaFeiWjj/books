@@ -668,7 +668,7 @@ class Get extends Command
 //            ->where(['c.books_id' => 236])
             ->field('c.*')
             ->chunk(100, function ($data) use ($k) {
-
+                print_r($data);exit;
                 if (!$data) {
                     echo $k . '------第' . $k . '个没有数据' . PHP_EOL;
                     return false;
