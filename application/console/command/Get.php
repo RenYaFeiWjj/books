@@ -723,8 +723,9 @@ class Get extends Command
                         echo 'exit--------' . PHP_EOL;
                         exit;
                     }
+                    print_r($match);
+
                 }
-                print_r($match);
 //                //去除前面重复的几个最新章节
 //                $match = array_unique_fb($match);
 //                $chapter = [];
