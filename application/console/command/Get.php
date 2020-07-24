@@ -634,19 +634,17 @@ class Get extends Command
     {
         Cache::set('zhang', 0, 3600);
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
-        $a = Cache::get('p');
-        print_r($a);exit;
 //        $this->updateChapter(1);
 //
-//        for ($i = 0; $i < 10; $i++) {
-//            echo '------开始' . $i . PHP_EOL;
-//            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
-//                $this->updateChapter($i);
-//            });
-//            $pid = $process->start();
-////            \swoole_process::wait();
-//            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
-//        }
+        for ($i = 0; $i < 10; $i++) {
+            echo '------开始' . $i . PHP_EOL;
+            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
+                $this->updateChapter($i);
+            });
+            $pid = $process->start();
+//            \swoole_process::wait();
+            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+        }
     }
 
 
@@ -695,14 +693,23 @@ class Get extends Command
                     continue;
                 }
                 $match = [];
-                sleep(2);
                 $match = query($datas, $content);
-                print_r($match);
                 if (!$match) {
-                    echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
-                    $p[] = ['url' => $v['books_url'] , 'data' => $datas , 'c' => $content];
-                    Cache::set('p', json_encode($p), 3600);
-                    continue;
+                    $i = 0;
+                    while($i<=5)
+                    {
+                        $match = query($datas, $content);
+                        if($match){
+                            continue;
+                        }
+                        $i++;
+                    }
+                    if(!$match){
+                        echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
+                        $p[] = ['url' => $v['books_url'] , 'data' => $datas , 'c' => $content];
+                        Cache::set('p', json_encode($p), 3600);
+                        continue;
+                    }
                 }
                 //去除前面重复的几个最新章节
                 $match = array_unique_fb($match);
