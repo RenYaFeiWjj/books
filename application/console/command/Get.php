@@ -699,11 +699,10 @@ class Get extends Command
                     while($i<=5)
                     {
                         $match = query($datas, $content);
-                        if($match){
-                            continue;
-                        }
+                        print_r($match);
                         $i++;
                     }
+                    print_r($match);
                     if(!$match){
                         echo $k . $v['books_id'] . '-----没有匹配到数据' . PHP_EOL;
                         $p[] = ['url' => $v['books_url'] , 'data' => $datas , 'c' => $content];
