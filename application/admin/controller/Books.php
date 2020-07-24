@@ -168,7 +168,7 @@ Class Books extends Base
 
             $curl = model('Curl');
             $url = $rule['rule_url'] . $books_name;
-            $data = $curl->getDataHttps($url, $books_name);
+            $data = $curl->getDataHttps($url);
 
             //第三方类库
             Loader::import('QueryList', EXTEND_PATH);
