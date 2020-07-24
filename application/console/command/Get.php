@@ -726,6 +726,7 @@ class Get extends Command
             echo $k . '-----' . $v['books_name'] . PHP_EOL;
             echo $k . '-----' . $v['books_url'] . PHP_EOL;
             $books_url = parse_url($v['books_url']);
+            print_r($books_url);
             $host = $books_url['host'];
             $has = Db::table('books_rule_info')->alias('i')->field('i.*')->join('books_rule r', 'r.rule_id=i.rule_id')->where('r.rule_url', 'like', "%{$host}%")->find();
             if ($has) {
@@ -733,10 +734,11 @@ class Get extends Command
                     'text' => [$has['chapter_name'], 'text'],
                     'herf' => [$has['chapter_url'], 'href'],
                 );
-
+                print_r($content);
                 echo $k . '-----开始匹配最新章节' . PHP_EOL;
                 $match = [];
                 $match = QueryList::query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->getData();
+                print_r($match);
                 if (!$match) {
                     echo $k . 'ERROR' . $v['books_id'] . '-----没有匹配到最新章节' . PHP_EOL;
                     $content = [
