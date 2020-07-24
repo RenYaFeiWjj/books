@@ -678,7 +678,6 @@ class Get extends Command
 
         }
         echo '00000000000000000';
-        print_r($worker);
         foreach ($worker as $v) {
 
             echo $v->read() . PHP_EOL;
