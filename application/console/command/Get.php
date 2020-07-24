@@ -677,7 +677,8 @@ class Get extends Command
             $worker[$pro_id] = $pro;
 
         }
-
+        echo '00000000000000000';
+        print_r($worker);
         foreach ($worker as $v) {
 
             echo $v->read() . PHP_EOL;
