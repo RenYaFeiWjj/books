@@ -650,30 +650,30 @@ class Get extends Command
 ////            \swoole_process::wait();
 //            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
 //        }
-
-        $s_time = time();
-        echo '开始时间:' . date('H:i:s', $s_time) . PHP_EOL;
-        $work_number = 10;
-
-        for ($i = 0; $i < $work_number; $i++) {
-
-            //创建多线程
-
-            $pro = new \swoole_process(function (\swoole_process $pro) use ($i) {
-
-                //获取html文件
-                $this->updateChapter($i);
-//                $this->aaa();
-                $pro->write('index:' . $i);
-                //写入管道
-
-            });
-            $pro_id = $pro->start();
-            sleep(1);
-            echo $pro->read();
-            $work[$pro_id] = $pro;
-
-        }
+        $this->updateChapter(0);
+//        $s_time = time();
+//        echo '开始时间:' . date('H:i:s', $s_time) . PHP_EOL;
+//        $work_number = 10;
+//
+//        for ($i = 0; $i < $work_number; $i++) {
+//
+//            //创建多线程
+//
+//            $pro = new \swoole_process(function (\swoole_process $pro) use ($i) {
+//
+//                //获取html文件
+//                $this->updateChapter($i);
+////                $this->aaa();
+//                $pro->write('index:' . $i);
+//                //写入管道
+//
+//            });
+//            $pro_id = $pro->start();
+//            sleep(1);
+//            echo $pro->read();
+//            $work[$pro_id] = $pro;
+//
+//        }
 
 //        while (1) {
 //            $ret = \swoole_process::wait();
@@ -686,12 +686,12 @@ class Get extends Command
 //        }
 
 
-        $e_time = time();
-
-        echo '结束时间:' . date('H:i:s', $e_time) . PHP_EOL;
-
-
-        echo '所用时间:' . ($e_time - $s_time) . '秒' . PHP_EOL;
+//        $e_time = time();
+//
+//        echo '结束时间:' . date('H:i:s', $e_time) . PHP_EOL;
+//
+//
+//        echo '所用时间:' . ($e_time - $s_time) . '秒' . PHP_EOL;
     }
 
     public function aaa()
