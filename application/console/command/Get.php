@@ -633,16 +633,16 @@ class Get extends Command
     public function updateChapters()
     {
         Cache::set('zhang', 0, 3600);
-//        $this->updateChapter(2);
-        for ($i = 0; $i < 100; $i++) {
-            echo '------开始' . $i . PHP_EOL;
-            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
-                $this->updateChapter($i);
-            });
-            $pid = $process->start();
-//            \swoole_process::wait();
-            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
-        }
+        $this->updateChapter(1);
+//        for ($i = 0; $i < 100; $i++) {
+//            echo '------开始' . $i . PHP_EOL;
+//            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
+//                $this->updateChapter($i);
+//            });
+//            $pid = $process->start();
+////            \swoole_process::wait();
+//            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+//        }
     }
 
 
