@@ -720,6 +720,10 @@ class Get extends Command
                             echo $k . $v['books_id'] . '三次-----匹配到数据' . PHP_EOL;
                         }else{
                             echo $k . $v['books_id'] . '三次-----没有匹配到数据' . PHP_EOL;
+                            print_r($datas);
+                            echo  '////'. PHP_EOL;
+                            print_r($content);
+                            echo  '////'. PHP_EOL;
                             $p = Cache::get('p');
                             $p = explode(',', $p);
                             $p[] = $v['books_id'];

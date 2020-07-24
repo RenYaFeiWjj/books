@@ -154,13 +154,13 @@ Class Books extends Base
     {
 //        $this->updateChapter(2);
         \think\Loader::import('QueryList', EXTEND_PATH);
-        $url = 'https://www.biquge5200.cc/0_844/';
+        $url = 'https://m.biquge5200.cc/info-41665/';
 // 定义采集规则
         $rules = [
-//            'text' => ['.chapter>li>a', 'text'],
-            'text' => ['dd>a', 'text'],
-//            'herf' => ['.chapter>li>a', 'href'],
-            'herf' => ['dd>a', 'href'],
+            'text' => ['.chapter>li>a', 'text'],
+//            'text' => ['dd>a', 'text'],
+            'herf' => ['.chapter>li>a', 'href'],
+//            'herf' => ['dd>a', 'href'],
         ];
         $rt = QueryList::query($url,$rules, '', 'UTF-8', 'GB2312')->getData();
         print_r($rt);
