@@ -665,8 +665,8 @@ class Get extends Command
             $pro = new \swoole_process(function (\swoole_process $pro) use ($i) {
 
                 //获取html文件
-//                $content = $this->updateChapter($i);
-                $this->aaa();
+                $this->updateChapter($i);
+//                $this->aaa();
                 $pro->write('index:' . $i);
                 //写入管道
 
