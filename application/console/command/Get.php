@@ -715,6 +715,7 @@ class Get extends Command
                     $match = \QL\QueryList::Query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->data;
                     if (!$match) {
                         print_r($match);
+                        print_r($datas);
                         echo $k . $v['books_id'] . '二次-----没有匹配到数据' . PHP_EOL;
                         $p = Cache::get('p');
                         $p = explode(',', $p);
