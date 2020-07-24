@@ -638,16 +638,16 @@ class Get extends Command
 
         $p = Cache::get('p');
         echo $p . '||' . PHP_EOL;
-//        Cache::set('p', '', 3600);
-//        for ($i = 0; $i < 10; $i++) {
-//            echo '------开始' . $i . PHP_EOL;
-//            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
-//                $this->updateChapter($i);
-//            });
-//            $pid = $process->start();
-////            \swoole_process::wait();
-//            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
-//        }
+        Cache::set('p', '', 3600);
+        for ($i = 0; $i < 3; $i++) {
+            echo '------开始' . $i . PHP_EOL;
+            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
+                $this->updateChapter($i);
+            });
+            $pid = $process->start();
+//            \swoole_process::wait();
+            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+        }
     }
 
 
