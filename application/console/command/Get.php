@@ -727,7 +727,11 @@ class Get extends Command
                             print_r($content);
                             echo  '////'. PHP_EOL;
                             $match = \QL\QueryList::Query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->data;
-        print_r($match);exit;
+                             print_r($match);
+                            echo  '////'. PHP_EOL;
+                            $hhh= file_get_contents($v['books_url']);
+                            print_r($hhh);
+                            echo  '////'. PHP_EOL;
                             $p = Cache::get('p');
                             $p = explode(',', $p);
                             $p[] = $v['books_id'];
