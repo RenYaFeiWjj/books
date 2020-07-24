@@ -673,13 +673,12 @@ class Get extends Command
 
             $pro_id = $pro->start();
             $pro->write('index:' . $i);
-            $pro->push('进程的消息队列内容');
             $work[$pro_id] = $pro;
 
         }
 
         while (1) {
-            $ret = swoole_process::wait();
+            $ret = \swoole_process::wait();
             if ($ret) {// $ret 是个数组 code是进程退出状态码，
                 $pid = $ret['pid'];
                 echo PHP_EOL . "Worker Exit, PID=" . $pid . PHP_EOL;
