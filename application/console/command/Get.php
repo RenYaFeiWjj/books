@@ -754,7 +754,7 @@ class Get extends Command
                     'time' => [$has['books_time'], 'text'],
                 );
 
-                $res = query($datas, $content);
+                $res = QueryList::query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->getData();
                 if ($res && isset($res[0]) && $res[0]) {
                     $time = getDates($res[0]['time']);
                     //如果最后一次更新时间大于现在时间半年 状态为完结
