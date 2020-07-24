@@ -712,38 +712,18 @@ class Get extends Command
                         'text' => ['.block_txt2>p:eq(5) a', 'text'],
                         'herf' => ['.block_txt2>p:eq(5) a', 'href'],
                     ];
-                    $match = query($datas, $content);
+                    $match = query($v['books_url'], $content, '', 'UTF-8', 'GB2312');
                     if (!$match) {
-                        $match = \QL\QueryList::Query($datas, $content, '', 'UTF-8', 'GB2312')->data;
                         echo $k . $v['books_id'] . '二次-----没有匹配到数据' . PHP_EOL;
-                        if($match){
-                            echo $k . $v['books_id'] . '三次-----匹配到数据' . PHP_EOL;
-                        }else{
-                            echo $k . $v['books_id'] . '三次-----没有匹配到数据' . PHP_EOL;
-                            print_r($v['books_url']);
-                            echo  '////'. PHP_EOL;
-                            print_r($datas);
-                            echo  '////'. PHP_EOL;
-                            print_r($content);
-                            echo  '////'. PHP_EOL;
-                            $match = \QL\QueryList::Query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->data;
-                             print_r($match);
-                            echo  '////'. PHP_EOL;
-                            $hhh= file_get_contents($v['books_url']);
-                            print_r($hhh);
-                            echo  '////'. PHP_EOL;
-                            $p = Cache::get('p');
-                            $p = explode(',', $p);
-                            $p[] = $v['books_id'];
-                            $p = implode(',', $p);
-                            Cache::set('p', $p, 60 * 60 * 24);
-                            echo 'exit--------' . PHP_EOL;
-                            exit;
-                        }
-
+                        $p = Cache::get('p');
+                        $p = explode(',', $p);
+                        $p[] = $v['books_id'];
+                        $p = implode(',', $p);
+                        Cache::set('p', $p, 60 * 60 * 24);
+                        echo 'exit--------' . PHP_EOL;
+                        exit;
                     }
                     print_r($match);
-
                 }
 //                //去除前面重复的几个最新章节
 //                $match = array_unique_fb($match);
@@ -877,7 +857,8 @@ class Get extends Command
                         continue;
                     }
                 }
-                print_r($match);exit;
+                print_r($match);
+                exit;
                 //去除前面重复的几个最新章节
                 $match = array_unique_fb($match);
                 $chapter = [];
