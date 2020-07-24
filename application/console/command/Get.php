@@ -753,6 +753,7 @@ class Get extends Command
             return false;
         }
         foreach ($data as $v) {
+            sleep(10);
             echo $k . '-----' . $v['books_id'] . PHP_EOL;
             echo $k . '-----' . $v['books_name'] . PHP_EOL;
             echo $k . '-----' . $v['books_url'] . PHP_EOL;
