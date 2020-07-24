@@ -635,7 +635,7 @@ class Get extends Command
         Cache::set('zhang', 0, 3600);
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
         $a = Cache::get('p');
-        print_r(\GuzzleHttp\json_decode($a ,true));exit;
+        print_r(\$a);exit;
 //        $this->updateChapter(1);
 //
 //        for ($i = 0; $i < 10; $i++) {
