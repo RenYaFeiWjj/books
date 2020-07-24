@@ -714,6 +714,7 @@ class Get extends Command
                     ];
                     $match = \QL\QueryList::Query($v['books_url'], $content, '', 'UTF-8', 'GB2312')->data;
                     if (!$match) {
+                        print_r($match);
                         echo $k . $v['books_id'] . '二次-----没有匹配到数据' . PHP_EOL;
                         $p = Cache::get('p');
                         $p = explode(',', $p);
@@ -724,8 +725,6 @@ class Get extends Command
                         exit;
 
                     }
-                    print_r($match);
-
                 }
 //                //去除前面重复的几个最新章节
 //                $match = array_unique_fb($match);
