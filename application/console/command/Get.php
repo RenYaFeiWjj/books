@@ -707,7 +707,7 @@ class Get extends Command
     public function creatProcess($i, $url)
     {
 //    每次过来统计一下进程数量
-        $cmd = "ps -ef |grep test1 |grep -v grep |wc -l";
+        $cmd = "ps -ef |grep get |grep -v grep |wc -l";
         $pCount = system($cmd);//进程数量
         if ($pCount < 200) {
             //    创建子进程
