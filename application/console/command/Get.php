@@ -662,29 +662,29 @@ class Get extends Command
 
             //创建多线程
 
-            $pro = new \swoole_process(function (\swoole_process $work) use ($i) {
+            $pro = new \swoole_process(function (\swoole_process $pro) use ($i) {
 
                 //获取html文件
 //                $content = $this->updateChapter($i);
-                $this->aaa($work);
+                $pro->write('index:' . $i);
                 //写入管道
 
             }, true);
             $pro_id = $pro->start();
-            $pro->write('index:' . $i);
+            echo $pro->read();
             $work[$pro_id] = $pro;
 
         }
 
-        while (1) {
-            $ret = \swoole_process::wait();
-            if ($ret) {// $ret 是个数组 code是进程退出状态码，
-                $pid = $ret['pid'];
-                echo PHP_EOL . "Worker Exit, PID=" . $pid . PHP_EOL;
-            } else {
-                break;
-            }
-        }
+//        while (1) {
+//            $ret = \swoole_process::wait();
+//            if ($ret) {// $ret 是个数组 code是进程退出状态码，
+//                $pid = $ret['pid'];
+//                echo PHP_EOL . "Worker Exit, PID=" . $pid . PHP_EOL;
+//            } else {
+//                break;
+//            }
+//        }
 
 
         $e_time = time();
