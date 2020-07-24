@@ -635,19 +635,19 @@ class Get extends Command
     {
         Cache::set('zhang', 0, 3600);
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
-//        $this->updateChapter(1);
+        $this->updateChapter(1);
 
         $p = Cache::get('p');
         echo $p . '||' . PHP_EOL;
-        for ($i = 0; $i < 5; $i++) {
-            echo '------开始' . $i . PHP_EOL;
-            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
-                $this->updateChapter($i);
-            });
-            $pid = $process->start();
-//            \swoole_process::wait();
-            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
-        }
+//        for ($i = 0; $i < 5; $i++) {
+//            echo '------开始' . $i . PHP_EOL;
+//            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
+//                $this->updateChapter($i);
+//            });
+//            $pid = $process->start();
+////            \swoole_process::wait();
+//            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+//        }
     }
 
 
@@ -661,21 +661,21 @@ class Get extends Command
 //            ->where(['a.chapter_name' => ''])
 //            ->limit($k * 500, 500)
 //            ->select();
-        $count = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
-            ->where(['a.chapter_name' => ''])
-//            ->where(['c.books_status' => 0])
-//            ->where('c.books_id' ,'in',$arr)
-            ->where('c.books_url', 'not like', '%m.37zw.n%')
-            ->field('c.*')
-            ->count('*');
-        $limit = ceil($count / 5);
+//        $count = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
+//            ->where(['a.chapter_name' => ''])
+////            ->where(['c.books_status' => 0])
+////            ->where('c.books_id' ,'in',$arr)
+//            ->where('c.books_url', 'not like', '%m.37zw.n%')
+//            ->field('c.*')
+//            ->count('*');
+//        $limit = ceil($count / 5);
         $data = Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['a.chapter_name' => ''])
 //            ->where(['c.books_status' => 0])
 //            ->where('c.books_id' ,'in',$arr)
             ->where('c.books_url', 'not like', '%m.37zw.n%')
             ->field('c.*')
-            ->limit($k * $limit, $limit)
+//            ->limit($k * $limit, $limit)
             ->select();
 
         if (!$data) {
@@ -713,7 +713,7 @@ class Get extends Command
                     $p[] = $v['books_id'];
                     $p = implode(',', $p);
                     Cache::set('p', $p, 60 * 60 * 24);
-                    continue;
+                    exit;
                 }
                 //去除前面重复的几个最新章节
                 $match = array_unique_fb($match);

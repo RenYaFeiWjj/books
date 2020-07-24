@@ -154,7 +154,7 @@ Class Books extends Base
     {
 //        $this->updateChapter(2);
         \think\Loader::import('QueryList', EXTEND_PATH);
-        $url = 'https://m.biquge5200.cc/info-56455/';
+        $url = 'https://m.biquge5200.cc/info-9853/';
 // 定义采集规则
         $rules = [
             'text' => ['.chapter>li>a', 'text'],
@@ -162,8 +162,7 @@ Class Books extends Base
         ];
         $rt = QueryList::query($url,$rules, '', 'UTF-8', 'GB2312')->getData();
 
-        print_r($rt);
-        exit;
+
         $books_name = input('post.books_name');
         $rule_id = input('post.rule_id');
 
