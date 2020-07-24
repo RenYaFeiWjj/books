@@ -635,64 +635,6 @@ class Get extends Command
 
     public function updateChapters()
     {
-//        Cache::set('zhang', 0, 3600);
-//        echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
-//
-//        $p = Cache::set('p','');
-//        echo $p . '||' . PHP_EOL;
-////        $this->updateChapter(1);
-//        for ($i = 0; $i < 40; $i++) {
-//            echo '------开始' . $i . PHP_EOL;
-//            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
-//                $this->updateChapter($i);
-//            });
-//            $pid = $process->start();
-////            \swoole_process::wait();
-//            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
-//        }
-//        $this->updateChapter(0);
-//        $s_time = time();
-//        echo '开始时间:' . date('H:i:s', $s_time) . PHP_EOL;
-//        $work_number = 10;
-//
-//        for ($i = 0; $i < $work_number; $i++) {
-//
-//            //创建多线程
-//
-//            $pro = new \swoole_process(function (\swoole_process $pro) use ($i) {
-//
-//                //获取html文件
-//                $this->updateChapter($i);
-////                $this->aaa();
-////                $pro->write('index:' . $i);
-//                //写入管道
-//
-//            });
-//            $pro_id = $pro->start();
-//            sleep(1);
-////            echo $pro->read();
-//            $work[$pro_id] = $pro;
-//
-//        }
-
-//        while (1) {
-//            $ret = \swoole_process::wait();
-//            if ($ret) {// $ret 是个数组 code是进程退出状态码，
-//                $pid = $ret['pid'];
-//                echo PHP_EOL . "Worker Exit, PID=" . $pid . PHP_EOL;
-//            } else {
-//                break;
-//            }
-//        }
-
-
-//        $e_time = time();
-//
-//        echo '结束时间:' . date('H:i:s', $e_time) . PHP_EOL;
-//
-//
-//        echo '所用时间:' . ($e_time - $s_time) . '秒' . PHP_EOL;
-
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
         $baseUrl = "http://www.baidu.com/";//自定义网页
         $count = 100;//为了方便演示，此处用1000意思一下
@@ -743,7 +685,7 @@ class Get extends Command
 //            ->where(['c.books_status' => 0])
             ->where('c.books_id','not in',$books_ids)
 //            ->where('c.books_id' ,'in',$arr)
-            ->where('c.books_url', 'not like', '%m.37zw.n%')
+            ->where('c.books_url', 'like', '%m.37zw.n%')
             ->field('c.*')
             ->limit($k * 400, 400)
             ->select();
