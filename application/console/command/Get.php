@@ -714,14 +714,21 @@ class Get extends Command
                     ];
                     $match = query($datas, $content);
                     if (!$match) {
+                        $match = \QL\QueryList::Query($datas, $content, '', 'UTF-8', 'GB2312')->data;
                         echo $k . $v['books_id'] . '二次-----没有匹配到数据' . PHP_EOL;
-                        $p = Cache::get('p');
-                        $p = explode(',', $p);
-                        $p[] = $v['books_id'];
-                        $p = implode(',', $p);
-                        Cache::set('p', $p, 60 * 60 * 24);
-                        echo 'exit--------' . PHP_EOL;
-                        exit;
+                        if($match){
+                            echo $k . $v['books_id'] . '三次-----匹配到数据' . PHP_EOL;
+                        }else{
+                            echo $k . $v['books_id'] . '三次-----没有匹配到数据' . PHP_EOL;
+                            $p = Cache::get('p');
+                            $p = explode(',', $p);
+                            $p[] = $v['books_id'];
+                            $p = implode(',', $p);
+                            Cache::set('p', $p, 60 * 60 * 24);
+                            echo 'exit--------' . PHP_EOL;
+                            exit;
+                        }
+
                     }
                     print_r($match);
 
