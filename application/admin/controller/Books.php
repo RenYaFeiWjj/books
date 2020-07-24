@@ -156,6 +156,8 @@ Class Books extends Base
         $url = 'https://m.biquge5200.cc/info-76216/';
         $curl = model("Curl");
         $res = $curl->getDataHttps($url);
+        $html = file_get_contents($url);
+        print_r($html);exit;
 // 定义采集规则
         $rules = [
             'text' => ['.chapter>li>a', 'text'],
