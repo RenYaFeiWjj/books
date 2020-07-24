@@ -633,7 +633,9 @@ class Get extends Command
     public function updateChapters()
     {
         Cache::set('zhang', 0, 3600);
+        echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
         $this->updateChapter(1);
+
 //        for ($i = 0; $i < 100; $i++) {
 //            echo '------开始' . $i . PHP_EOL;
 //            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
@@ -656,7 +658,7 @@ class Get extends Command
 //            ->where(['a.chapter_name' => ''])
 //            ->limit($k * 500, 500)
 //            ->select();
-
+        echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
         Db::table('books_cou')->alias('c')->join('books_chapter a', 'a.books_id = c.books_id', 'left')
             ->where(['a.chapter_name' => ''])
 //            ->where(['c.books_status' => 0])
