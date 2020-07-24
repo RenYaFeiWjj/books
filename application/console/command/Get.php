@@ -666,11 +666,13 @@ class Get extends Command
 
                 //获取html文件
 //                $content = $this->updateChapter($i);
+                $this->aaa();
                 $pro->write('index:' . $i);
                 //写入管道
 
             }, true);
             $pro_id = $pro->start();
+            sleep(1);
             echo $pro->read();
             $work[$pro_id] = $pro;
 
@@ -695,16 +697,11 @@ class Get extends Command
         echo '所用时间:' . ($e_time - $s_time) . '秒' . PHP_EOL;
     }
 
-    public function aaa($worker)
+    public function aaa()
     {
-        echo 111111111111111111111111;
-        $recv = $worker->pop();
-        echo "子输出主内容: {$recv}" . PHP_EOL;
-        //get guandao content
-        $recv = $worker->read();
-        sleep(2);
-        echo PHP_EOL . $worker->pid . '===' . $recv;
-        $worker->exit(0);
+       for ($i=0;$i<100;$i++){
+           echo '---' . $i . PHP_EOL;
+       }
 
     }
 
