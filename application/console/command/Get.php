@@ -219,12 +219,12 @@ class Get extends Command
 //
 //        echo "采集m.37zw.net" . PHP_EOL;
 //        $this->ready($this->config['m.37zw.net']);
-//        echo "采集m.biquge5200.cc" . PHP_EOL;
-//        $this->ready($this->config['m.biquge5200.cc']);
-//        echo "采集起点" . PHP_EOL;
-//        $this->getCaiji($output); //采集笔趣pc端
-//        echo "更新biquge5200作者" . PHP_EOL;
-//        $this->updateMData($output, 14, 'm.biquge5200.cc'); //更新作者和更新时间
+        echo "采集m.biquge5200.cc" . PHP_EOL;
+        $this->ready($this->config['m.biquge5200.cc']);
+        echo "采集起点" . PHP_EOL;
+        $this->getCaiji($output); //采集笔趣pc端
+        echo "更新biquge5200作者" . PHP_EOL;
+        $this->updateMData($output, 14, 'm.biquge5200.cc'); //更新作者和更新时间
 //        echo "更新37zw作者" . PHP_EOL;
 //        $this->updateMData($output, 14, 'm.37zw.net'); //更新作者和更新时间
 //        echo '------结束咯' . PHP_EOL;
