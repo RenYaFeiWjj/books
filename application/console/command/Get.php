@@ -635,10 +635,10 @@ class Get extends Command
     {
         Cache::set('zhang', 0, 3600);
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
-        $this->updateChapter(1);
 
         $p = Cache::get('p');
         echo $p . '||' . PHP_EOL;
+        $this->updateChapter(1);
 //        for ($i = 0; $i < 5; $i++) {
 //            echo '------开始' . $i . PHP_EOL;
 //            $process = new \swoole_process(function (\swoole_process $worker) use ($i) {
