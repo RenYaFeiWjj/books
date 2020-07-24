@@ -685,7 +685,7 @@ class Get extends Command
 //            ->where(['c.books_status' => 0])
             ->where('c.books_id','not in',$books_ids)
 //            ->where('c.books_id' ,'in',$arr)
-            ->where('c.books_url', 'like', '%m.37zw.n%')
+            ->where('c.books_url', 'not like', '%m.37zw.n%')
             ->field('c.*')
             ->limit($k * 400, 400)
             ->select();
