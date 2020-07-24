@@ -651,29 +651,29 @@ class Get extends Command
 //            echo '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
 //        }
         $this->updateChapter(0);
-//        $s_time = time();
-//        echo '开始时间:' . date('H:i:s', $s_time) . PHP_EOL;
-//        $work_number = 10;
-//
-//        for ($i = 0; $i < $work_number; $i++) {
-//
-//            //创建多线程
-//
-//            $pro = new \swoole_process(function (\swoole_process $pro) use ($i) {
-//
-//                //获取html文件
-//                $this->updateChapter($i);
-////                $this->aaa();
-//                $pro->write('index:' . $i);
-//                //写入管道
-//
-//            });
-//            $pro_id = $pro->start();
-//            sleep(1);
-//            echo $pro->read();
-//            $work[$pro_id] = $pro;
-//
-//        }
+        $s_time = time();
+        echo '开始时间:' . date('H:i:s', $s_time) . PHP_EOL;
+        $work_number = 10;
+
+        for ($i = 0; $i < $work_number; $i++) {
+
+            //创建多线程
+
+            $pro = new \swoole_process(function (\swoole_process $pro) use ($i) {
+
+                //获取html文件
+                $this->updateChapter($i);
+//                $this->aaa();
+                $pro->write('index:' . $i);
+                //写入管道
+
+            });
+            $pro_id = $pro->start();
+            sleep(1);
+            echo $pro->read();
+            $work[$pro_id] = $pro;
+
+        }
 
 //        while (1) {
 //            $ret = \swoole_process::wait();
