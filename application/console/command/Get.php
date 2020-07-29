@@ -224,7 +224,7 @@ class Get extends Command
         echo "采集起点" . PHP_EOL;
         $this->getCaiji($output); //采集笔趣pc端
         echo "更新biquge5200作者" . PHP_EOL;
-        $this->updateMData($output, 14, 'm.biquge5200.cc'); //更新作者和更新时间
+        $this->updateMData($output, 314, 'm.biquge5200.cc'); //更新作者和更新时间
 //        echo "更新37zw作者" . PHP_EOL;
 //        $this->updateMData($output, 14, 'm.37zw.net'); //更新作者和更新时间
         echo '------结束咯' . PHP_EOL;
@@ -681,7 +681,7 @@ class Get extends Command
 //        $books_ids = Db::table('books_chapter')->column('books_id');
         $data = Db::table('books_cou')->alias('c')
             ->join('books_chapter a', 'a.books_id = c.books_id', 'left')
-            ->where(['a.chapter_name' => ''])
+//            ->where(['a.chapter_name' => ''])
             ->where(['c.books_status' => 0])
 //            ->where('c.books_id','not in',$books_ids)
 //            ->where('c.books_id' ,'in',$arr)
