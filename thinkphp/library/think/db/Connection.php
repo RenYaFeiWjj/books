@@ -109,7 +109,7 @@ abstract class Connection
         // Query类
         'query'           => '\\think\\db\\Query',
         // 是否需要断线重连
-        'break_reconnect' => false,
+        'break_reconnect' => true,
     ];
 
     // PDO连接参数
@@ -315,7 +315,12 @@ abstract class Connection
      */
     public function free()
     {
-        $this->PDOStatement = null;
+        try {
+            $this->PDOStatement = null;
+        } catch (Exception $e) {
+            Log::write("has error when free PDOStatement maybe mysql gone away,skip it:" . $e->getMessage(), log::DEBUG);
+        }
+
     }
 
     /**
