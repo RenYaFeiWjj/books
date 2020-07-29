@@ -687,7 +687,7 @@ class Get extends Command
 //            ->where('c.books_id' ,'in',$arr)
             ->where('c.books_url', 'not like', '%m.37zw.n%')
             ->field('c.*')
-            ->limit($k * 400, 400)
+            ->limit($k * 100, 100)
             ->select();
         if (!$data) {
             echo $k . '------第' . $k . '个没有数据' . PHP_EOL;

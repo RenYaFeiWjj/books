@@ -169,7 +169,6 @@ Class Books extends Base
             $curl = model('Curl');
             $url = $rule['rule_url'] . $books_name;
             $data = $curl->getDataHttps($url);
-
             //第三方类库
             Loader::import('QueryList', EXTEND_PATH);
             //取得小说信息
@@ -177,11 +176,13 @@ Class Books extends Base
                 'name' => array($rule['search_name'], 'text'),
                 'href' => array($rule['search_url'], 'href'),
             );
-
             //匹配出信息
             $result = query($data, $content);
             foreach ($result as &$val) {
                 $val['name'] = mb_convert_encoding($val['name'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
+                if (filter_var($url, FILTER_VALIDATE_URL) === false) {
+                    $val['href'] =  correct_url($rule['rule_url'], $val['href']);
+                }
             }
 
             $this->view->result = $result;
