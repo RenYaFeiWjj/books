@@ -689,7 +689,6 @@ class Get extends Command
             ->field('c.*')
             ->limit($k * 400, 400)
             ->select();
-        print_r($data);
         if (!$data) {
             echo $k . '------第' . $k . '个没有数据' . PHP_EOL;
             return false;
