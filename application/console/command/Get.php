@@ -210,21 +210,21 @@ class Get extends Command
     protected function execute(Input $input, Output $output)
     {
         ini_set('memory_limit', '1024M');
-//设置永不超时
+        //设置永不超时
         set_time_limit(0);
         \think\Loader::import('QueryList', EXTEND_PATH);
         $this->start_time = $this->getCurrentTime();
         echo '------开始咯' . PHP_EOL;
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
-//
-//        echo "采集m.37zw.net" . PHP_EOL;
-//        $this->ready($this->config['m.37zw.net']);
-        echo "采集m.biquge5200.cc" . PHP_EOL;
-        $this->ready($this->config['m.biquge5200.cc']);
-        echo "采集起点" . PHP_EOL;
-        $this->getCaiji($output); //采集笔趣pc端
-        echo "更新biquge5200作者" . PHP_EOL;
-        $this->updateMData($output, 14, 'm.biquge5200.cc'); //更新作者和更新时间
+////
+////        echo "采集m.37zw.net" . PHP_EOL;
+////        $this->ready($this->config['m.37zw.net']);
+//        echo "采集m.biquge5200.cc" . PHP_EOL;
+//        $this->ready($this->config['m.biquge5200.cc']);
+//        echo "采集起点" . PHP_EOL;
+//        $this->getCaiji($output); //采集笔趣pc端
+//        echo "更新biquge5200作者" . PHP_EOL;
+//        $this->updateMData($output, 14, 'm.biquge5200.cc'); //更新作者和更新时间
 //        echo "更新37zw作者" . PHP_EOL;
 //        $this->updateMData($output, 14, 'm.37zw.net'); //更新作者和更新时间
 //        echo '------结束咯' . PHP_EOL;
@@ -265,13 +265,13 @@ class Get extends Command
     {
         $curl = new Curl();
         $html = $curl->getDataHttps($url);
-//第三方类库
+        //第三方类库
         Loader::import('QueryList', EXTEND_PATH);
-//取得更新时间
+        //取得更新时间
         $content = $config['search_rule'];
 
         echo $k . '------匹配出信息' . PHP_EOL;
-//匹配出信息
+        //匹配出信息
         $data = query($html, $content);
         if (!$data) {
             echo $k . '------没有数据了' . PHP_EOL;
@@ -299,14 +299,14 @@ class Get extends Command
      */
     public function Warehousings($href, $name, $config)
     {
-//引入curl方法
+        //引入curl方法
         $curl = new Curl();
         $all = $curl->getDataHttps($href);
-//第三方类库
+        //第三方类库
         Loader::import('QueryList', EXTEND_PATH);
-//取得小说信息
+        //取得小说信息
         $content = $config['match_rule'];
-//匹配出信息
+        //匹配出信息
         $info = query($all, $content);
         if (!empty($info[0]) && isset($info[0]['author'])) {
             $author = str_replace('作者：', '', $info[0]['author']);
@@ -689,7 +689,7 @@ class Get extends Command
             ->field('c.*')
             ->limit($k * 400, 400)
             ->select();
-
+        print_r($data);
         if (!$data) {
             echo $k . '------第' . $k . '个没有数据' . PHP_EOL;
             return false;
