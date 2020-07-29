@@ -201,7 +201,7 @@ function correct_url($url, $basename)
         $res = $href['scheme'] . '://' . $href['host'] . '/' . $path . '/';
     } else {
         if (filter_var($url, FILTER_VALIDATE_URL) !== false) {
-            $res = $href['scheme'] . '://' . $href['host'] . '/' .  $path;
+            $res = $href['scheme'] . '://' . $href['host']  .  $basename;
         }else{
             $res = $href['scheme'] . '://' . $href['host'] . $href['path'] . $path;
         }

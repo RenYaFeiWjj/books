@@ -64,8 +64,8 @@ class Catalog extends Model
      */
     public function getCatalog($books_id)
     {
-        $match = cache($books_id . '_catalog');
-//        $match = '';
+//        $match = cache($books_id . '_catalog');
+        $match = '';
         if (empty($match)) {
 
             $books = $this->getBook($books_id);
