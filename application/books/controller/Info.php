@@ -60,9 +60,9 @@ class Info extends Base
                     'title' => array($rule['info_title'], 'text'),
                     'content' => array($rule['info_content'], 'text', '<br />'),
                 );
-
                 //第三方类库
                 $info = query($res, $data);
+
                 $chapter_content = mb_convert_encoding($info[0]['content'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
 
                 $chapter_name = mb_convert_encoding($info[0]['title'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');

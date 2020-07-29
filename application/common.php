@@ -200,7 +200,11 @@ function correct_url($url, $basename)
     if (strpos($url, 'https://m.biquge5200.cc') !== false) {
         $res = $href['scheme'] . '://' . $href['host'] . '/' . $path . '/';
     } else {
-        $res = $href['scheme'] . '://' . $href['host'] . $href['path'] . $path;
+        if (filter_var($url, FILTER_VALIDATE_URL) !== false) {
+            $res = $href['scheme'] . '://' . $href['host'] . '/' .  $path;
+        }else{
+            $res = $href['scheme'] . '://' . $href['host'] . $href['path'] . $path;
+        }
     }
     return $res;
 }
