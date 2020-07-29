@@ -217,17 +217,17 @@ class Get extends Command
         echo '------开始咯' . PHP_EOL;
         echo "process-start-time:" . date("Ymd H:i:s") . PHP_EOL;
 ////
-////        echo "采集m.37zw.net" . PHP_EOL;
-////        $this->ready($this->config['m.37zw.net']);
-//        echo "采集m.biquge5200.cc" . PHP_EOL;
-//        $this->ready($this->config['m.biquge5200.cc']);
-//        echo "采集起点" . PHP_EOL;
-//        $this->getCaiji($output); //采集笔趣pc端
-//        echo "更新biquge5200作者" . PHP_EOL;
-//        $this->updateMData($output, 14, 'm.biquge5200.cc'); //更新作者和更新时间
+//        echo "采集m.37zw.net" . PHP_EOL;
+//        $this->ready($this->config['m.37zw.net']);
+        echo "采集m.biquge5200.cc" . PHP_EOL;
+        $this->ready($this->config['m.biquge5200.cc']);
+        echo "采集起点" . PHP_EOL;
+        $this->getCaiji($output); //采集笔趣pc端
+        echo "更新biquge5200作者" . PHP_EOL;
+        $this->updateMData($output, 14, 'm.biquge5200.cc'); //更新作者和更新时间
 //        echo "更新37zw作者" . PHP_EOL;
 //        $this->updateMData($output, 14, 'm.37zw.net'); //更新作者和更新时间
-//        echo '------结束咯' . PHP_EOL;
+        echo '------结束咯' . PHP_EOL;
         $this->updateChapters();
 //        $this->updateChapterid();
 //        $output->writeln("更新成功" . $this->update_count);
@@ -678,14 +678,13 @@ class Get extends Command
      */
     public function updateChapter($k)
     {
-        $books_ids = Db::table('books_chapter')->column('books_id');
+//        $books_ids = Db::table('books_chapter')->column('books_id');
         $data = Db::table('books_cou')->alias('c')
-//            ->join('books_chapter a', 'a.books_id = c.books_id', 'left')
-//            ->where(['a.chapter_name' => ''])
-//            ->where(['c.books_status' => 0])
-            ->where('c.books_id','not in',$books_ids)
+            ->join('books_chapter a', 'a.books_id = c.books_id', 'left')
+            ->where(['a.chapter_name' => ''])
+            ->where(['c.books_status' => 0])
+//            ->where('c.books_id','not in',$books_ids)
 //            ->where('c.books_id' ,'in',$arr)
-            ->where('c.books_url', 'not like', '%m.37zw.n%')
             ->field('c.*')
             ->limit($k * 100, 100)
             ->select();
