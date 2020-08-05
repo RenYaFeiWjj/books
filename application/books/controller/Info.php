@@ -52,6 +52,8 @@ class Info extends Base
             $chapter_url = base64_decode($chapter_url);
             $curl = model("Curl");
             $res = $curl->getDataHttps($chapter_url);
+            print_r($chapter_url);
+            print_r($res);exit;
             if ($res) {
                 $href = parse_url($chapter_url);
                 $rule = Db::table('books_rule')->field('info_title,info_content')->alias('r')->join('books_rule_info i', 'i.rule_id=r.rule_id')->where('rule_url', 'like', "%{$href["host"]}%")->find();
@@ -62,7 +64,6 @@ class Info extends Base
                 );
                 //第三方类库
                 $info = query($res, $data);
-                print_r($info);exit;
                 $chapter_content = mb_convert_encoding($info[0]['content'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
 
                 $chapter_name = mb_convert_encoding($info[0]['title'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
