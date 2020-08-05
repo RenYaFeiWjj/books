@@ -62,7 +62,7 @@ class Info extends Base
                 );
                 //第三方类库
                 $info = query($res, $data);
-
+                print_r($info);exit;
                 $chapter_content = mb_convert_encoding($info[0]['content'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
 
                 $chapter_name = mb_convert_encoding($info[0]['title'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
