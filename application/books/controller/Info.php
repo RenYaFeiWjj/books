@@ -52,8 +52,6 @@ class Info extends Base
             $chapter_url = base64_decode($chapter_url);
             $curl = model("Curl");
             $res = $curl->getDataHttps($chapter_url);
-            print_r($chapter_url);
-            print_r($res);exit;
             if ($res) {
                 $href = parse_url($chapter_url);
                 $rule = Db::table('books_rule')->field('info_title,info_content')->alias('r')->join('books_rule_info i', 'i.rule_id=r.rule_id')->where('rule_url', 'like', "%{$href["host"]}%")->find();
