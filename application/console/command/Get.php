@@ -280,7 +280,6 @@ class Get extends Command
         }
 
         echo $k . "------匹配到" . count($data) . '条' . PHP_EOL;
-        print_r($data);exit;
 
         if ($data) {
             foreach ($data as $v) {
