@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 127.0.0.1
-Source Server Version : 50553
-Source Host           : localhost:3306
+Source Server         : 119.45.156.22
+Source Server Version : 50648
+Source Host           : 119.45.156.22:3306
 Source Database       : new_books
 
 Target Server Type    : MYSQL
-Target Server Version : 50553
+Target Server Version : 50648
 File Encoding         : 65001
 
-Date: 2019-03-14 18:41:55
+Date: 2020-12-22 15:44:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,7 +33,7 @@ CREATE TABLE `books_admin` (
 -- ----------------------------
 -- Records of books_admin
 -- ----------------------------
-INSERT INTO `books_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '[\"\\u89d2\\u8272\\u7ba1\\u7406\",\"\\u7f51\\u7ad9\\u7528\\u6237\",\"\\u540e\\u53f0\\u7ba1\\u7406\\u5458\",\"\\u5c0f\\u8bf4\\u7ba1\\u7406\",\"\\u6dfb\\u52a0\\u5c0f\\u8bf4\",\"\\u5c0f\\u8bf4\\u5217\\u8868\",\"\\u5206\\u7c7b\\u7ba1\\u7406\",\"\\u5c0f\\u8bf4\\u5206\\u7c7b\",\"\\u91c7\\u96c6\\u7ba1\\u7406\",\"\\u89c4\\u5219\\u7ba1\\u7406\",\"\\u5c0f\\u8bf4\\u91c7\\u96c6\",\"\\u8bbe\\u7f6e\",\"\\u9996\\u9875\\u8bbe\\u7f6e\",\"\\u5e7b\\u706f\\u7247\\u8bbe\\u7f6e\",\"\\u7cfb\\u7edf\\u8bbe\\u7f6e\",\"\\u7f51\\u7ad9\\u8bbe\\u7f6e\",\"\\u90ae\\u4ef6\\u670d\\u52a1\",\"\\u7545\\u8a00\\u63a5\\u5165\"]', '拥有至高无上的权利', '2018-08-03 12:13:27', '0');
+INSERT INTO `books_admin` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '[\"\\u89d2\\u8272\\u7ba1\\u7406\",\"\\u7f51\\u7ad9\\u7528\\u6237\",\"\\u540e\\u53f0\\u7ba1\\u7406\\u5458\",\"\\u5c0f\\u8bf4\\u7ba1\\u7406\",\"\\u6dfb\\u52a0\\u5c0f\\u8bf4\",\"\\u5c0f\\u8bf4\\u5217\\u8868\",\"\\u5206\\u7c7b\\u7ba1\\u7406\",\"\\u5c0f\\u8bf4\\u5206\\u7c7b\",\"\\u91c7\\u96c6\\u7ba1\\u7406\",\"\\u89c4\\u5219\\u7ba1\\u7406\",\"\\u5c0f\\u8bf4\\u91c7\\u96c6\",\"\\u8bbe\\u7f6e\",\"\\u9996\\u9875\\u8bbe\\u7f6e\",\"\\u5e7b\\u706f\\u7247\\u8bbe\\u7f6e\",\"\\u7cfb\\u7edf\\u8bbe\\u7f6e\",\"\\u7f51\\u7ad9\\u8bbe\\u7f6e\",\"\\u90ae\\u4ef6\\u670d\\u52a1\",\"\\u7545\\u8a00\\u63a5\\u5165\"]', '拥有至高无上的权利', '2018-08-03 12:13:27', '0');
 
 -- ----------------------------
 -- Table structure for books_article
@@ -82,8 +82,9 @@ CREATE TABLE `books_cou` (
   `books_synopsis` text COLLATE utf8_bin COMMENT '书籍简介',
   `books_img` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '书籍封面',
   `books_url` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '书箱来源地址',
-  PRIMARY KEY (`books_id`,`books_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+  PRIMARY KEY (`books_id`,`books_name`),
+  UNIQUE KEY `books_name` (`books_name`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=10297 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of books_cou
@@ -141,7 +142,7 @@ CREATE TABLE `books_rule` (
   `is_search` tinyint(4) DEFAULT '0' COMMENT '是否可用于小说搜索 0否 1是',
   `is_urlencode` tinyint(4) DEFAULT '0' COMMENT '书名是否开启urlencode化 0否 1是',
   PRIMARY KEY (`rule_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='小说添加规则';
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='小说添加规则';
 
 -- ----------------------------
 -- Records of books_rule
@@ -154,6 +155,8 @@ INSERT INTO `books_rule` VALUES ('6', '笔趣阁3', 'https://www.bqg5.cc/', '', 
 INSERT INTO `books_rule` VALUES ('8', '顶点小说', 'https://www.23wxw.cc/', '', '', '0', '0');
 INSERT INTO `books_rule` VALUES ('11', '无图小说网', 'http://www.wutuxs.com/', '', '', '0', '0');
 INSERT INTO `books_rule` VALUES ('10', '笔趣阁小说网', 'https://www.biqugexsw.com/', '', '', '0', '0');
+INSERT INTO `books_rule` VALUES ('16', '三七中文网', 'https://m.37zw.net', '.line>a:nth-child(2)', '.line>a:nth-child(2)', '0', '0');
+INSERT INTO `books_rule` VALUES ('17', '笔趣手机网', 'https://m.biquge5200.cc', '.line>a:nth-child(2)', '.line>a:nth-child(2)', '0', '0');
 
 -- ----------------------------
 -- Table structure for books_rule_info
@@ -171,20 +174,23 @@ CREATE TABLE `books_rule_info` (
   `chapter_url` varchar(255) DEFAULT NULL COMMENT '章节地址匹配规则',
   `info_title` varchar(255) DEFAULT NULL COMMENT '章节标题',
   `info_content` varchar(255) DEFAULT NULL COMMENT '章节内容',
+  `is_zuixin` tinyint(4) DEFAULT '1' COMMENT '最新章节匹配1：正序；2：倒序',
   PRIMARY KEY (`rule_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='具体添加规则';
 
 -- ----------------------------
 -- Records of books_rule_info
 -- ----------------------------
-INSERT INTO `books_rule_info` VALUES ('1', 'h1', '#info>p:eq(0)', '#info>p:eq(2)', '.con_top>a:eq(1)', '#intro>p', '#fmimg>img', 'dd>a', 'dd>a', 'h1', '#content');
-INSERT INTO `books_rule_info` VALUES ('2', 'h1', '#info>p:eq(0)', '#info>p:eq(2)', '.con_top>a:eq(1)', '#intro>p', '#fmimg>img', 'dd>a', 'dd>a', 'h1', '#content');
-INSERT INTO `books_rule_info` VALUES ('4', 'h1', '.author>span:eq(0)', '.author>span:eq(1)', '.p2>p', '.p3', '.articleinfo>.l>p>img', '.chapterlist>ul>li>a', '.chapterlist>ul>li>a', 'h1', '#content>p');
-INSERT INTO `books_rule_info` VALUES ('5', '', '', '', '', '', '', '#chapterlist>li>a', '#chapterlist>li>a', 'h1', '#book_text');
-INSERT INTO `books_rule_info` VALUES ('6', '', '', '', '', '', '', '#list>dl>dd>a', '#list>dl>dd>a', 'h1', '#content');
-INSERT INTO `books_rule_info` VALUES ('8', '', '', '', '', '', '', '#list>.dl>.dd>a', '#list>.dl>.dd>a', 'h1', '#content');
-INSERT INTO `books_rule_info` VALUES ('11', '', '', '', '', '', '', '.L>a', '.L>a', 'h1', '#amain>dl>#contents');
-INSERT INTO `books_rule_info` VALUES ('10', '', '', '', '', '', '', '.listmain>dl>dd>a', '.listmain>dl>dd>a', 'h1', '#content');
+INSERT INTO `books_rule_info` VALUES ('1', 'h1', '#info>p:eq(0)', '#info>p:eq(2)', '.con_top>a:eq(1)', '#intro>p', '#fmimg>img', 'dd>a', 'dd>a', 'h1', '#content', '1');
+INSERT INTO `books_rule_info` VALUES ('2', 'h1', '#info>p:eq(0)', '#info>p:eq(2)', '.con_top>a:eq(1)', '#intro>p', '#fmimg>img', 'dd>a', 'dd>a', 'h1', '#content', '1');
+INSERT INTO `books_rule_info` VALUES ('4', 'h1', '.author>span:eq(0)', '.author>span:eq(1)', '.p2>p', '.p3', '.articleinfo>.l>p>img', '.chapterlist>ul>li>a', '.chapterlist>ul>li>a', 'h1', '#content>p', '1');
+INSERT INTO `books_rule_info` VALUES ('5', '', '', '', '', '', '', '#chapterlist>li>a', '#chapterlist>li>a', 'h1', '#book_text', '1');
+INSERT INTO `books_rule_info` VALUES ('6', '', '', '', '', '', '', '#list>dl>dd>a', '#list>dl>dd>a', 'h1', '#content', '1');
+INSERT INTO `books_rule_info` VALUES ('8', '', '', '', '', '', '', '#list>.dl>.dd>a', '#list>.dl>.dd>a', 'h1', '#content', '1');
+INSERT INTO `books_rule_info` VALUES ('11', '', '', '', '', '', '', '.L>a', '.L>a', 'h1', '#amain>dl>#contents', '1');
+INSERT INTO `books_rule_info` VALUES ('10', '', '', '', '', '', '', '.listmain>dl>dd>a', '.listmain>dl>dd>a', 'h1', '#content', '1');
+INSERT INTO `books_rule_info` VALUES ('16', 'h1', '.block_txt2>p:eq(1)', '.block_txt2>p:eq(4)', '.block_txt2>p:eq(2)>a', '.intro_info', '.block_img2>img', '.block_txt2>p:eq(5) a', '.block_txt2>p:eq(5) a', '#nr_title', '#nr1', '1');
+INSERT INTO `books_rule_info` VALUES ('17', 'h1', '.block_txt2>p:eq(1)', '.block_txt2>p:eq(4)', '.block_txt2>p:eq(2)>a', '.intro_info', '.block_img2>img', '.block_txt2>p:eq(5) a', '.block_txt2>p:eq(5) a', '.title', '.text', '1');
 
 -- ----------------------------
 -- Table structure for books_seo
@@ -262,7 +268,7 @@ CREATE TABLE `books_user` (
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `is_disable` tinyint(4) DEFAULT '0' COMMENT '是否禁用',
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of books_user
