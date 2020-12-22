@@ -239,16 +239,17 @@ class Get extends Command
 
     public function ready($config)
     {
-        for ($i = 0; $i < 15; $i++) {
-            if (isset($config['menu'][$i])) {
-                echo '------开始' . $config['menu'][$i]['url'] . PHP_EOL;
-                $process = new \swoole_process(function (\swoole_process $worker) use ($i, $config) {
-                    $this->process($i, $config, $config['menu'][$i]['url']);
-                });
-                $pid = $process->start();
-                echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
-            }
-        }
+        $this->process(1, $config, $config['menu'][1]['url']);
+//        for ($i = 0; $i < 15; $i++) {
+//            if (isset($config['menu'][$i])) {
+//                echo '------开始' . $config['menu'][$i]['url'] . PHP_EOL;
+//                $process = new \swoole_process(function (\swoole_process $worker) use ($i, $config) {
+//                    $this->process($i, $config, $config['menu'][$i]['url']);
+//                });
+//                $pid = $process->start();
+//                echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
+//            }
+//        }
 //        $this->process(2, $config, $config['menu'][2]['url']);
     }
 
@@ -273,6 +274,7 @@ class Get extends Command
         echo $k . '------匹配出信息' . PHP_EOL;
         //匹配出信息
         $data = query($html, $content);
+        print_r($data);exit;
         if (!$data) {
             echo $k . '------没有数据了' . PHP_EOL;
             return false;

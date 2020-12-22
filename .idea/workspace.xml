@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0250816-a906-4eb6-baa7-5bf397309a09" name="默认更改列表" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/tkbooks.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/tkbooks.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/books/view/mobile/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/books/view/mobile/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new_books.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/new_books1.sql" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -63,7 +59,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1608622158504</updated>
-      <workItem from="1608622159656" duration="917000" />
+      <workItem from="1608622159656" duration="1911000" />
     </task>
     <servers />
   </component>
