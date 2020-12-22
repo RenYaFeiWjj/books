@@ -209,6 +209,7 @@ class Get extends Command
 
     protected function execute(Input $input, Output $output)
     {
+        Cache::clear('num');
         ini_set('memory_limit', '1024M');
         //设置永不超时
         set_time_limit(0);
@@ -262,6 +263,7 @@ class Get extends Command
 
     public function search($k, $config, $url)
     {
+
         $curl = new Curl();
         $html = $curl->getDataHttps($url);
         //第三方类库
@@ -361,7 +363,10 @@ class Get extends Command
                     $chapter_data = ['books_id' => $books_id, 'chapter_name' => $end_chapter['text'], 'chapter_url' => $end_chapter['href']];
 
                     Db::table('books_chapter')->insert($chapter_data);
+                    $num = Cache::get('num');
+                    Cache::set('num', $num + 1);
                     echo '----插入小说信息' . PHP_EOL;
+                    echo '----共插入小说' . $num + 1 . PHP_EOL;
                 }
 
                 $this->count += 1;
@@ -659,7 +664,7 @@ class Get extends Command
                 $this->updateChapter($i);
             });
             $pid = $process->start();
-            echo $url . '------第' . $i . '个子进程创建完毕'.PHP_EOL;
+            echo $url . '------第' . $i . '个子进程创建完毕' . PHP_EOL;
         } else {
             sleep(10);//可以根据实际情况定义
             $this->creatProcess($i, $url);
@@ -670,7 +675,7 @@ class Get extends Command
     public function curlData($url)
     {
         sleep(20);//为了让子进程多存在一段时间，让大家看到效果
-        echo '$url'.PHP_EOL;
+        echo '$url' . PHP_EOL;
     }
 
 
@@ -702,7 +707,7 @@ class Get extends Command
             //print_r($books_url);
             $curl = new Curl();
             $ress = $curl->getDataHttps($v['books_url']);
-            if(!$ress){
+            if (!$ress) {
                 echo '获取页面失败' . PHP_EOL;
                 continue;
             }
@@ -749,7 +754,7 @@ class Get extends Command
                 $chapter = [];
                 if ($match) {
                     foreach ($match as $key => $val) {
-                    //使用该函数对结果进行转码
+                        //使用该函数对结果进行转码
                         $chapter[$key]['text'] = mb_convert_encoding($val[0], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
                         $chapter[$key]['href'] = correct_url($v['books_url'], $val[1]);
                     }
@@ -882,7 +887,7 @@ class Get extends Command
                 if ($match) {
                     foreach ($match as $key => $val) {
 
-                    //使用该函数对结果进行转码
+                        //使用该函数对结果进行转码
                         $chapter[$key]['text'] = mb_convert_encoding($val[0], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
                         $chapter[$key]['href'] = correct_url($v['books_url'], $val[1]);
 
