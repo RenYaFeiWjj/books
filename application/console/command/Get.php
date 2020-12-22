@@ -239,7 +239,7 @@ class Get extends Command
 
     public function ready($config)
     {
-        $this->process(1, $config, $config['menu'][1]['url']);
+        $this->process($config['menu'][1]['title'], $config, $config['menu'][1]['url']);
 //        for ($i = 0; $i < 15; $i++) {
 //            if (isset($config['menu'][$i])) {
 //                echo '------开始' . $config['menu'][$i]['url'] . PHP_EOL;
@@ -274,12 +274,14 @@ class Get extends Command
         echo $k . '------匹配出信息' . PHP_EOL;
         //匹配出信息
         $data = query($html, $content);
-        print_r($data);exit;
         if (!$data) {
             echo $k . '------没有数据了' . PHP_EOL;
             return false;
         }
+
         echo $k . "------匹配到" . count($data) . '条' . PHP_EOL;
+        print_r($data);exit;
+
         if ($data) {
             foreach ($data as $v) {
                 $has = Db::table('books_cou')->where('books_name', $v['text'])->find();
