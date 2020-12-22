@@ -180,7 +180,7 @@ Class Books extends Base
             $result = query($data, $content);
             foreach ($result as &$val) {
                 $val['name'] = mb_convert_encoding($val['name'], 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
-                $val['href'] = correct_url($rule['rule_url'], $val['href']);
+//                $val['href'] = correct_url($rule['rule_url'], $val['href']);
             }
 
             $this->view->result = $result;
