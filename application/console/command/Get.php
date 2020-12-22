@@ -225,7 +225,7 @@ class Get extends Command
         echo "采集起点" . PHP_EOL;
         $this->getCaiji($output); //采集笔趣pc端
         echo "更新biquge5200作者" . PHP_EOL;
-        $this->updateMData($output, 314, 'm.biquge5200.cc'); //更新作者和更新时间
+        $this->updateMData($output, 17, 'm.biquge5200.cc'); //更新作者和更新时间
 //        echo "更新37zw作者" . PHP_EOL;
 //        $this->updateMData($output, 14, 'm.37zw.net'); //更新作者和更新时间
         echo '------结束咯' . PHP_EOL;
@@ -244,7 +244,7 @@ class Get extends Command
             if (isset($config['menu'][$i])) {
                 echo '------开始' . $config['menu'][$i]['url'] . PHP_EOL;
                 $process = new \swoole_process(function (\swoole_process $worker) use ($i, $config) {
-                    $this->process($config['menu'][1]['title'], $config, $config['menu'][$i]['url']);
+                    $this->process($config['menu'][$i]['title'], $config, $config['menu'][$i]['url']);
                 });
                 $pid = $process->start();
                 echo $config['menu'][$i]['url'] . '------第' . $i . '页个子进程创建完毕' . PHP_EOL;
