@@ -222,8 +222,8 @@ class Get extends Command
 //        $this->ready($this->config['m.37zw.net']);
         echo "采集m.biquge5200.cc" . PHP_EOL;
         $this->ready($this->config['m.biquge5200.cc']);
-        echo "采集m.37zw.net" . PHP_EOL;
-        $this->ready($this->config['m.37zw.net']);
+//        echo "采集m.37zw.net" . PHP_EOL;
+//        $this->ready($this->config['m.37zw.net']);
         echo "采集起点" . PHP_EOL;
         $this->getCaiji($output); //采集笔趣pc端
         echo "更新biquge5200作者" . PHP_EOL;
