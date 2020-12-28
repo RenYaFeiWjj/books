@@ -209,7 +209,7 @@ class Get extends Command
 
     protected function execute(Input $input, Output $output)
     {
-        file_get_contents('https://sc.ftqq.com/SCU140275T29b6baf71872e8ea31dc4740966935ac5fe99b3421da9.send?text='.urlencode('开始脚本~'));
+        file_get_contents('https://sc.ftqq.com/SCU140275T29b6baf71872e8ea31dc4740966935ac5fe99b3421da9.send?text='.urlencode('小说爬取开始脚本~'));
 
         Cache::clear('num');
         ini_set('memory_limit', '1024M');
